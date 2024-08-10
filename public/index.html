@@ -2,78 +2,104 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Nametag Example — Networked-Aframe</title>
-    <meta name="description" content="Nametag — Networked-Aframe" />
-
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
-    <script src="/easyrtc/easyrtc.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/networked-aframe@0.12.3/dist/networked-aframe.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-environment-component@1.3.7/dist/aframe-environment-component.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/networked-aframe@0.12.3/examples/js/spawn-in-circle.component.js"></script>
-
-    <script src="/dist/components.js"></script>
-    <script defer src="/dist/ui.js"></script>
+    <title>SummitXR</title>
+    <meta name="description" content="SummitXR" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body>
-    <a-scene
-      renderer="physicallyCorrectLights:true;colorManagement:true"
-      networked-scene="
-        connectOnLoad: false;
-        room: nametag;
-        debug: true;
-        adapter: easyrtc;
-        audio: true;
-    "
-    >
-      <a-assets>
-        <template id="rig-template">
-          <a-entity></a-entity>
-        </template>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-        <template id="head-template">
-          <a-entity class="avatar" networked-audio-source player-info>
-            <a-sphere class="head" scale="0.2 0.22 0.2"></a-sphere>
-            <a-entity class="face" position="0 0.05 0">
-              <a-sphere class="eye" color="white" position="0.06 0.05 -0.16" scale="0.04 0.04 0.04">
-                <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
-              </a-sphere>
-              <a-sphere class="eye" color="white" position="-0.06 0.05 -0.16" scale="0.04 0.04 0.04">
-                <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
-              </a-sphere>
-            </a-entity>
+    <div class="w-full md:m-10 my-10">
+        <!-- Logo and Header -->
+        <div class="text-center">
+          <img src="./assets/Logo.webp" alt="SummitXR Logo" class="mx-auto w-24 h-auto mb-4">
+          <div class="text-3xl font-bold mb-2">SummitXR</div>
+          <p class="text-gray-500 mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
 
-            <!-- here we add a text component for a nametag; the value will be updated by the player-info component -->
-            <a-text
-              class="nametag"
-              align="center"
-              value="?"
-              rotation="0 180 0"
-              position="0 -.35 0"
-              side="double"
-              scale=".5 .5 .5"
-            ></a-text>
-          </a-entity>
-        </template>
-      </a-assets>
+        <!-- Main Content -->
+        <div class="m-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+          <!-- Left Side - Text and Open Rooms -->
+          <div class="text-center md:text-left">
+            <h1 class="text-3xl font-bold mb-4">Immersive Virtual Meetings for everyone</h1>
+            <p class="text-gray-500 mb-6">Lorem ipsum dolor sit amet, consectetur</p>
 
-      <a-entity environment="preset:starry;groundColor:#000000;"></a-entity>
-      <a-entity light="type:ambient;intensity:0.5"></a-entity>
+            <div>
+                <p class="text-xl font-semibold mb-4">Open Rooms:</p>
+                <a href="room.html" class="block">
+                  <div class="relative w-full max-w-md h-56 bg-cover bg-center rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 mx-auto md:mx-0" style="background-image: url('./assets/roomPreview.webp');">
+                      <div class="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white p-2">
+                          BlueMountain
+                      </div>
+                      <!-- <div class="absolute bottom-0 right-0 bg-black bg-opacity-50 text-white p-2">
+                          <span class="inline-flex items-center justify-center w-8 h-8 bg-gray-800 rounded-full">
+                              3
+                          </span>
+                      </div> -->
+                  </div>
+                </a>
+              
+            </div>
+          </div>
 
-      <a-entity id="rig" movement-controls spawn-in-circle="radius:3" networked="template:#rig-template;">
-        <a-entity
-          id="player"
-          camera
-          position="0 1.6 0"
-          look-controls
-          networked="template:#head-template;"
-          visible="false"
-        ></a-entity>
-      </a-entity>
-    </a-scene>
+
+          <!-- Right Side - Carousel -->
+          <div class="w-full h-full bg-gray-800 rounded-lg overflow-hidden">
+            <div class="relative w-full h-full">
+                <!-- Carousel Images -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <img src="./assets/roomPreview.webp" class="absolute inset-0 w-full h-full object-cover" alt="Carousel Image 1">
+                    <img src="./assets/roomPreview2.webp" class="absolute inset-0 w-full h-full object-cover opacity-0" alt="Carousel Image 2">
+                    <img src="./assets/roomPreview3.webp" class="absolute inset-0 w-full h-full object-cover opacity-0" alt="Carousel Image 3">
+                </div>
+                <!-- Navigation Arrows -->
+                <div class="absolute top-1/2 left-0 transform -translate-y-1/2 text-white cursor-pointer p-4 bg-black bg-opacity-50" onclick="prevSlide()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </div>
+                <div class="absolute top-1/2 right-0 transform -translate-y-1/2 text-white cursor-pointer p-4 bg-black bg-opacity-50" onclick="nextSlide()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dots Indicator -->
+        <div class="flex justify-center mt-6">
+          <p>Blue Mountain Hackathon 2024</p>
+        </div>
+    </div>
+
   </body>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.absolute.inset-0 img');
+    
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('opacity-100', i === index);
+            slide.classList.toggle('opacity-0', i !== index);
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    // Initialize
+    showSlide(currentSlide);
+  </script>
+
 </html>
