@@ -116,17 +116,22 @@ export const ChatMessageRepresentation: Component<ChatMessageProps> = (props) =>
     <div
       class="pointer-events-auto mb-2 mr-2 flex flex-col"
       classList={{
+        // display to the right when the message is from the current user
         'items-end': props.entry.fromClientId === NAF.clientId,
+        // display to the left when the message is not from the current user
         'items-start': props.entry.fromClientId !== NAF.clientId,
       }}
     >
+      {/* Only show sender's name when the message is not from the current user */}
       <Show when={props.entry.fromClientId !== NAF.clientId}>
         <span class="text-sm font-normal">{props.entry.name}</span>
       </Show>
       <div
         class="whitespace-pre-wrap rounded-xl p-2 text-base font-normal text-gray-900"
         classList={{
+          // Background Color for message from current user
           'bg-sky-200': props.entry.fromClientId === NAF.clientId,
+          // Background Color for message from other users
           'bg-gray-200': props.entry.fromClientId !== NAF.clientId,
         }}
       >
@@ -219,6 +224,8 @@ export const ChatPanel: Component<ChatPanelProps> = (props) => {
           </For>
           <div ref={messagesEndRef}></div>
         </div>
+
+        {/* Chat Message Input */}
         <form class="relative flex" onSubmit={sendMessageAndResetInput}>
           <textarea
             rows={textRow()}
