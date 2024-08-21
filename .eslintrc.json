@@ -14,7 +14,7 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "indent": "off",
+    "indent": "warn",
     "quotes": "off",
     "comma-dangle": "off",
     "semi": "off",
