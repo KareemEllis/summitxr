@@ -59,6 +59,7 @@ export const CameraButton: Component<Props> = (props) => {
       const listener = () => {
         setIsConnected(true);
         NAF.connection.adapter?.enableCamera?.(untrack(cameraEnabled));
+        toggleCameraDisplay(untrack(cameraEnabled));
       };
       document.body.addEventListener('connected', listener);
       onCleanup(() => {
@@ -67,11 +68,20 @@ export const CameraButton: Component<Props> = (props) => {
     }
   });
 
+  // This function toggles the visibility of the camera display
+  const toggleCameraDisplay = (enabled: boolean) => {
+    const cameraDisplay = document.querySelector('#rig #camera-display');
+    // @ts-ignore
+    // instead of hiding, completely remove the element to avoid the camera stream being rendered
+    cameraDisplay.setAttribute('visible', enabled);
+  };
+
   createEffect(() => {
     if (!domContentLoaded()) return;
     const info = { videoOff: iconOff() };
     // @ts-ignore
     document.querySelector(props.entity ?? '#player')?.setAttribute('player-info', info);
+    toggleCameraDisplay(cameraEnabled());
   });
 
   createEffect(() => {
@@ -85,6 +95,7 @@ export const CameraButton: Component<Props> = (props) => {
         return;
       }
       NAF.connection.adapter.enableCamera(enabled);
+      toggleCameraDisplay(enabled);
     }
   });
 
