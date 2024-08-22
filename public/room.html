@@ -50,6 +50,41 @@
           <a-entity></a-entity>
         </template>
 
+        <!-- Camera Display  -->
+        <template id="camera-template">
+          <a-entity id="camera-display" class="avatar" networked-audio-source player-info>
+            <!-- These 2 planes are the objects that will show the camera stream -->
+            <!-- Aspect Ratio 4:3 scaled down to 2:1.5-->
+            <a-plane
+              color="#FFF"
+              width="2"
+              height="1.5"
+              position="0 .6 0"
+              material="side: front"
+              networked-video-source
+            ></a-plane>
+            <a-plane
+              color="#FFF"
+              width="2"
+              height="1.5"
+              position="0 .6 0"
+              material="side: back"
+              networked-video-source
+            ></a-plane>
+
+            <!-- here we add a text component for a nametag; the value will be updated by the player-info component -->
+            <a-text
+              class="nametag"
+              align="center"
+              value="?"
+              rotation="0 180 0"
+              position="0 -.35 0"
+              side="double"
+              scale=".5 .5 .5"
+            ></a-text>
+          </a-entity>
+        </template>
+
         <!-- Player -->
         <template id="head-template">
           <a-entity class="avatar" networked-audio-source player-info>
