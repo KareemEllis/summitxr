@@ -20,6 +20,23 @@ NAF.schemas.getComponents = (template) => {
     });
   }
 
+  if (!NAF.schemas.hasTemplate('#camera-template')) {
+    NAF.schemas.add({
+      template: '#camera-template',
+      components: [
+        {
+          component: 'position',
+          requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.001),
+        },
+        {
+          component: 'rotation',
+          requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5),
+        },
+        'player-info',
+      ],
+    });
+  }
+
   const components = NAF.schemas.getComponentsOriginal(template);
   return components;
 };
@@ -29,6 +46,7 @@ AFRAME.registerComponent('player-info', {
     name: { type: 'string', default: 'anonymous' },
     color: { type: 'color', default: '#ffffff' },
     muted: { type: 'boolean', default: false },
+    videoOff: { type: 'boolean', default: false },
   },
 
   init: function () {
