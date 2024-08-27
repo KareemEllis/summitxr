@@ -17,13 +17,11 @@ NAF.schemas.getComponents = (template) => {
         },
         {
           selector: '.head',
-          component: 'scale',
-          requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.001),
+          component: 'visible',
         },
         {
           selector: '#camera-display',
-          component: 'scale',
-          requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.01)
+          component: 'visible',
         },
         'player-info',
       ],
