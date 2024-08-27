@@ -16,7 +16,7 @@ NAF.schemas.getComponents = (template) => {
           requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5),
         },
         {
-          selector: '.head',
+          selector: '.avatar-model',
           component: 'visible',
         },
         {
@@ -41,7 +41,7 @@ AFRAME.registerComponent('player-info', {
   },
 
   init: function () {
-    this.head = this.el.querySelector('.head');
+    this.avatarModel = this.el.querySelector('.avatar-model');
     this.nametag = this.el.querySelector('.nametag');
     this.updatedEventDetail = { el: undefined, data: undefined, oldData: undefined };
   },
@@ -54,7 +54,7 @@ AFRAME.registerComponent('player-info', {
     this.updatedEventDetail.data = undefined;
     this.updatedEventDetail.oldData = undefined;
     this.updatedEventDetail.el = undefined;
-    if (this.head) this.head.setAttribute('material', 'color', this.data.color);
+    if (this.avatarModel) this.avatarModel.setAttribute('material', 'color', this.data.color);
     if (this.nametag) this.nametag.setAttribute('value', this.data.name);
   },
 });

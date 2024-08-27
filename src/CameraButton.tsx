@@ -76,19 +76,19 @@ export const CameraButton: Component<Props> = (props) => {
     if (!playerEntity) return;
 
     // Access the head and camera-display entities
-    const headEntity = playerEntity.querySelector('.head');
+    const modelEntity = playerEntity.querySelector('.avatar-model');
     const cameraDisplayEntity = playerEntity.querySelector('#camera-display');
 
-    if (!headEntity || !cameraDisplayEntity) return;
+    if (!modelEntity || !cameraDisplayEntity) return;
 
     // Toggle visibility based on camera state
     if (enabled) {
       // Hide the avatar head and show the camera display
-      headEntity.setAttribute('visible', 'false');
+      modelEntity.setAttribute('visible', 'false');
       cameraDisplayEntity.setAttribute('visible', 'true');
     } else {
       // Show the avatar head and hide the camera display
-      headEntity.setAttribute('visible', 'true');
+      modelEntity.setAttribute('visible', 'true');
       cameraDisplayEntity.setAttribute('visible', 'false');
     }
   };
