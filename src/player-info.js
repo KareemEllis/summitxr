@@ -15,6 +15,16 @@ NAF.schemas.getComponents = (template) => {
           component: 'rotation',
           requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5),
         },
+        {
+          selector: '.head',
+          component: 'scale',
+          requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.001),
+        },
+        {
+          selector: '#camera-display',
+          component: 'scale',
+          requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.01)
+        },
         'player-info',
       ],
     });
