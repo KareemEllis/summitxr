@@ -70,10 +70,27 @@ export const CameraButton: Component<Props> = (props) => {
 
   // This function toggles the visibility of the camera display
   const toggleCameraDisplay = (enabled: boolean) => {
-    const cameraDisplay = document.querySelector('#rig #camera-display');
-    // @ts-ignore
-    // instead of hiding, completely remove the element to avoid the camera stream being rendered
-    cameraDisplay.setAttribute('visible', enabled);
+    // Access the player entity
+    const playerEntity = document.querySelector('#rig #player');
+
+    if (!playerEntity) return;
+
+    // Access the head and camera-display entities
+    const headEntity = playerEntity.querySelector('.head');
+    const cameraDisplayEntity = playerEntity.querySelector('#camera-display');
+
+    if (!headEntity || !cameraDisplayEntity) return;
+
+    // Toggle visibility based on camera state
+    if (enabled) {
+      // Hide the avatar head and show the camera display
+      headEntity.setAttribute('visible', 'false');
+      cameraDisplayEntity.setAttribute('visible', 'true');
+    } else {
+      // Show the avatar head and hide the camera display
+      headEntity.setAttribute('visible', 'true');
+      cameraDisplayEntity.setAttribute('visible', 'false');
+    }
   };
 
   createEffect(() => {
