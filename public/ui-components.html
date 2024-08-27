@@ -34,7 +34,7 @@
           <a-entity></a-entity>
         </template>
 
-        <template id="head-template">
+        <template id="avatar-template">
           <a-entity class="avatar" networked-audio-source player-info>
             <a-sphere class="head" scale="0.2 0.22 0.2"></a-sphere>
             <a-entity class="face" position="0 0.05 0">
@@ -69,7 +69,7 @@
           camera
           position="0 1.6 0"
           look-controls
-          networked="template:#head-template;"
+          networked="template:#avatar-template;"
           visible="false"
         ></a-entity>
       </a-entity>

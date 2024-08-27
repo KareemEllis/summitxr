@@ -51,7 +51,7 @@
         </template>
 
         <!-- Player -->
-        <template id="head-template">
+        <template id="avatar-template">
           <a-entity class="avatar" networked-audio-source player-info>
 
             <a-entity id="camera-display" scale="1 1 1" visible="false">
@@ -117,7 +117,7 @@
           camera
           position="0 1.6 0"
           look-controls
-          networked="template:#head-template;"
+          networked="template:#avatar-template;"
           visible="false"
         >
         </a-entity>
