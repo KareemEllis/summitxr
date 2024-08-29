@@ -5,6 +5,7 @@ declare var NAF: {
   connection: {
     adapter?: {
       enableMicrophone: (enabled: boolean) => void;
+      enableCamera: (enabled: boolean) => void;
     };
     broadcastDataGuaranteed: (dataType: string, data: object) => void;
     isConnected: () => boolean;

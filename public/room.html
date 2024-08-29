@@ -41,6 +41,7 @@
         debug: true;
         adapter: easyrtc;
         audio: true;
+        video: true;
     "
     >
       <!-- Assets Management -->
@@ -50,17 +51,41 @@
         </template>
 
         <!-- Player -->
-        <template id="head-template">
+        <template id="avatar-template">
           <a-entity class="avatar" networked-audio-source player-info>
-            <a-sphere class="head" scale="0.2 0.22 0.2"></a-sphere>
-            <a-entity class="face" position="0 0.05 0">
-              <a-sphere class="eye" color="white" position="0.06 0.05 -0.16" scale="0.04 0.04 0.04">
-                <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
-              </a-sphere>
-              <a-sphere class="eye" color="white" position="-0.06 0.05 -0.16" scale="0.04 0.04 0.04">
-                <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
-              </a-sphere>
+
+            <a-entity id="camera-display" scale="1 1 1" visible="false">
+              <!-- These 2 planes are the objects that will show the camera stream -->
+              <!-- Aspect Ratio 4:3 scaled down to 2:1.5-->
+              <a-plane
+                color="#FFF"
+                width="2"
+                height="1.5"
+                position="0 .6 0"
+                material="side: front"
+                networked-video-source
+              ></a-plane>
+              <a-plane
+                color="#FFF"
+                width="2"
+                height="1.5"
+                position="0 .6 0"
+                material="side: back"
+                networked-video-source
+              ></a-plane>
             </a-entity>
+
+            <!-- This is the player's head. It will be replaced with the camera stream when camera is enabled. -->
+            <a-sphere class="avatar-model" scale="0.2 0.22 0.2">
+              <a-entity class="face" position="-0.0038 0.05 0.12182" scale="6 6 6">
+                <a-sphere class="eye" color="white" position="0.06 0.05 -0.16" scale="0.04 0.04 0.04">
+                  <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+                </a-sphere>
+                <a-sphere class="eye" color="white" position="-0.06 0.05 -0.16" scale="0.04 0.04 0.04">
+                  <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+                </a-sphere>
+              </a-entity>
+            </a-sphere>
 
             <!-- here we add a text component for a nametag; the value will be updated by the player-info component -->
             <a-text
@@ -75,8 +100,7 @@
           </a-entity>
         </template>
       </a-assets>
-      <!-- --------------------------------------------------- -->
-       <!-- --------------------------------------------------- -->
+
 
       <a-entity environment="preset:starry;groundColor:#000000;"></a-entity>
       <a-entity light="type:ambient;intensity:0.5"></a-entity>
@@ -93,7 +117,7 @@
           camera
           position="0 1.6 0"
           look-controls
-          networked="template:#head-template;"
+          networked="template:#avatar-template;"
           visible="false"
         >
         </a-entity>

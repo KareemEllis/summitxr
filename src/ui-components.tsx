@@ -2,12 +2,18 @@ import './assets/style.css';
 import { customElement, noShadowDOM } from 'solid-element';
 import { ChatButton } from './Chat';
 import { MicButton } from './MicButton';
+import { CameraButton } from './CameraButton';
 import { UsernameInput } from './UsernameInput';
 import { UsersButton } from './UsersButton';
 
 customElement('naf-mic-button', { entity: '#player' }, (props) => {
   noShadowDOM();
   return <MicButton {...props} />;
+});
+
+customElement('naf-camera-button', { entity: '#player' }, (props) => {
+  noShadowDOM();
+  return <CameraButton {...props} />;
 });
 
 customElement('naf-username-input', { entity: '#player', enableColorPicker: true }, (props) => {

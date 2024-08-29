@@ -83,7 +83,7 @@ easyrtc.events.on(
   },
 );
 
-// To test, lets print the credential to the console for every room join!
+// lets print the credential to the console for every room join!
 easyrtc.events.on(
   "roomJoin",
   (connectionObj, roomName, roomParameter, callback) => {
