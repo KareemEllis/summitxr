@@ -3,9 +3,9 @@
 // Temporary workaround for template declaration; see issue 167
 NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
 NAF.schemas.getComponents = (template) => {
-  if (!NAF.schemas.hasTemplate('#head-template')) {
+  if (!NAF.schemas.hasTemplate('#avatar-template')) {
     NAF.schemas.add({
-      template: '#head-template',
+      template: '#avatar-template',
       components: [
         {
           component: 'position',
@@ -14,6 +14,14 @@ NAF.schemas.getComponents = (template) => {
         {
           component: 'rotation',
           requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5),
+        },
+        {
+          selector: '.avatar-model',
+          component: 'visible',
+        },
+        {
+          selector: '#camera-display',
+          component: 'visible',
         },
         'player-info',
       ],
@@ -29,10 +37,11 @@ AFRAME.registerComponent('player-info', {
     name: { type: 'string', default: 'anonymous' },
     color: { type: 'color', default: '#ffffff' },
     muted: { type: 'boolean', default: false },
+    videoOff: { type: 'boolean', default: false },
   },
 
   init: function () {
-    this.head = this.el.querySelector('.head');
+    this.avatarModel = this.el.querySelector('.avatar-model');
     this.nametag = this.el.querySelector('.nametag');
     this.updatedEventDetail = { el: undefined, data: undefined, oldData: undefined };
   },
@@ -45,7 +54,7 @@ AFRAME.registerComponent('player-info', {
     this.updatedEventDetail.data = undefined;
     this.updatedEventDetail.oldData = undefined;
     this.updatedEventDetail.el = undefined;
-    if (this.head) this.head.setAttribute('material', 'color', this.data.color);
+    if (this.avatarModel) this.avatarModel.setAttribute('material', 'color', this.data.color);
     if (this.nametag) this.nametag.setAttribute('value', this.data.name);
   },
 });

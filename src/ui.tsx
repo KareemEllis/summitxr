@@ -4,6 +4,7 @@ import { render } from 'solid-js/web';
 import { Show, createSignal } from 'solid-js';
 import { IoSettingsOutline } from 'solid-icons/io';
 import { MicButton } from './MicButton';
+import { CameraButton } from './CameraButton';
 import { UsernameInput } from './UsernameInput';
 import { ChatButton } from './Chat';
 import { UsersButton } from './UsersButton';
@@ -87,6 +88,7 @@ const BottomBar = () => {
         <IoSettingsOutline size={24} />
       </button>
       <MicButton entity="#player" />
+      <CameraButton entity="#player" />
       <UsersButton />
       <ChatButton />
     </div>
