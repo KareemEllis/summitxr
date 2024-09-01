@@ -39,6 +39,8 @@ interface Props {
 }
 
 export const ScreenShareButton: Component<Props> = (props) => {
+  let screenSharingInProgress = false; // New flag to prevent duplicate creation
+
   const iconOff = createMemo(() => {
     return !screenEnabled();
   });
@@ -71,12 +73,20 @@ export const ScreenShareButton: Component<Props> = (props) => {
     const rig = document.querySelector('#rig');
     const player = document.querySelector('#player');
 
-    if (!rig || !scene || !player) return;
+    if (!rig || !scene || !player || screenSharingInProgress) return;
 
     const screenEntity = document.querySelector('#screen-display');
+    const existingScreenVideo = document.querySelector('#screen-video');
 
     if (enabled) {
       if (!screenEntity) {
+        screenSharingInProgress = true;
+
+        // Remove any existing screen video element
+        if (existingScreenVideo) {
+          document.body.removeChild(existingScreenVideo);
+        }
+
         // Get the player's position and rotation
         const playerPosition = rig.getAttribute('position');
         const playerRotation = player.getAttribute('rotation');
@@ -109,6 +119,33 @@ export const ScreenShareButton: Component<Props> = (props) => {
         // Start screen sharing
         navigator.mediaDevices.getDisplayMedia().then((stream) => {
           NAF.connection.adapter?.addLocalMediaStream(stream, 'screen');
+
+          // Adjust the camera position to accommodate the screen share
+          const cameraVideoEl = document.querySelector('#camera-video') as HTMLElement;
+          if (cameraVideoEl) {
+            cameraVideoEl.style.top = `${cameraVideoEl.offsetHeight + 20}px`; // Move camera down to stack below the screen share
+          }
+
+          // Attach the stream to a small video element on the top-left corner
+          const videoEl = document.createElement('video');
+          videoEl.setAttribute('id', 'screen-video');
+          // @ts-ignore
+          videoEl.srcObject = stream;
+          // @ts-ignore
+          videoEl.autoplay = true;
+          // @ts-ignore
+          videoEl.muted = true; // Prevent echo
+          // @ts-ignore
+          videoEl.playsInline = true; // Ensure it plays on mobile devices
+          videoEl.style.position = 'absolute';
+          videoEl.style.top = '10px';
+          videoEl.style.left = '10px';
+          videoEl.style.width = '200px'; // Adjust the size as needed
+          videoEl.style.height = 'auto';
+          videoEl.style.zIndex = '9999'; // Make sure it stays on top
+
+          document.body.appendChild(videoEl);
+
           stream.getVideoTracks().forEach((track) => {
             track.addEventListener(
               'ended',
@@ -116,10 +153,22 @@ export const ScreenShareButton: Component<Props> = (props) => {
                 NAF.connection.adapter?.removeLocalMediaStream('screen');
                 setScreenEnabled(false);
                 scene.removeChild(screen);
+                document.body.removeChild(videoEl);
+                screenSharingInProgress = false; // Reset the flag
+
+                // Reset the camera position when screen share is removed
+                if (cameraVideoEl) {
+                  cameraVideoEl.style.top = '10px'; // Move camera back to the top-left
+                }
               },
               { once: true }
             );
           });
+
+          screenSharingInProgress = false; // Reset the flag after the stream has been successfully added
+        }).catch((error) => {
+          console.error("Screen sharing failed: ", error);
+          screenSharingInProgress = false; // Reset the flag if the user cancels or an error occurs
         });
       }
     } else {
@@ -127,6 +176,18 @@ export const ScreenShareButton: Component<Props> = (props) => {
       if (screenEntity) {
         NAF.connection.adapter?.removeLocalMediaStream('screen');
         scene.removeChild(screenEntity);
+
+        if (existingScreenVideo) {
+          document.body.removeChild(existingScreenVideo);
+        }
+
+        // Reset the camera position when screen share is removed
+        const cameraVideoEl = document.querySelector('#camera-video') as HTMLElement;
+        if (cameraVideoEl) {
+          cameraVideoEl.style.top = '10px'; // Move camera back to the top-left
+        }
+
+        screenSharingInProgress = false; // Reset the flag when screen sharing is stopped
       }
     }
   };
@@ -141,7 +202,7 @@ export const ScreenShareButton: Component<Props> = (props) => {
 
   createEffect(() => {
     const enabled = screenEnabled();
-    localStorage.setItem('screenEnabled', enabled.toString());
+
     if (isConnected()) {
       if (!NAF.connection.adapter?.addLocalMediaStream) {
         console.error(
