@@ -75,6 +75,9 @@ const EnterScreen = () => {
 };
 
 const BottomBar = () => {
+  const isVRHeadsetConnected = AFRAME.utils.device.checkHeadsetConnected();
+  const isMobileDevice = AFRAME.utils.device.isMobile();
+
   return (
     <div class="naf-bottom-bar-center">
       <button
@@ -89,8 +92,15 @@ const BottomBar = () => {
         <IoSettingsOutline size={24} />
       </button>
       <MicButton entity="#player" />
-      <CameraButton entity="#player" />
-      <ScreenShareButton entity="#player" />
+
+      {/* Conditionally render the CameraButton and ScreenShareButton */}
+      <Show when={!isVRHeadsetConnected || isMobileDevice}>
+        <CameraButton entity="#player" />
+      </Show>
+      <Show when={!isVRHeadsetConnected && !isMobileDevice}>
+        <ScreenShareButton entity="#player" />
+      </Show>
+
       <UsersButton />
       <ChatButton />
     </div>
