@@ -2,8 +2,7 @@
 import { Component, createEffect, createMemo, createSignal, onCleanup, onMount, Show, untrack } from 'solid-js';
 import { BsMic, BsMicMute } from 'solid-icons/bs';
 
-const savedMicEnabled = localStorage.getItem('micEnabled');
-export const [micEnabled, setMicEnabled] = createSignal(savedMicEnabled === 'true');
+export const [micEnabled, setMicEnabled] = createSignal(false);
 const [isConnected, setIsConnected] = createSignal(false);
 
 export const [audioEnabled, setAudioEnabled] = createSignal(false);
@@ -76,7 +75,6 @@ export const MicButton: Component<Props> = (props) => {
 
   createEffect(() => {
     const enabled = micEnabled();
-    localStorage.setItem('micEnabled', enabled.toString());
     if (isConnected()) {
       if (!NAF.connection.adapter?.enableMicrophone) {
         console.error(

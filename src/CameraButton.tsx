@@ -2,8 +2,7 @@
 import { Component, createEffect, createMemo, createSignal, onCleanup, onMount, Show, untrack } from 'solid-js';
 import { BsCameraVideo, BsCameraVideoOff } from 'solid-icons/bs';
 
-const savedCameraEnabled = localStorage.getItem('cameraEnabled');
-export const [cameraEnabled, setCameraEnabled] = createSignal(savedCameraEnabled === 'true');
+export const [cameraEnabled, setCameraEnabled] = createSignal(false);
 const [isConnected, setIsConnected] = createSignal(false);
 
 export const [videoEnabled, setVideoEnabled] = createSignal(false);
@@ -103,7 +102,6 @@ export const CameraButton: Component<Props> = (props) => {
 
   createEffect(() => {
     const enabled = cameraEnabled();
-    localStorage.setItem('cameraEnabled', enabled.toString());
     if (isConnected()) {
       if (!NAF.connection.adapter?.enableCamera) {
         console.error(
