@@ -112,6 +112,18 @@
         spawn-in-circle="radius:3" 
         networked="template:#rig-template;"
       >
+        <!-- Left and Right Hand Controls -->
+        <a-entity
+          id="my-tracked-left-hand"
+          networked-hand-controls="hand:left;"
+          networked="template:#left-hand-default-template"
+        ></a-entity>
+        <a-entity
+          id="my-tracked-right-hand"
+          networked-hand-controls="hand:right;handModelStyle:controller;"
+          networked="template:#right-hand-default-template"
+        ></a-entity>
+        
         <a-entity
           id="player"
           camera
