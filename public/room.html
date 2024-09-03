@@ -75,6 +75,7 @@
                 color="#FFF"
                 width="2"
                 height="1.5"
+                scale="-1 1 1"
                 position="0 .6 0"
                 material="side: back"
                 networked-video-source
@@ -104,6 +105,31 @@
               scale=".5 .5 .5"
             ></a-text>
           </a-entity>
+        </template>
+
+        <!-- ScreenShare -->
+        <template id="screenshare-template">
+
+          <a-entity id="screen-display">
+            <a-plane
+              color="#FFF"
+              width="2"
+              height="1.5"
+              position="0 .6 0"
+              material="side: front"
+              networked-video-source="streamName: screen"
+            ></a-plane>
+            <a-plane
+              color="#FFF"
+              width="2"
+              height="1.5"
+              scale="-1 1 1"
+              position="0 .6 0"
+              material="side: back"
+              networked-video-source="streamName: screen"
+            ></a-plane>
+          </a-entity>
+
         </template>
       </a-assets>
 
