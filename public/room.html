@@ -32,6 +32,7 @@
 
     <!-- Super Hands Library -->
     <script src="https://unpkg.com/super-hands@3.0.4/dist/super-hands.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
 
     <script src="/dist/components.js"></script>
 
@@ -54,7 +55,7 @@
         adapter: easyrtc;
         audio: true;
         video: true;
-    "
+      "
     >
       <!-- Assets Management -->
       <a-assets>
@@ -116,7 +117,7 @@
         <!-- ScreenShare -->
         <template id="screenshare-template">
 
-          <a-entity id="screen-display">
+          <a-entity id="screen-display" mixin="grab-move">
             <a-plane
               color="#FFF"
               width="2"
@@ -137,6 +138,14 @@
           </a-entity>
 
         </template>
+
+        <!-- Grab interaction mixin: Apply to eneities than need to be grabbable -->
+        <a-mixin 
+          id="grab-move"
+          hoverable grabbable stretchable grab-look-control-manager
+          event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+          event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+        ></a-mixin>
       </a-assets>
 
 
@@ -144,7 +153,7 @@
       <a-entity light="type:ambient;intensity:0.5"></a-entity>
 
       <!-- Grabbable Test objects -->
-      <a-box hoverable grabbable stretchable color="blue" position="0 1 -3"></a-box>
+      <a-box mixin="grab-move" color="blue" position="0 1 -3"></a-box>
 
       <!-- Entity for Rig and Player -->
       <a-entity 
@@ -161,6 +170,14 @@
           look-controls
           networked="template:#avatar-template;"
           visible="false"
+          capture-mouse
+          raycaster cursor="rayOrigin:mouse"
+          super-hands="
+            colliderEvent: raycaster-intersection;
+            colliderEventProperty: els;
+            colliderEndEvent:raycaster-intersection-cleared;
+            colliderEndEventProperty: clearedEls;
+          "
         ></a-entity>
 
         <!-- Left and Right Hand Controls for VR -->
