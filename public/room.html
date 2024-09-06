@@ -50,6 +50,13 @@
           <a-entity></a-entity>
         </template>
 
+        <!-- 3D Room Model -->
+        <a-asset-item 
+        id="roomModel" 
+        src="./assets/models/room/scene.gltf"
+        >
+        </a-asset-item> 
+
         <!-- Player -->
         <template id="avatar-template">
           <a-entity class="avatar" networked-audio-source player-info>
@@ -127,6 +134,13 @@
         </template>
       </a-assets>
 
+      <!-- Entity For 3D Room -->
+      <a-entity 
+      gltf-model="#roomModel" 
+      position="0 0 0" 
+      scale="1.5 1 1.5"
+      >
+      </a-entity>
 
       <a-entity environment="preset:starry;groundColor:#000000;"></a-entity>
       <a-entity light="type:ambient;intensity:0.5"></a-entity>
