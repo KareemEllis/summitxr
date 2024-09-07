@@ -1,5 +1,6 @@
 /* global AFRAME */
 import './assets/style.css';
+import nipplejs from 'nipplejs'
 import { render } from 'solid-js/web';
 import { Show, createSignal } from 'solid-js';
 import { IoSettingsOutline } from 'solid-icons/io';
@@ -8,6 +9,7 @@ import { CameraButton } from './CameraButton';
 import { UsernameInput } from './UsernameInput';
 import { ChatButton } from './Chat';
 import { UsersButton } from './UsersButton';
+// import { Joystick } from './Joystick';
 
 const [showSettings, setShowSettings] = createSignal(false);
 const [entered, setEntered] = createSignal(false);
@@ -73,6 +75,28 @@ const EnterScreen = () => {
   );
 };
 
+const Joystick = () => {
+  const joystickZone = document.getElementById('zone_joystick');
+  if (!joystickZone) {
+    return null; // or handle the error
+  }
+
+  var joystick = nipplejs.create({
+    zone: joystickZone,
+    mode: 'static',
+    position: { left: '50%', top: '50%' }, // Center the joystick
+    color: 'blue'
+  });
+
+  // Listen to joystick events
+  joystick.on('move', function (evt, data) {
+    if (data.direction) {
+      // Handle movement here, e.g., move the player in A-Frame
+      console.log('Joystick moved:', data.direction);
+    }
+  });
+}
+
 const BottomBar = () => {
   return (
     <div class="naf-bottom-bar-center">
@@ -106,6 +130,7 @@ const App = () => {
       </Show>
       <Show when={entered() && sceneLoaded() && !showSettings()}>
         <BottomBar />
+        <Joystick />
       </Show>
     </>
   );
