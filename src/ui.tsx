@@ -89,7 +89,7 @@ const Joystick = () => {
     color: 'blue'
   });
 
-  const cameraEl = document.getElementById('camera') as Entity;
+  const playerEl = document.getElementById('player') as Entity;
   // turn joystick data into WASD movement in AFRAME
   var f; var ang; var xVec; var yVec;
 
@@ -98,14 +98,14 @@ const Joystick = () => {
     f = data.force;
     ang = data.angle.radian
 
-    xVec = Math.cos(ang + 3.14 / 180 * cameraEl.getAttribute('rotation').y);
-    yVec = Math.sin(ang + 3.14 / 180 * cameraEl.getAttribute('rotation').y);
+    xVec = Math.cos(ang + 3.14 / 180 * playerEl.getAttribute('rotation').y);
+    yVec = Math.sin(ang + 3.14 / 180 * playerEl.getAttribute('rotation').y);
 
-    var x = cameraEl.getAttribute("position").x + f / 15 * (xVec);
-    var y = cameraEl.getAttribute("position").y
-    var z = cameraEl.getAttribute("position").z - f / 15 * (yVec);
+    var x = playerEl.getAttribute("position").x + f / 15 * (xVec);
+    var y = playerEl.getAttribute("position").y
+    var z = playerEl.getAttribute("position").z - f / 15 * (yVec);
 
-    cameraEl.setAttribute("position", `${x} ${y} ${z}`)
+    playerEl.setAttribute("position", `${x} ${y} ${z}`)
   });
 }
 

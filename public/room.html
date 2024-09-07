@@ -15,11 +15,6 @@
     <script src="https://cdn.jsdelivr.net/npm/networked-aframe@0.12.3/dist/networked-aframe.min.js"></script>
     <!-- --------------------------------------------------- -->
 
-    <!-- --------------------------------------------------- -->
-    <!-- NippleJS Library -->
-    <!-- --------------------------------------------------- -->
-    <!-- <script src="https://cdn.rawgit.com/mrturck/aframe-joystick/master/joystick.min.js"></script> -->
-    <!-- ---------------------------------------------------
 
 
     <!-- A-Frame Extras Library -->
@@ -108,7 +103,7 @@
         </template>
       </a-assets>
 
-      <a-entity camera id="camera" position="0 1.6 0" look-controls wasd-controls></a-entity>
+      <!-- <a-entity camera id="camera" position="0 1.6 0" look-controls wasd-controls></a-entity> -->
 
       <a-entity environment="preset:starry;groundColor:#000000;"></a-entity>
       <a-entity light="type:ambient;intensity:0.5"></a-entity>
@@ -116,6 +111,7 @@
       <!-- Entity for Rig and Player -->
       <a-entity 
         id="rig" 
+        
         movement-controls 
         spawn-in-circle="radius:3" 
         networked="template:#rig-template;"
@@ -159,9 +155,17 @@
   </body>
 
   <!-- Show joystick on mobile devives -->
-  <!-- <script>
+  <script>
     AFRAME.utils.device.isMobile() ? document.getElementById('zone_joystick').style.display = 'block' : document.getElementById('zone_joystick').style.display = 'none';
+    
+      const rig = document.getElementById('rig');
+
+      if (AFRAME.utils.device.isMobile()) {
+        // Disable movement-controls on mobile devices
+        rig.removeAttribute('movement-controls');
+      }
+
   </script>
-   -->
+  
 
 </html>
