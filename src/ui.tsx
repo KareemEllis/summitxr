@@ -6,6 +6,7 @@ import { Show, createSignal } from 'solid-js';
 import { IoSettingsOutline } from 'solid-icons/io';
 import { MicButton } from './MicButton';
 import { CameraButton } from './CameraButton';
+import { ScreenShareButton } from './ScreenShareButton';
 import { UsernameInput } from './UsernameInput';
 import { ChatButton } from './Chat';
 import { UsersButton } from './UsersButton';
@@ -110,6 +111,9 @@ const Joystick = () => {
 }
 
 const BottomBar = () => {
+  const isVRHeadsetConnected = AFRAME.utils.device.checkHeadsetConnected();
+  const isMobileDevice = AFRAME.utils.device.isMobile();
+
   return (
     <div class="naf-bottom-bar-center">
       <button
@@ -124,7 +128,15 @@ const BottomBar = () => {
         <IoSettingsOutline size={24} />
       </button>
       <MicButton entity="#player" />
-      <CameraButton entity="#player" />
+
+      {/* Conditionally render the CameraButton and ScreenShareButton */}
+      <Show when={!isVRHeadsetConnected || isMobileDevice}>
+        <CameraButton entity="#player" />
+      </Show>
+      <Show when={!isVRHeadsetConnected && !isMobileDevice}>
+        <ScreenShareButton entity="#player" />
+      </Show>
+
       <UsersButton />
       <ChatButton />
     </div>

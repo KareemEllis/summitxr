@@ -6,6 +6,8 @@ declare var NAF: {
     adapter?: {
       enableMicrophone: (enabled: boolean) => void;
       enableCamera: (enabled: boolean) => void;
+      addLocalMediaStream: (stream: MediaStream, streamName: String) => void;
+      removeLocalMediaStream: (streamName: String) => void;
     };
     broadcastDataGuaranteed: (dataType: string, data: object) => void;
     isConnected: () => boolean;
