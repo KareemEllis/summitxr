@@ -15,6 +15,12 @@
     <script src="https://cdn.jsdelivr.net/npm/networked-aframe@0.12.3/dist/networked-aframe.min.js"></script>
     <!-- --------------------------------------------------- -->
 
+    <!-- --------------------------------------------------- -->
+    <!-- NippleJS Library -->
+    <!-- --------------------------------------------------- -->
+    <!-- <script src="https://cdn.rawgit.com/mrturck/aframe-joystick/master/joystick.min.js"></script> -->
+    <!-- ---------------------------------------------------
+
 
     <!-- A-Frame Extras Library -->
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
@@ -102,6 +108,7 @@
         </template>
       </a-assets>
 
+      <a-entity camera id="camera" position="0 1.6 0" look-controls wasd-controls></a-entity>
 
       <a-entity environment="preset:starry;groundColor:#000000;"></a-entity>
       <a-entity light="type:ambient;intensity:0.5"></a-entity>
@@ -141,7 +148,7 @@
         id="zone_joystick" 
         style="
           position: absolute; 
-          bottom: 10px; left: 10px; 
+          bottom: 5px; left: 10px; 
           width: 200px; 
           height: 200px;"
         >
@@ -151,6 +158,10 @@
 
   </body>
 
-  
+  <!-- Show joystick on mobile devives -->
+  <!-- <script>
+    AFRAME.utils.device.isMobile() ? document.getElementById('zone_joystick').style.display = 'block' : document.getElementById('zone_joystick').style.display = 'none';
+  </script>
+   -->
 
 </html>

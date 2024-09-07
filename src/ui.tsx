@@ -9,6 +9,7 @@ import { CameraButton } from './CameraButton';
 import { UsernameInput } from './UsernameInput';
 import { ChatButton } from './Chat';
 import { UsersButton } from './UsersButton';
+import { Entity } from 'aframe';
 // import { Joystick } from './Joystick';
 
 const [showSettings, setShowSettings] = createSignal(false);
@@ -88,12 +89,23 @@ const Joystick = () => {
     color: 'blue'
   });
 
+  const cameraEl = document.getElementById('camera') as Entity;
+  // turn joystick data into WASD movement in AFRAME
+  var f; var ang; var xVec; var yVec;
+
   // Listen to joystick events
   joystick.on('move', function (evt, data) {
-    if (data.direction) {
-      // Handle movement here, e.g., move the player in A-Frame
-      console.log('Joystick moved:', data.direction);
-    }
+    f = data.force;
+    ang = data.angle.radian
+
+    xVec = Math.cos(ang + 3.14 / 180 * cameraEl.getAttribute('rotation').y);
+    yVec = Math.sin(ang + 3.14 / 180 * cameraEl.getAttribute('rotation').y);
+
+    var x = cameraEl.getAttribute("position").x + f / 15 * (xVec);
+    var y = cameraEl.getAttribute("position").y
+    var z = cameraEl.getAttribute("position").z - f / 15 * (yVec);
+
+    cameraEl.setAttribute("position", `${x} ${y} ${z}`)
   });
 }
 
