@@ -150,7 +150,6 @@
       <!-- Entity for Rig and Player -->
       <a-entity 
         id="rig" 
-        
         movement-controls 
         spawn-in-circle="radius:3" 
         networked="template:#rig-template;"
@@ -178,16 +177,32 @@
         </a-entity>
       </a-entity>
 
+      <!--  -->
       <!-- Joystick Zone -->
+      <!--  -->
+      <!-- WASD-like Movement Joystick -->
         <div 
         id="zone_joystick" 
         style="
           position: absolute; 
-          bottom: 5px; left: 10px; 
+          bottom: 15px; left: 10px; 
           width: 200px; 
-          height: 200px;"
+          height: 200px;
+          display: none;"
         >
       </div>
+
+      <!-- Looking Around Movement Joystick -->
+      <div 
+      id="joystick_look" 
+      style="
+        position: absolute; 
+        bottom: 15px; right: 10px; 
+        width: 200px; 
+        height: 200px;
+        display: none;"
+      >
+    </div>
     
     </a-scene>
 
@@ -195,13 +210,19 @@
 
   <!-- Show joystick on mobile devives -->
   <script>
-    AFRAME.utils.device.isMobile() ? document.getElementById('zone_joystick').style.display = 'block' : document.getElementById('zone_joystick').style.display = 'none';
-    
       const rig = document.getElementById('rig');
+      const player = document.getElementById('player');
 
       if (AFRAME.utils.device.isMobile()) {
-        // Disable movement-controls on mobile devices
+        // Disable movement-controls and look controls on mobile devices
         rig.removeAttribute('movement-controls');
+        player.removeAttribute('look-controls');
+
+        // Disable displaying movement and look joysticks on mobile devices
+        document.getElementById('zone_joystick').style.display = 'block';
+        document.getElementById('joystick_look').style.display = 'block';
+        
+
       }
 
   </script>

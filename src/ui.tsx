@@ -77,7 +77,7 @@ const EnterScreen = () => {
   );
 };
 
-const Joystick = () => {
+const JoystickWASD = () => {
   const joystickZone = document.getElementById('zone_joystick');
   if (!joystickZone) {
     return null; // or handle the error
@@ -109,6 +109,33 @@ const Joystick = () => {
     playerEl.setAttribute("position", `${x} ${y} ${z}`)
   });
 }
+
+const LookJoystick = () => {
+  const joystickZone = document.getElementById('joystick_look');
+  if (!joystickZone) {
+    return null; // we can handle errors here
+  }
+
+  const joystick = nipplejs.create({
+    zone: joystickZone,
+    mode: 'static',
+    position: { right: '50%', top: '50%' }, // Center the joystick
+    color: 'red',
+  });
+
+  const playerEl = document.getElementById('player') as Entity;
+
+  joystick.on('move', function (evt, data) {
+    const rotation = playerEl.getAttribute('rotation');
+    const deltaX = data.vector.x * 2; // Adjust sensitivity as needed
+    const deltaY = data.vector.y * 2;
+
+    const newRotationY = rotation.y - deltaX;
+    const newRotationX = Math.max(-90, Math.min(90, rotation.x + deltaY)); // Limit pitch rotation
+
+    playerEl.setAttribute('rotation', `${newRotationX} ${newRotationY} 0`);
+  });
+};
 
 const BottomBar = () => {
   const isVRHeadsetConnected = AFRAME.utils.device.checkHeadsetConnected();
@@ -154,7 +181,8 @@ const App = () => {
       </Show>
       <Show when={entered() && sceneLoaded() && !showSettings()}>
         <BottomBar />
-        <Joystick />
+        <JoystickWASD />
+        <LookJoystick />
       </Show>
     </>
   );
