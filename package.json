@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.2",
+    "aframe": "^1.6.0",
     "networked-aframe": "^0.12.1",
+    "nipplejs": "^0.10.2",
     "solid-element": "^1.8.0",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.8.15",

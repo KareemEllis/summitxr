@@ -1,5 +1,6 @@
 /* global AFRAME */
 import './assets/style.css';
+import nipplejs from 'nipplejs'
 import { render } from 'solid-js/web';
 import { Show, createSignal } from 'solid-js';
 import { IoSettingsOutline } from 'solid-icons/io';
@@ -9,6 +10,8 @@ import { ScreenShareButton } from './ScreenShareButton';
 import { UsernameInput } from './UsernameInput';
 import { ChatButton } from './Chat';
 import { UsersButton } from './UsersButton';
+import { Entity } from 'aframe';
+// import { Joystick } from './Joystick';
 
 const [showSettings, setShowSettings] = createSignal(false);
 const [entered, setEntered] = createSignal(false);
@@ -74,6 +77,66 @@ const EnterScreen = () => {
   );
 };
 
+const JoystickWASD = () => {
+  const joystickZone = document.getElementById('zone_joystick');
+  if (!joystickZone) {
+    return null; // or handle the error
+  }
+
+  var joystick = nipplejs.create({
+    zone: joystickZone,
+    mode: 'static',
+    position: { left: '50%', top: '50%' }, // Center the joystick
+    color: 'blue'
+  });
+
+  const playerEl = document.getElementById('player') as Entity;
+  // turn joystick data into WASD movement in AFRAME
+  var f; var ang; var xVec; var yVec;
+
+  // Listen to joystick events
+  joystick.on('move', function (evt, data) {
+    f = data.force;
+    ang = data.angle.radian
+
+    xVec = Math.cos(ang + 3.14 / 180 * playerEl.getAttribute('rotation').y);
+    yVec = Math.sin(ang + 3.14 / 180 * playerEl.getAttribute('rotation').y);
+
+    var x = playerEl.getAttribute("position").x + f / 15 * (xVec);
+    var y = playerEl.getAttribute("position").y
+    var z = playerEl.getAttribute("position").z - f / 15 * (yVec);
+
+    playerEl.setAttribute("position", `${x} ${y} ${z}`)
+  });
+}
+
+const LookJoystick = () => {
+  const joystickZone = document.getElementById('joystick_look');
+  if (!joystickZone) {
+    return null; // we can handle errors here
+  }
+
+  const joystick = nipplejs.create({
+    zone: joystickZone,
+    mode: 'static',
+    position: { right: '50%', top: '50%' }, // Center the joystick
+    color: 'red',
+  });
+
+  const playerEl = document.getElementById('player') as Entity;
+
+  joystick.on('move', function (evt, data) {
+    const rotation = playerEl.getAttribute('rotation');
+    const deltaX = data.vector.x * 2; // Adjust sensitivity as needed
+    const deltaY = data.vector.y * 2;
+
+    const newRotationY = rotation.y - deltaX;
+    const newRotationX = Math.max(-90, Math.min(90, rotation.x + deltaY)); // Limit pitch rotation
+
+    playerEl.setAttribute('rotation', `${newRotationX} ${newRotationY} 0`);
+  });
+};
+
 const BottomBar = () => {
   const isVRHeadsetConnected = AFRAME.utils.device.checkHeadsetConnected();
   const isMobileDevice = AFRAME.utils.device.isMobile();
@@ -118,6 +181,8 @@ const App = () => {
       </Show>
       <Show when={entered() && sceneLoaded() && !showSettings()}>
         <BottomBar />
+        <JoystickWASD />
+        <LookJoystick />
       </Show>
     </>
   );

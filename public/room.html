@@ -21,6 +21,8 @@
     <script src="https://cdn.jsdelivr.net/npm/networked-aframe@0.12.3/dist/networked-aframe.min.js"></script>
     <!-- --------------------------------------------------- -->
 
+
+
     <!-- A-Frame Extras Library -->
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
     
@@ -212,6 +214,55 @@
       
       </a-entity>
 
+      <!--  -->
+      <!-- Joystick Zone -->
+      <!--  -->
+      <!-- WASD-like Movement Joystick -->
+        <div 
+        id="zone_joystick" 
+        style="
+          position: absolute; 
+          bottom: 15px; left: 10px; 
+          width: 200px; 
+          height: 200px;
+          display: none;"
+        >
+      </div>
+
+      <!-- Looking Around Movement Joystick -->
+      <div 
+      id="joystick_look" 
+      style="
+        position: absolute; 
+        bottom: 15px; right: 10px; 
+        width: 200px; 
+        height: 200px;
+        display: none;"
+      >
+    </div>
+    
     </a-scene>
+
   </body>
+
+  <!-- Show joystick on mobile devives -->
+  <script>
+      const rig = document.getElementById('rig');
+      const player = document.getElementById('player');
+
+      if (AFRAME.utils.device.isMobile()) {
+        // Disable movement-controls and look controls on mobile devices
+        rig.removeAttribute('movement-controls');
+        player.removeAttribute('look-controls');
+
+        // Disable displaying movement and look joysticks on mobile devices
+        document.getElementById('zone_joystick').style.display = 'block';
+        document.getElementById('joystick_look').style.display = 'block';
+        
+
+      }
+
+  </script>
+  
+
 </html>
