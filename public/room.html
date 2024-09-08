@@ -28,9 +28,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/aframe-environment-component@1.3.7/dist/aframe-environment-component.min.js"></script>
 
-    <!-- This component is used to spawn entities in a circle around the parent entity. 
-    This prevents entities from overlapping each other when they are spawned in the same location.  -->
-    <script src="https://cdn.jsdelivr.net/npm/networked-aframe@0.12.3/examples/js/spawn-in-circle.component.js"></script>
 
     <!-- Super Hands Library -->
     <script src="https://unpkg.com/super-hands@3.0.4/dist/super-hands.min.js"></script>
@@ -41,9 +38,10 @@
     <!-- --------------------------------------------------- -->
     <!-- COMMENT OUT THIS LINE TO DIABLE UI WHILE DEVELOPING -->
     <!-- --------------------------------------------------- -->
-    <script defer src="/dist/ui.js"></script>
+    <!-- <script defer src="/dist/ui.js"></script> -->
     <!-- --------------------------------------------------- -->
 
+    <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
      
   </head>
 
@@ -58,6 +56,7 @@
         audio: true;
         video: true;
       "
+      inspector-plugin-recast
     >
       <!-- Assets Management -->
       <a-assets>
@@ -174,6 +173,7 @@
       <!-- Entity for Rig and Player -->
       <a-entity 
         id="rig" 
+        position="0 0 6"
         movement-controls 
         spawn-in-circle="radius:3" 
         networked="template:#rig-template;"
