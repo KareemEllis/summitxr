@@ -7,44 +7,30 @@
 
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
 
-    <!-- Used to remove the grabbable component from the A-Frame library to prevent conflicts with the Super Hands library.
-    https://github.com/c-frame/aframe-super-hands-component/issues/238 -->
-    <script>
-      delete AFRAME.components["grabbable"];
-    </script>
+    <!-- See Link: https://github.com/c-frame/aframe-super-hands-component/issues/238 -->
+    <script>delete AFRAME.components["grabbable"]</script>
 
     <!-- --------------------------------------------------- -->
     <!-- --------- Networked A-Frame Requirements ---------- -->
-    <!-- --------------------------------------------------- -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
     <script src="/easyrtc/easyrtc.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/networked-aframe@0.12.3/dist/networked-aframe.min.js"></script>
     <!-- --------------------------------------------------- -->
 
-
-
     <!-- A-Frame Extras Library -->
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/aframe-environment-component@1.3.7/dist/aframe-environment-component.min.js"></script>
-
-    <!-- This component is used to spawn entities in a circle around the parent entity. 
-    This prevents entities from overlapping each other when they are spawned in the same location.  -->
-    <script src="https://cdn.jsdelivr.net/npm/networked-aframe@0.12.3/examples/js/spawn-in-circle.component.js"></script>
-
     <!-- Super Hands Library -->
     <script src="https://unpkg.com/super-hands@3.0.4/dist/super-hands.min.js"></script>
+    <!-- A-Frame Event Set Component -->
     <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
-
-    <script src="/dist/components.js"></script>
+    <!-- See src/components.js for A-Frame components -->
+    <script src="/dist/components.js"></script> 
 
     <!-- --------------------------------------------------- -->
     <!-- COMMENT OUT THIS LINE TO DIABLE UI WHILE DEVELOPING -->
-    <!-- --------------------------------------------------- -->
     <script defer src="/dist/ui.js"></script>
-    <!-- --------------------------------------------------- -->
+    <!-- --------------------------------------------------- --> 
 
-     
   </head>
 
   <body>
@@ -61,16 +47,21 @@
     >
       <!-- Assets Management -->
       <a-assets>
+        <!-- Player Rig -->
         <template id="rig-template">
           <a-entity></a-entity>
         </template>
 
         <!-- 3D Room Model -->
         <a-asset-item 
-        id="roomModel" 
-        src="./assets/models/room/scene.gltf"
-        >
-        </a-asset-item> 
+          id="roomModel" 
+          src="./assets/models/room/scene.gltf"
+        ></a-asset-item> 
+        <!-- Navigation Mesh -->
+        <a-asset-item 
+          id="navmesh-model" 
+          src="./assets/models/room/navmesh.gltf"
+        ></a-asset-item> 
 
         <!-- Player -->
         <template id="avatar-template">
@@ -159,23 +150,21 @@
 
       <!-- Entity For 3D Room -->
       <a-entity 
-      gltf-model="#roomModel" 
-      position="0 0 0" 
-      scale="1.5 1 1.5"
-      >
-      </a-entity>
+        gltf-model="#roomModel" 
+        position="0 0 0" 
+        scale="1.5 1 1.5"
+      ></a-entity>
+      <!-- Entity for Navigation Mesh -->
+      <a-gltf-model class="navmesh" src="#navmesh-model" visible="false"></a-gltf-model>
 
-      <a-entity environment="preset:starry;groundColor:#000000;"></a-entity>
       <a-entity light="type:ambient;intensity:0.5"></a-entity>
-
-      <!-- Grabbable Test objects -->
-      <a-box mixin="grab-move" color="blue" position="0 1 -3"></a-box>
 
       <!-- Entity for Rig and Player -->
       <a-entity 
         id="rig" 
-        movement-controls 
-        spawn-in-circle="radius:3" 
+        position="0 0 6"
+        simple-navmesh-constraint="navmesh:.navmesh;fall:0.5;height:0;"
+        movement-controls
         networked="template:#rig-template;"
       >
         <!-- Player (This is where the Avatar template from the assets will be placed) -->
@@ -214,32 +203,30 @@
       
       </a-entity>
 
-      <!--  -->
-      <!-- Joystick Zone -->
-      <!--  -->
+      <!-- ----------------------------- -->
+      <!-- Joysticks for mobile controls -->
       <!-- WASD-like Movement Joystick -->
-        <div 
+      <div 
         id="zone_joystick" 
         style="
           position: absolute; 
           bottom: 15px; left: 10px; 
           width: 200px; 
           height: 200px;
-          display: none;"
-        >
-      </div>
-
+          display: none;
+        "
+      ></div>
       <!-- Looking Around Movement Joystick -->
       <div 
-      id="joystick_look" 
-      style="
-        position: absolute; 
-        bottom: 15px; right: 10px; 
-        width: 200px; 
-        height: 200px;
-        display: none;"
-      >
-    </div>
+        id="joystick_look" 
+        style="
+          position: absolute; 
+          bottom: 15px; right: 10px; 
+          width: 200px; 
+          height: 200px;
+          display: none;
+        "
+      ></div>
     
     </a-scene>
 
