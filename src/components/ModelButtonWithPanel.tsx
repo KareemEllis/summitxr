@@ -7,52 +7,63 @@ import { setShowChatPanel } from './Chat';
 import { setShowUsersPanel } from './UsersButton';
 
 // Signals to store form input values
-const [sketchfabUrl, setSketchfabUrl] = createSignal('');
 const [description, setDescription] = createSignal('');
+const [uploadedFile, setUploadedFile] = createSignal<File | null>(null); // Signal to store uploaded file
 
 // Toggle visibility of the model panel
 export const [showModelPanel, setShowModelPanel] = createSignal(false);
 
-// Handler for submitting the Sketchfab URL
-const handleSketchfabSubmit = () => {
-  if (sketchfabUrl()) {
-    // Add the model to the scene using the URL
-    addModelToScene(sketchfabUrl());
-    setSketchfabUrl(''); // Reset the input after submission
+// Handler for submitting the uploaded image
+const handleImageUploadSubmit = async () => {
+  if (uploadedFile()) {
+    // Send the uploaded file to the server for model generation
+    const formData = new FormData();
+    formData.append('file', uploadedFile()!);
+
+    try {
+      const response = await fetch('/upload-image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const { modelPath } = await response.json();
+      addModelToScene(modelPath); // Assuming the API returns the path to the generated 3D model
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
   }
 };
 
 // Handler for submitting the description to an API
 const handleDescriptionSubmit = async () => {
   if (description()) {
-    // Simulate API call to generate model from description
-    await generateModelFromDescription(description());
+    try {
+      // Simulate API call to generate model from description
+      const response = await fetch('/generate-model', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ description: description() }),
+      });
+
+      const { modelPath } = await response.json();
+      addModelToScene(modelPath); // Assuming the API returns a model URL
+    } catch (error) {
+      console.error('Error generating model from description:', error);
+    }
+
     setDescription(''); // Reset input after submission
   }
 };
 
-// Function to add a 3D model from Sketchfab into the A-Frame scene
+// Function to add a 3D model into the A-Frame scene
 const addModelToScene = (modelUrl: string) => {
   const scene = document.querySelector('a-scene');
   const modelEntity = document.createElement('a-entity');
   modelEntity.setAttribute('gltf-model', modelUrl); // Assuming it's a glTF format
   modelEntity.setAttribute('position', '0 1 -3'); // Example position
   scene.appendChild(modelEntity);
-};
-
-// Simulated function to generate a model based on description via an API
-const generateModelFromDescription = async (description: string) => {
-  // This function would make an API call to generate a 3D model based on the description
-  const response = await fetch('/generate-model', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ description }),
-  });
-
-  const modelPath = await response.json();
-  addModelToScene(modelPath); // Assuming the API returns a model URL
 };
 
 // The component for the "Add Model" button and the panel
@@ -91,33 +102,31 @@ export const ModelButtonWithPanel = () => {
               </button>
             </div>
 
-            {/* Section 1: Add model via URL */}
+            {/* Section 1: Upload Image to generate 3D model */}
             <div class="flex flex-col space-y-4">
-              <h3 class="text-lg font-semibold">Add a 3D Model from Sketchfab</h3>
-              <label for="sketchfab-url" class="text-sm">Model URL:</label>
+              <h3 class="text-lg font-semibold">Upload an Image to Generate a 3D Model</h3>
               <input
-                id="sketchfab-url"
-                type="text"
-                value={sketchfabUrl()}
-                onInput={(e) => setSketchfabUrl(e.target.value)}
-                placeholder="Enter Sketchfab URL"
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                onInput={(e) => setUploadedFile(e.target.files[0])}
                 class="form-input w-full px-4 py-2 text-sm rounded-lg"
               />
-              <button class="btn-secondary w-full" onClick={handleSketchfabSubmit}>
-                Submit
+              <button class="btn-secondary w-full" onClick={handleImageUploadSubmit}>
+                Submit Image
               </button>
             </div>
 
             {/* Section 2: Generate a model based on a description */}
             <div class="flex flex-col space-y-4">
               <h3 class="text-lg font-semibold">Generate a 3D Model</h3>
-              <label for="description" class="text-sm">Describe the model:</label>
+              <label for="description" class="text-sm">Describe the model you want to generate:</label>
               <textarea
                 id="description"
                 value={description()}
                 onInput={(e) => setDescription(e.target.value)}
-                placeholder="Describe the model you want"
-                class="form-textarea w-full px-4 py-2 text-sm rounded-lg"
+                placeholder="Example: A soccer ball"
+                class="form-textarea w-full px-4 py-2 text-sm rounded-lg max-h-20"
               />
               <button class="btn-secondary w-full" onClick={handleDescriptionSubmit}>
                 Submit Description
