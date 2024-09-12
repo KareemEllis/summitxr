@@ -1,18 +1,19 @@
 /* global AFRAME */
 import './assets/style.css';
+import { Entity } from 'aframe';
 import nipplejs from 'nipplejs'
 import { render } from 'solid-js/web';
 import { Show, createSignal } from 'solid-js';
+
 import { IoSettingsOutline } from 'solid-icons/io';
 import { BsThreeDots } from 'solid-icons/bs';
+
 import { MicButton } from './MicButton';
 import { CameraButton } from './CameraButton';
 import { ScreenShareButton } from './ScreenShareButton';
 import { UsernameInput } from './UsernameInput';
 import { ChatButton } from './Chat';
 import { UsersButton } from './UsersButton';
-import { Entity } from 'aframe';
-// import { Joystick } from './Joystick';
 
 const [showSettings, setShowSettings] = createSignal(false);
 const [entered, setEntered] = createSignal(false);
@@ -147,14 +148,18 @@ const BottomBar = () => {
 
   return (
     <div class="naf-bottom-bar-center">
+      {/* Mic Button */}
       <MicButton entity="#player" />
 
-      {/* Conditionally render the CameraButton and ScreenShareButton */}
+      {/* CameraButton */}
       <Show when={!isVRHeadsetConnected || isMobileDevice}>
         <CameraButton entity="#player" />
       </Show>
 
+      {/* Users Button */}
       <UsersButton />
+
+      {/* Chat Button */}
       <ChatButton />
 
       {/* "More" Button and Dropdown Menu */}

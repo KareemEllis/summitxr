@@ -116,7 +116,6 @@
 
         <!-- ScreenShare -->
         <template id="screenshare-template">
-
           <a-entity id="screen-display" mixin="grab-move">
             <a-plane
               color="#FFF"
@@ -136,7 +135,6 @@
               networked-video-source="streamName: screen"
             ></a-plane>
           </a-entity>
-
         </template>
 
         <!-- Grab interaction mixin: Apply to eneities than need to be grabbable -->
@@ -245,10 +243,7 @@
         // Disable displaying movement and look joysticks on mobile devices
         document.getElementById('zone_joystick').style.display = 'block';
         document.getElementById('joystick_look').style.display = 'block';
-        
-
       }
-
   </script>
   
 
