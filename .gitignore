@@ -2,3 +2,4 @@ node_modules
 public/dist
 !public/dist/ui-components.js
 package-lock.json
+uploads/
