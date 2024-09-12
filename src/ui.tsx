@@ -107,6 +107,7 @@ const BottomBar = () => {
         <button
           type="button"
           class="btn-secondary btn-rounded"
+          classList={{ active: showMoreMenu() }}
           onClick={() => {
             setShowMoreMenu((prev) => !prev)
             if (showMoreMenu()) {
