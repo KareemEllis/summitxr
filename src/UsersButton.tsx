@@ -5,7 +5,9 @@ import { Portal } from 'solid-js/web';
 import { FiUsers } from 'solid-icons/fi';
 import { BsMic, BsMicMute } from 'solid-icons/bs';
 import { VsChromeClose } from 'solid-icons/vs';
+
 import { setShowChatPanel } from './Chat';
+import { setShowModelPanel } from './ModelButtonWithPanel';
 import { audioEnabled } from './MicButton';
 
 export interface Presence {
@@ -80,6 +82,7 @@ export const UsersButton: Component = () => {
           setShowUsersPanel((v) => !v);
           if (showUsersPanel()) {
             setShowChatPanel(false);
+            setShowModelPanel(false);
           }
         }}
         title="Users"

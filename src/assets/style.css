@@ -141,6 +141,7 @@
     @apply naf-bar bottom-6 right-6 justify-end;
   }
 
+  /* CSS for the "More" menu */
   .more-menu {
     position: absolute;
     bottom: 60px; /* Adjust this to control the vertical offset from the "More" button */

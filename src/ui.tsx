@@ -14,6 +14,7 @@ import { ScreenShareButton } from './ScreenShareButton';
 import { UsernameInput } from './UsernameInput';
 import { ChatButton } from './Chat';
 import { UsersButton } from './UsersButton';
+import { ModelButtonWithPanel, setShowModelPanel } from './ModelButtonWithPanel';
 
 const [showSettings, setShowSettings] = createSignal(false);
 const [entered, setEntered] = createSignal(false);
@@ -167,7 +168,12 @@ const BottomBar = () => {
         <button
           type="button"
           class="btn-secondary btn-rounded"
-          onClick={() => setShowMoreMenu((prev) => !prev)}
+          onClick={() => {
+            setShowMoreMenu((prev) => !prev)
+            if (showMoreMenu()) {
+              setShowModelPanel(false);
+            }
+          }}
           title="More"
         >
           <BsThreeDots size={24} />
@@ -193,6 +199,8 @@ const BottomBar = () => {
             <Show when={!isVRHeadsetConnected && !isMobileDevice}>
               <ScreenShareButton entity="#player" />
             </Show>
+
+            <ModelButtonWithPanel />
 
           </div>
         </Show>

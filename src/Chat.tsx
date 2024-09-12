@@ -7,7 +7,9 @@ import Linkify from 'solid-media-linkify';
 import { BsChatDots, BsSend } from 'solid-icons/bs';
 import { VsChromeClose } from 'solid-icons/vs';
 import { username } from './UsernameInput';
+
 import { setShowUsersPanel } from './UsersButton';
+import { setShowModelPanel } from './ModelButtonWithPanel';
 
 const [isDocumentVisible, setIsDocumentVisible] = createSignal(true);
 
@@ -89,6 +91,7 @@ export const ChatButton = () => {
           setShowChatPanel((v) => !v);
           if (showChatPanel()) {
             setShowUsersPanel(false);
+            setShowModelPanel(false);
           }
         }}
         title="Chat"
