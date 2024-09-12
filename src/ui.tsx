@@ -4,6 +4,7 @@ import nipplejs from 'nipplejs'
 import { render } from 'solid-js/web';
 import { Show, createSignal } from 'solid-js';
 import { IoSettingsOutline } from 'solid-icons/io';
+import { BsThreeDots } from 'solid-icons/bs';
 import { MicButton } from './MicButton';
 import { CameraButton } from './CameraButton';
 import { ScreenShareButton } from './ScreenShareButton';
@@ -141,31 +142,56 @@ const BottomBar = () => {
   const isVRHeadsetConnected = AFRAME.utils.device.checkHeadsetConnected();
   const isMobileDevice = AFRAME.utils.device.isMobile();
 
+  // Signal for toggling the "more" dropdown menu
+  const [showMoreMenu, setShowMoreMenu] = createSignal(false);
+
   return (
     <div class="naf-bottom-bar-center">
-      <button
-        type="button"
-        id="settingsButton"
-        class="btn-secondary btn-rounded"
-        onClick={() => {
-          setShowSettings(true);
-        }}
-        title="Settings"
-      >
-        <IoSettingsOutline size={24} />
-      </button>
       <MicButton entity="#player" />
 
       {/* Conditionally render the CameraButton and ScreenShareButton */}
       <Show when={!isVRHeadsetConnected || isMobileDevice}>
         <CameraButton entity="#player" />
       </Show>
-      <Show when={!isVRHeadsetConnected && !isMobileDevice}>
-        <ScreenShareButton entity="#player" />
-      </Show>
 
       <UsersButton />
       <ChatButton />
+
+      {/* "More" Button and Dropdown Menu */}
+      <div class="more-menu-container">
+        <button
+          type="button"
+          class="btn-secondary btn-rounded"
+          onClick={() => setShowMoreMenu((prev) => !prev)}
+          title="More"
+        >
+          <BsThreeDots size={24} />
+        </button>
+
+        {/* Dropdown menu that appears when the "More" button is clicked */}
+        <Show when={showMoreMenu()}>
+          <div class="more-menu">
+            {/* Settings Button */}
+            <button
+              type="button"
+              id="settingsButton"
+              class="btn-secondary btn-rounded"
+              onClick={() => {
+                setShowSettings(true);
+              }}
+              title="Settings"
+            >
+              <IoSettingsOutline size={24} />
+            </button>
+
+            {/* Screen Share Button */}
+            <Show when={!isVRHeadsetConnected && !isMobileDevice}>
+              <ScreenShareButton entity="#player" />
+            </Show>
+
+          </div>
+        </Show>
+      </div>
     </div>
   );
 };
