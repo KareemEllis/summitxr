@@ -18,16 +18,18 @@ const handleImageUploadSubmit = async () => {
   if (uploadedFile()) {
     // Send the uploaded file to the server for model generation
     const formData = new FormData();
-    formData.append('file', uploadedFile()!);
+    formData.append('image', uploadedFile()!);
+    console.log(uploadedFile())
 
     try {
-      const response = await fetch('/upload-image', {
+      const response = await fetch('/api/model/generate-from-image', {
         method: 'POST',
         body: formData,
       });
 
       const { modelPath } = await response.json();
-      addModelToScene(modelPath); // Assuming the API returns the path to the generated 3D model
+      console.log('Model generated:', modelPath);
+      // addModelToScene(modelPath); // Assuming the API returns the path to the generated 3D model
     } catch (error) {
       console.error('Error uploading image:', error);
     }
@@ -39,7 +41,7 @@ const handleDescriptionSubmit = async () => {
   if (description()) {
     try {
       // Simulate API call to generate model from description
-      const response = await fetch('/generate-model', {
+      const response = await fetch('/api/model/generate-from-text', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +50,8 @@ const handleDescriptionSubmit = async () => {
       });
 
       const { modelPath } = await response.json();
-      addModelToScene(modelPath); // Assuming the API returns a model URL
+      console.log('Model generated:', modelPath);
+      // addModelToScene(modelPath); // Assuming the API returns a model URL
     } catch (error) {
       console.error('Error generating model from description:', error);
     }
@@ -74,6 +77,7 @@ export const ModelButtonWithPanel = () => {
       <button
         type="button"
         class="btn-secondary btn-rounded"
+        classList={{ active: showModelPanel() }}
         onClick={() => {
           setShowModelPanel((v) => !v)
           if (showModelPanel()) {
