@@ -11,9 +11,9 @@ import { MicButton } from './MicButton';
 import { CameraButton } from './CameraButton';
 import { ScreenShareButton } from './ScreenShareButton';
 import { UsernameInput } from './UsernameInput';
-import { ChatButton } from './Chat';
-import { UsersButton } from './UsersButton';
-import { ModelButtonWithPanel, setShowModelPanel } from './ModelButtonWithPanel';
+import { ChatButton, showChatPanel } from './Chat';
+import { UsersButton, showUsersPanel } from './UsersButton';
+import { ModelButtonWithPanel, showModelPanel, setShowModelPanel } from './ModelButtonWithPanel';
 
 const [showSettings, setShowSettings] = createSignal(false);
 const [entered, setEntered] = createSignal(false);
@@ -162,7 +162,8 @@ const App = () => {
       <Show when={entered() && sceneLoaded() && !showSettings()}>
         <BottomBar />
 
-        <Show when={isMobileDevice}>
+        {/* Don't show the joysticks when the chat, model, or users panel is open */}
+        <Show when={isMobileDevice && !showChatPanel() && !showModelPanel() && !showUsersPanel()}>
           <JoystickWASD />
           <LookJoystick />
         </Show>
