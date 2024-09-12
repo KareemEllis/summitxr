@@ -6,14 +6,14 @@ import { Show, createSignal } from 'solid-js';
 import { IoSettingsOutline } from 'solid-icons/io';
 import { BsThreeDots } from 'solid-icons/bs';
 
-import { JoystickWASD, LookJoystick } from './JoystickControls';
-import { MicButton } from './MicButton';
-import { CameraButton } from './CameraButton';
-import { ScreenShareButton } from './ScreenShareButton';
-import { UsernameInput } from './UsernameInput';
-import { ChatButton, showChatPanel } from './Chat';
-import { UsersButton, showUsersPanel } from './UsersButton';
-import { ModelButtonWithPanel, showModelPanel, setShowModelPanel } from './ModelButtonWithPanel';
+import { JoystickWASD, LookJoystick } from './components/JoystickControls';
+import { MicButton } from './components/MicButton';
+import { CameraButton } from './components/CameraButton';
+import { ScreenShareButton } from './components/ScreenShareButton';
+import { UsernameInput } from './components/UsernameInput';
+import { ChatButton, showChatPanel } from './components/Chat';
+import { UsersButton, showUsersPanel } from './components/UsersButton';
+import { ModelButtonWithPanel, showModelPanel, setShowModelPanel } from './components/ModelButtonWithPanel';
 
 const [showSettings, setShowSettings] = createSignal(false);
 const [entered, setEntered] = createSignal(false);
