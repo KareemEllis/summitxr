@@ -200,32 +200,6 @@
         ></a-entity>
       
       </a-entity>
-
-      <!-- ----------------------------- -->
-      <!-- Joysticks for mobile controls -->
-      <!-- WASD-like Movement Joystick -->
-      <div 
-        id="zone_joystick" 
-        style="
-          position: absolute; 
-          bottom: 15px; left: 10px; 
-          width: 200px; 
-          height: 200px;
-          display: none;
-        "
-      ></div>
-      <!-- Looking Around Movement Joystick -->
-      <div 
-        id="joystick_look" 
-        style="
-          position: absolute; 
-          bottom: 15px; right: 10px; 
-          width: 200px; 
-          height: 200px;
-          display: none;
-        "
-      ></div>
-    
     </a-scene>
 
   </body>
@@ -239,10 +213,6 @@
         // Disable movement-controls and look controls on mobile devices
         rig.removeAttribute('movement-controls');
         player.removeAttribute('look-controls');
-
-        // Disable displaying movement and look joysticks on mobile devices
-        document.getElementById('zone_joystick').style.display = 'block';
-        document.getElementById('joystick_look').style.display = 'block';
       }
   </script>
   

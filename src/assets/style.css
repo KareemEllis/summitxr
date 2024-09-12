@@ -141,6 +141,23 @@
     @apply naf-bar bottom-6 right-6 justify-end;
   }
 
+  /* Styles for the Joysticks */
+  .joystick {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+  }
+  
+  #zone_joystick {
+    bottom: 15px;
+    left: 10px;
+  }
+  
+  #joystick_look {
+    bottom: 15px;
+    right: 10px;
+  }
+  
   /* CSS for the "More" menu */
   .more-menu {
     position: absolute;
