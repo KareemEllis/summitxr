@@ -3,6 +3,8 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const router = express.Router();
+const { removeImageBackground } = require('./backgroundRemover'); // Import background removal function
+
 
 // Ensure 'uploads/images' directory exists
 const uploadDir = 'uploads/images';
@@ -24,7 +26,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // POST route to generate a model from an uploaded image
-router.post('/api/model/generate-from-image', upload.single('image'), (req, res) => {
+router.post('/api/model/generate-from-image', upload.single('image'), async (req, res) => {
   // Simulate model generation from the uploaded image
   if (!req.file) {
     return res.status(400).json({ error: 'No image uploaded' });
@@ -36,16 +38,32 @@ router.post('/api/model/generate-from-image', upload.single('image'), (req, res)
 
   const imagePath = req.file.path;
 
-  // Use the image to generate the model
+    try {
+    // Use the imported function to remove the background from the uploaded image
+    const imageWithNoBackground = await removeImageBackground(imagePath);
 
-  // Simulate generating the model path
-  const generatedModelPath = `/assets/models/generated/${req.file.filename.replace(/\..+$/, '')}.glb`;
+    // Generate path for the output image
+    const outputPath = `uploads/images/processedImages/bgRemoved_${req.file.filename}`;
 
-  // Send back the model path (this should be generated after your API processes the image)
-  res.status(200).json({
-    message: 'Model generated from image',
-    modelPath: generatedModelPath,
-  });
+    // Save the processed image (with no background) to a file
+    fs.writeFileSync(outputPath, imageWithNoBackground);
+
+    // Simulate generating the model path (this should be updated as per your API needs)
+    const generatedModelPath = `/assets/models/generated/${req.file.filename.replace(/\..+$/, '')}.glb`;
+
+    // Respond with the path of the processed image and the generated model path
+    res.status(200).json({
+      message: 'Model generated and background removed',
+      imagePath: outputPath, // Path to the image without background
+      modelPath: generatedModelPath, // Path to the generated model (simulated)
+    });
+  } catch (error) {
+    // Handle errors in background removal or file handling
+    res.status(500).json({ error: 'Error processing the image: ' + error.message });
+  }
 });
+
+
+
 
 module.exports = router;
