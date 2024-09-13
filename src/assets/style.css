@@ -140,4 +140,41 @@
   .naf-bottom-bar-right {
     @apply naf-bar bottom-6 right-6 justify-end;
   }
+
+  /* Styles for the Joysticks */
+  .joystick {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+  }
+  
+  #zone_joystick {
+    bottom: 15px;
+    left: 10px;
+  }
+  
+  #joystick_look {
+    bottom: 15px;
+    right: 10px;
+  }
+  
+  /* CSS for the "More" menu */
+  .more-menu {
+    position: absolute;
+    bottom: 60px; /* Adjust this to control the vertical offset from the "More" button */
+    left: 50%;    /* Center it with respect to the button */
+    transform: translateX(-50%); /* Ensure it's perfectly centered above the button */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;    /* Space between each menu item */
+    background: rgba(0, 0, 0, 0.15); /* Semi-transparent background */
+    padding: 10px;
+    border-radius: 15px;
+    z-index: 9999; /* Ensure it stays above other elements */
+  }
+  
+  .more-menu-container {
+    position: relative; /* Set this on the container to keep the menu positioned relative to the "More" button */
+  }
+  
 }

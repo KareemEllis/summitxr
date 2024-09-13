@@ -1,11 +1,11 @@
 import './assets/style.css';
 import { customElement, noShadowDOM } from 'solid-element';
-import { ChatButton } from './Chat';
-import { MicButton } from './MicButton';
-import { CameraButton } from './CameraButton';
-import { ScreenShareButton } from './ScreenShareButton';
-import { UsernameInput } from './UsernameInput';
-import { UsersButton } from './UsersButton';
+import { ChatButton } from './components/Chat';
+import { MicButton } from './components/MicButton';
+import { CameraButton } from './components/CameraButton';
+import { ScreenShareButton } from './components/ScreenShareButton';
+import { UsernameInput } from './components/UsernameInput';
+import { UsersButton } from './components/UsersButton';
 
 customElement('naf-mic-button', { entity: '#player' }, (props) => {
   noShadowDOM();

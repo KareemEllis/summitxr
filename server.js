@@ -5,6 +5,10 @@ const express = require("express"); // web framework external module
 const socketIo = require("socket.io"); // web socket external module
 const easyrtc = require("open-easyrtc"); // EasyRTC external module
 
+// Import API routes
+const generateFromImageRoute = require('./routes/generateFromImage');
+const generateFromTextRoute = require('./routes/generateFromText');
+
 // Set process name
 process.title = "networked-aframe-server";
 
@@ -28,7 +32,14 @@ if (process.env.NODE_ENV === "development") {
   );
 }
 
+// Middleware to handle JSON parsing
+app.use(express.json());
+
 app.use(express.static("public"));
+
+// API routes
+app.use(generateFromImageRoute);
+app.use(generateFromTextRoute);
 
 // Start Express http server
 const webServer = http.createServer(app);
