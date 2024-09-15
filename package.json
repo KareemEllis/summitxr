@@ -12,9 +12,13 @@
     "prettier": "prettier --write 'src/**/*.js' 'src/**/*.ts?'"
   },
   "dependencies": {
+    "@gradio/client": "^1.5.2",
     "@imgly/background-removal-node": "^1.4.5",
     "@tailwindcss/forms": "^0.5.2",
     "aframe": "^1.6.0",
+    "axios": "^1.7.7",
+    "formdata": "^0.10.4",
+    "fs": "^0.0.1-security",
     "multer": "^1.4.5-lts.1",
     "networked-aframe": "^0.12.1",
     "nipplejs": "^0.10.2",

@@ -7,10 +7,8 @@ async function removeImageBackground(imagePath) {
     try {
         // Remove the background from the image
         const blob = await removeBackground(imagePath);
-
         // Convert the Blob to a buffer
         const buffer = Buffer.from(await blob.arrayBuffer());
-
         return buffer;
     } catch (error) {
         throw new Error('Error removing background: ' + error.message);
