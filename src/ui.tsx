@@ -96,9 +96,6 @@ const BottomBar = () => {
         <CameraButton entity="#player" />
       </Show>
 
-      {/* Users Button */}
-      <UsersButton />
-
       {/* Chat Button */}
       <ChatButton />
 
@@ -139,6 +136,9 @@ const BottomBar = () => {
             <Show when={!isVRHeadsetConnected && !isMobileDevice}>
               <ScreenShareButton entity="#player" />
             </Show>
+
+            {/* Users Button */}
+            <UsersButton />
 
             <ModelButtonWithPanel />
 
