@@ -50,7 +50,7 @@ router.post('/api/model/generate-from-image', upload.single('image'), async (req
     console.log('Model path:', generatedModelPath);
     console.log('Output path:', outputPath);
     //Generate 3D model from the image
-    const apiKey = 'YOUR_API_KEY'; // This needs to be hidden in production
+    const apiKey = ''; // This needs to be hidden in production
     await sendImageTo3DAPI(outputPath, generatedModelPath, apiKey);
   } catch (error) {
     // Handle errors in background removal or file handling
