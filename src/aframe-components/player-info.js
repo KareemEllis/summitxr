@@ -55,6 +55,7 @@ AFRAME.registerComponent('player-info', {
     color: { type: 'color', default: '#ffffff' },
     muted: { type: 'boolean', default: false },
     videoOff: { type: 'boolean', default: false },
+    screenShareOff: { type: 'boolean', default: false },
   },
 
   init: function () {
