@@ -3,9 +3,8 @@ import { Component, createMemo, createSignal, For, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { Portal } from 'solid-js/web';
 import { FiUsers } from 'solid-icons/fi';
-import { BsMic, BsMicMute } from 'solid-icons/bs';
-import { BsCameraVideo, BsCameraVideoOff } from 'solid-icons/bs';
-import { TbScreenShare, TbScreenShareOff } from 'solid-icons/tb';
+import { BsMic, BsMicMute, BsCameraVideo } from 'solid-icons/bs';
+import { TbScreenShare } from 'solid-icons/tb';
 import { VsChromeClose } from 'solid-icons/vs';
 
 import { setShowChatPanel } from './Chat';
