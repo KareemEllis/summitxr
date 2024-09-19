@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Scene</title>
+
+    <!-- Import Model Viewer -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+    <!-- --------------------------------------------------- -->
+    <!-- COMMENT OUT THIS LINE TO DIABLE UI WHILE DEVELOPING -->
+    <script defer src="/dist/ar-ui.js"></script>
+    <!-- --------------------------------------------------- --> 
+
+    <style>
+        body, html {
+            margin: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        model-viewer {
+            width: 100vw; 
+            height: 100vh;
+            max-width: 100%; 
+            max-height: 100%;
+        }
+
+    </style>
+
+</head>
+<body>
+    <!-- Example Model Viewer -->
+    <model-viewer
+      id="ar-model-viewer"
+      src="" 
+      alt="A 3D model in your space"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      environment-image="neutral"
+      camera-controls
+      auto-rotate
+      ar-scale="auto"
+      ar-placement="floor"
+      shadow-intensity="1"
+      interaction-prompt="auto"
+      scale="0.5 0.5 0.5"
+      xr-environment
+    >
+    </model-viewer>
+</body>
+
+<script>
+    function getUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      const modelId = params.get('modelId');
+
+      // Use these values to load the correct model and set its position and scale
+      console.log('Model ID:', modelId);
+
+      
+      // Use the values to update the model-viewer dynamically
+      const modelViewer = document.getElementById('ar-model-viewer');
+
+      // Dynamically set the model src based on the modelId
+      if (modelId) {
+        modelViewer.src = `./assets/models/ar-display/${modelId}.glb`;
+      }
+
+      // Set the scale dynamically
+      if (scale) {
+        modelViewer.setAttribute('scale', `${scale[0]} ${scale[1]} ${scale[2]}`);
+      }
+
+      // Log for debugging
+      console.log('Model ID:', modelId);
+    }
+  
+    // Call the function to get the parameters
+    getUrlParams();
+</script>
+
+</html>
