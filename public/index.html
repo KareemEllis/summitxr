@@ -5,101 +5,237 @@
     <title>SummitXR</title>
     <meta name="description" content="SummitXR" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/dist/tailwind.js"></script>
+    <script src="https://kit.fontawesome.com/ce9445c7e1.js" crossorigin="anonymous"></script>
   </head>
 
-  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-
-    <div class="w-full md:m-10 my-10">
-        <!-- Logo and Header -->
-        <div class="text-center">
-          <img src="./assets/Logo.webp" alt="SummitXR Logo" class="mx-auto max-w-28 h-auto mb-2">
-          <div class="text-3xl font-bold mb-2">SummitXR</div>
-          <p class="text-gray-500 mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </div>
-
-        <!-- Main Content -->
-        <div class="m-10 grid grid-cols-1 md:grid-cols-2 gap-10">
-          <!-- Left Side - Text and Open Rooms -->
-          <div class="text-center md:text-left">
-            <h1 class="text-3xl font-bold mb-4">Immersive Virtual Meetings for everyone</h1>
-            <p class="text-gray-500 mb-6">Lorem ipsum dolor sit amet, consectetur</p>
-
-            <div>
-                <p class="text-xl font-semibold mb-4">Open Rooms:</p>
-                <a href="room.html" class="block">
-                  <div class="relative w-full max-w-md h-56 bg-cover bg-center rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 mx-auto md:mx-0" style="background-image: url('./assets/roomPreview.webp');">
-                      <div class="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white p-2">
-                          BlueMountain
-                      </div>
-                      <!-- <div class="absolute bottom-0 right-0 bg-black bg-opacity-50 text-white p-2">
-                          <span class="inline-flex items-center justify-center w-8 h-8 bg-gray-800 rounded-full">
-                              3
-                          </span>
-                      </div> -->
-                  </div>
-                </a>
-              
-            </div>
+  <body>
+    <nav class="navbar justify-center bg-base-300">
+      <a class="btn btn-ghost text-2xl font-bold">
+          <img alt="Logo" src="./assets/Logo.webp" class="w-4" />
+          SummitXR
+      </a>
+    </nav>
+  
+    <nav class="flex justify-center bg-base-200">
+      <ul class="menu menu-horizontal justify-center">
+        <li>
+          <a class="font-semibold">
+              <i class="fa-solid fa-circle-info text-secondary"></i>
+              About Us
+          </a>
+        </li>
+        <li>
+            <a class="font-semibold">
+                <i class="fa-solid fa-users text-secondary"></i>
+                Team
+            </a>
+        </li>
+        <li>
+            <a class="font-semibold">
+                <i class="fa-solid fa-address-book text-secondary"></i>
+                Contact Us 
+            </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <!-- HERO SECTION -->
+    <div class="flex justify-center py-20">
+      <div class="flex flex-col items-center text-center gap-6 max-w-2xl">
+          <h1 class="text-6xl font-bold">Experience the Future of Virtual Collaboration</h1>
+  
+          <span class="">
+            A platform that brings virtual meetings, collaboration, and 3D environments to life, allowing you to connect in ways never possible before.
+          </span>
+  
+          <div class="flex gap-4">
+              <a class="btn btn-primary" href="rooms.html">
+                  Try a room
+                  <i class="fa-solid fa-arrow-right text-sm"></i>
+              </a>
+  
+              <a class="btn btn-neutral">
+                  See our blog
+                  <i class="fa-solid fa-blog"></i>
+              </a>
           </div>
-
-
-          <!-- Right Side - Carousel -->
-          <div class="w-full h-full bg-gray-800 rounded-lg overflow-hidden">
-            <div class="relative w-full h-full">
-                <!-- Carousel Images -->
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <img src="./assets/roomPreview.webp" class="absolute inset-0 w-full h-full object-cover" alt="Carousel Image 1">
-                    <img src="./assets/roomPreview2.webp" class="absolute inset-0 w-full h-full object-cover opacity-0" alt="Carousel Image 2">
-                    <img src="./assets/roomPreview3.webp" class="absolute inset-0 w-full h-full object-cover opacity-0" alt="Carousel Image 3">
-                </div>
-                <!-- Navigation Arrows -->
-                <div class="absolute top-1/2 left-0 transform -translate-y-1/2 text-white cursor-pointer p-4 bg-black bg-opacity-50" onclick="prevSlide()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                </div>
-                <div class="absolute top-1/2 right-0 transform -translate-y-1/2 text-white cursor-pointer p-4 bg-black bg-opacity-50" onclick="nextSlide()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Dots Indicator -->
-        <div class="flex justify-center mt-6">
-          <p>Blue Mountain Hackathon 2024</p>
-        </div>
+      </div>
     </div>
 
-  </body>
 
-  <script>
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.absolute.inset-0 img');
+     <!-- Main Heading Section -->
+    <section class="py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-gray-900">
+          A Better Way to collaborate Virtually
+        </h2>
+        <p class="mt-2 text-lg text-gray-600">
+          Move beyond traditional video calls and step into a dynamic, interactive environment with SummitXR. Whether you're connecting for work, learning, or fun, engage with your team or community as avatars in stunning virtual spaces — no special equipment or VR headset needed. Enjoy outdoor environments with beautiful landscapes or customize indoor spaces to suit your needs.
+        </p>
+      </div>
     
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.toggle('opacity-100', i === index);
-            slide.classList.toggle('opacity-0', i !== index);
-        });
-    }
+      <!-- Split Section for Text and Image -->
+      <div class="mt-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center text-center lg:text-left gap-8">
+          
+          <!-- Left Text Section -->
+          <div class="flex-1">
+            <h3 class="text-2xl font-bold text-gray-900">
+              The many ways to use <span class="text-primary">SummitXR</span>
+            </h3>
+            <ul class="mt-4 space-y-2 text-lg text-gray-600">
+              <li>• Host a Virtual Conference</li>
+              <li>• Teach in a Virtual Classroom</li>
+              <li>• Host Virtual Team Socials</li>
+              <li>• Take Your Meetings to the Next Level</li>
+            </ul>
+          </div>
+    
+          <!-- Right Image Section -->
+          <div class="flex-1">
+            <img
+              src="https://via.placeholder.com/400" 
+              alt="Virtual meeting space"
+              class="rounded-lg shadow-lg mx-auto lg:mx-0"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
 
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slides.length;
-        showSlide(currentSlide);
-    }
 
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        showSlide(currentSlide);
-    }
+    <!-- Features SECTION -->
+    <section class="py-10">
+      <!-- Section Header -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-gray-900">Features of the Application</h2>
+        <p class="mt-2 text-lg text-gray-600">Explore the key features that make our application stand out.</p>
+      </div>
+    
+      <!-- Cards Section -->
+      <div class="mt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap justify-center gap-8">
+          <!-- Card 1 -->
+          <div class="card bg-base-100 w-72 shadow-xl">
+            <figure>
+              <img
+                src="https://plus.unsplash.com/premium_photo-1674078693680-d409068a7c88?q=80&w=2023&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Shoes" />
+            </figure>
+            <div class="card-body">
+              <h2 class="card-title">
+                Real-Time Collaboration!
+              </h2>
+              <p>Work together with your team in a virtual environment from anywhere in the world.</p>
+            </div>
+          </div>
+    
+          <!-- Card 2 -->
+          <div class="card bg-base-100 w-72 shadow-xl">
+            <figure>
+              <img
+                src="https://plus.unsplash.com/premium_vector-1718306350080-9da10c84afa7?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Shoes" />
+            </figure>
+            <div class="card-body">
+              <h2 class="card-title">
+                Virtual Meeting Spaces
+              </h2>
+              <p>Create customizable meeting rooms to match your needs.</p>
+            </div>
+          </div>
+    
+          <!-- Card 3 -->
+          <div class="card bg-base-100 w-72 shadow-xl">
+            <figure>
+              <img
+                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                alt="Shoes" />
+            </figure>
+            <div class="card-body">
+              <h2 class="card-title">
+                3D Avatars
+              </h2>
+              <p>Personalize your virtual presence with fully interactive avatars.</p>
+            </div>
+          </div>
 
-    // Initialize
-    showSlide(currentSlide);
-  </script>
+          <!-- Card 4 -->
+          <div class="card bg-base-100 w-72 shadow-xl">
+            <figure>
+              <img
+                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                alt="Shoes" />
+            </figure>
+            <div class="card-body">
+              <h2 class="card-title">
+                Screen Sharing & Presentations
+              </h2>
+              <p>Share your screen and deliver presentations to everyone in the space.</p>
+            </div>
+          </div>
 
+          <!-- Card 5 -->
+          <div class="card bg-base-100 w-72 shadow-xl">
+            <figure>
+              <img
+                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                alt="Shoes" />
+            </figure>
+            <div class="card-body">
+              <h2 class="card-title">
+                Cross-Platform Support
+              </h2>
+              <p>Use SummitXR on desktop, mobile, or VR devices.</p>
+            </div>
+          </div>
+    
+          <!-- Add more cards as needed -->
+        </div>
+      </div>
+    </section>
+
+
+    <footer class="text-base-content ">
+      <div class="footer footer-center p-10 bg-base-200">
+  
+          <!-- Socials -->
+          <nav class="grid grid-flow-col gap-6">
+              <a class="btn btn-ghost btn-sm btn-circle">
+                  <i class="fa-brands fa-github text-2xl"></i>
+              </a>
+              <a class="btn btn-ghost btn-sm btn-circle">
+                  <i class="fa-brands fa-twitter text-2xl"></i>
+              </a>
+              <a class="btn btn-ghost btn-sm btn-circle">
+                  <i class="fa-brands fa-facebook text-2xl"></i>
+              </a>
+              <a class="btn btn-ghost btn-sm btn-circle">
+                  <i class="fa-brands fa-youtube text-2xl"></i>
+              </a>
+          </nav>
+  
+          <!-- Links -->
+          <nav>
+              <div class="flex flex-wrap justify-center gap-y-2 gap-x-6 text-lg">
+                  <a class="link link-hover">Contact us</a>
+                  <a class="link link-hover">Services</a>
+                  <a class="link link-hover">Privacy Policy</a>
+                  <a class="link link-hover">Terms & Conditions</a>
+                  <a class="link link-hover">Career</a>
+              </div>
+          </nav>
+      </div>
+  
+      <!-- Brand -->
+      <aside class="bg-base-300 py-4 px-8 w-full flex gap-2 flex-wrap justify-between items-center text-sm">
+          <p class="text-xl flex items-center gap-2">
+              <img alt="Logo" src="/logo.svg" class="w-4" />
+              <span>Company</span>
+          </p>
+          <p>Copyright © 2024 - All rights reserved</p>
+      </aside>
+    </footer>
+  </body>
 </html>

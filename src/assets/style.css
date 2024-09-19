@@ -3,7 +3,7 @@
 @import 'tailwindcss/utilities';
 @import './colors.css';
 
-@layer base {
+/* @layer base {
   input,
   textarea,
   select {
@@ -17,11 +17,11 @@
   a:hover {
     @apply text-sky-800 underline;
   }
-}
+} */
 
 @layer components {
   /* Override the blue set by @tailwindcss/forms */
-  .form-input:focus,
+  /* .form-input:focus,
   .form-textarea:focus,
   .form-select:focus,
   .form-multiselect:focus {
@@ -38,12 +38,14 @@
   .form-radio:focus {
     --tw-ring-color: var(--btn-primary-bg);
   }
+  */
 
   .bg-panel {
     background-color: var(--panel-bg);
     color: var(--panel-text);
   }
 
+  /*
   .btn {
     @apply inline-block p-2 font-bold shadow-md transition duration-150 ease-in-out;
     background-color: var(--btn-primary-bg);
@@ -76,7 +78,7 @@
   }
 
   /* For the send button in ChatPanel */
-  .btn-in-input {
+  /* .btn-in-input {
     @apply text-gray-600;
     &:hover {
       color: var(--btn-primary-bg-hover);
@@ -85,7 +87,7 @@
     &[disabled]:hover {
       @apply text-gray-600;
     }
-  }
+  } */
 
   .animation-ping {
     animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
