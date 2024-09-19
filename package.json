@@ -17,6 +17,7 @@
     "@tailwindcss/forms": "^0.5.2",
     "aframe": "^1.6.0",
     "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
     "formdata": "^0.10.4",
     "fs": "^0.0.1-security",
     "multer": "^1.4.5-lts.1",

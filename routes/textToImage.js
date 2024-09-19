@@ -1,7 +1,7 @@
 const OpenAI = require('openai');
-
+require('dotenv').config();
 const openai = new OpenAI({
-  apiKey: '',
+  apiKey: process.env.OPEN_AI_API_KEY,
 });
 
 /**

@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+require('dotenv').config(); // Load environment variables from a .env file into process.env
 
 const router = express.Router();
 const { removeImageBackground } = require('./backgroundRemover'); // Import background removal function
@@ -46,11 +47,15 @@ router.post('/api/model/generate-from-image', upload.single('image'), async (req
     // Save the processed image (with no background) to a file
     fs.writeFileSync(outputPath, imageWithNoBackground);
     // Model Path
-    const generatedModelPath = path.resolve(__dirname, `../public/assets/models/generated/${req.file.filename.replace(/\..+$/, '')}.glb`);    
+    const generatedModelPath = path.resolve(
+      __dirname,
+      `../public/assets/models/generated/${req.file.filename.replace(/\..+$/, '')}.glb`,
+    );
     console.log('Model path:', generatedModelPath);
     console.log('Output path:', outputPath);
     //Generate 3D model from the image
-    const apiKey = ''; // This needs to be hidden in production
+    const apiKey = process.env.STABILITY_AI_API_KEY; // Load
+    console.log('API Key:', apiKey);
     await sendImageTo3DAPI(outputPath, generatedModelPath, apiKey);
   } catch (error) {
     // Handle errors in background removal or file handling

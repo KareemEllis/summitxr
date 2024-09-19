@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+require('dotenv').config(); 
 const fs = require('fs');
 const {generateImageFromText} = require('./textToImage');
 const { removeImageBackground } = require('./backgroundRemover'); // Import background removal function
@@ -40,7 +41,7 @@ router.post('/api/model/generate-from-text', async (req, res) => {
       `../public/assets/models/generated/${description.replace(/\..+$/, '')}.glb`,
     );
     //Generate 3D model from the image
-    const apiKey = ''; // This needs to be hidden in production
+    const apiKey = process.env.STABILITY_AI_API_KEY; // Load
     await sendImageTo3DAPI(outputPath, generatedModelPath, apiKey);
 
     // Send back the model path
