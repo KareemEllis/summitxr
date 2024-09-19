@@ -10,6 +10,9 @@ const openai = new OpenAI({
  * @returns {Promise<void>}
  */
 async function generateImageFromText(textPrompt) {
+  const refinementPromt =
+    ' NO background detail, focus ONLY on the object, make it three dimensional. Keep the background as clear and simple as possible: a plain white or transparent background.`';
+  const fullPrompt = textPrompt + refinementPromt;
   try {
     const response = await openai.images.generate({
       model: 'dall-e-3',
