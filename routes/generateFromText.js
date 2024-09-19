@@ -51,10 +51,11 @@ router.post('/api/model/generate-from-text', async (req, res) => {
     });
   } catch (error) {
     // Handle errors in background removal or file handling
-    console.error('Entering catch block: ' + error);
+    res.status(500).json({
+      message: 'An error occurred while generating the model',
+      error: error.message || 'Internal Server Error',
+    });
   }
-  // Create a model path so it can be displayed in the client
-  const generatedModelPath = `/assets/models/generated/${description.replace(/\s/g, '-')}.glb`;
 });
 
 module.exports = router;

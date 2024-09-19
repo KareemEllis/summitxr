@@ -55,11 +55,16 @@ router.post('/api/model/generate-from-image', upload.single('image'), async (req
     console.log('Output path:', outputPath);
     //Generate 3D model from the image
     const apiKey = process.env.STABILITY_AI_API_KEY; // Load
-    console.log('API Key:', apiKey);
     await sendImageTo3DAPI(outputPath, generatedModelPath, apiKey);
+    res.status(200).json({
+      message: 'Model generated from image',
+      modelPath: generatedModelPath,
+    });
   } catch (error) {
-    // Handle errors in background removal or file handling
-    console.error('Entering catch block: ' + error);
+    res.status(500).json({
+      message: 'An error occurred while generating the model',
+      error: error.message || 'Internal Server Error',
+    });
   }
 });
 
