@@ -60,6 +60,10 @@
         <!-- Navigation Mesh -->
         <a-asset-item id="navmesh-model" src="./assets/models/room/navmesh.gltf"></a-asset-item>
 
+        <!-- Test asset for 3d model -->
+         
+        <a-asset-item id="tree" src="./assets/models/ar-display/tree.glb"></a-asset-item>
+
         <!-- Player -->
         <template id="avatar-template">
           <a-entity class="avatar" networked-audio-source player-info>
@@ -171,6 +175,8 @@
           networked="template:#avatar-template;"
           visible="false"
           capture-mouse
+          raycaster="objects: .clickable"
+          cursor="rayOrigin: mouse"
           raycaster
           cursor="rayOrigin:mouse"
           super-hands="
@@ -197,6 +203,23 @@
           super-hands
         ></a-entity>
       </a-entity>
+
+      <!--  -->
+      <!-- Test 3d object -->
+      <!--  -->
+
+      <!-- Each 3d entity needs to have clickable class and the onclick here -->
+
+      <a-entity 
+        id="tree"
+        gltf-model="#tree" 
+        position="0 1 0"
+        scale="0.1 0.1 0.1"
+        modify-materials
+        class="clickable"
+        onclick="redirectToAR(this)">
+      </a-entity>
+      
     </a-scene>
   </body>
 
@@ -204,6 +227,34 @@
   <script>
     const rig = document.getElementById('rig');
     const player = document.getElementById('player');
+
+      if (AFRAME.utils.device.isMobile()) {
+        // Disable movement-controls and look controls on mobile devices
+        rig.removeAttribute('movement-controls');
+        player.removeAttribute('look-controls');
+      }
+
+      // Redirect to AR page when model is clicked
+      function redirectToAR(element) {
+        // Get the model's ID, position, and scale to pass as URL parameters
+
+        defaultScale = {x: 0.1, y: 0.1, z: 0.1};
+
+        console.log('you clicked ', element);
+
+        const modelId = element.id;
+        if (element.getAttribute('scale') !== null) {
+          scale = element.getAttribute('scale');
+        } else {
+          scale = defaultScale;
+        }
+        
+        // URL to ar page
+        const arUrl = `ar-display.html?modelId=${modelId}&scale=${scale.x},${scale.y},${scale.z}`;
+        
+        // Redirect to the AR page
+        window.location.href = arUrl;
+      }
 
     if (AFRAME.utils.device.isMobile()) {
       // Disable movement-controls and look controls on mobile devices

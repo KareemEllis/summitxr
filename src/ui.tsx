@@ -19,6 +19,9 @@ const [showSettings, setShowSettings] = createSignal(false);
 const [entered, setEntered] = createSignal(false);
 const [sceneLoaded, setSceneLoaded] = createSignal(false);
 
+// Signal for toggling the "more" dropdown menu
+const [showMoreMenu, setShowMoreMenu] = createSignal(false);
+
 const UserForm = () => {
   return (
     <div class="flex flex-col gap-2">
@@ -83,9 +86,6 @@ const BottomBar = () => {
   const isVRHeadsetConnected = AFRAME.utils.device.checkHeadsetConnected();
   const isMobileDevice = AFRAME.utils.device.isMobile();
 
-  // Signal for toggling the "more" dropdown menu
-  const [showMoreMenu, setShowMoreMenu] = createSignal(false);
-
   return (
     <div class="naf-bottom-bar-center">
       {/* Mic Button */}
@@ -95,9 +95,6 @@ const BottomBar = () => {
       <Show when={!isVRHeadsetConnected || isMobileDevice}>
         <CameraButton entity="#player" />
       </Show>
-
-      {/* Users Button */}
-      <UsersButton />
 
       {/* Chat Button */}
       <ChatButton />
@@ -140,6 +137,9 @@ const BottomBar = () => {
               <ScreenShareButton entity="#player" />
             </Show>
 
+            {/* Users Button */}
+            <UsersButton />
+
             <ModelButtonWithPanel />
 
           </div>
@@ -152,6 +152,12 @@ const BottomBar = () => {
 const App = () => {
   // const isVRHeadsetConnected = AFRAME.utils.device.checkHeadsetConnected();
   const isMobileDevice = AFRAME.utils.device.isMobile();
+
+  // Determine if any panel or menu is open
+  const isAnyPanelOpen = () => {
+    return showChatPanel() || showModelPanel() || showMoreMenu() || showUsersPanel();
+  };
+
   return (
     <>
       <Show when={!entered()}>
@@ -164,7 +170,7 @@ const App = () => {
         <BottomBar />
 
         {/* Don't show the joysticks when the chat, model, or users panel is open */}
-        <Show when={isMobileDevice && !showChatPanel() && !showModelPanel() && !showUsersPanel()}>
+        <Show when={isMobileDevice && !isAnyPanelOpen()}>
           <JoystickWASD />
           <LookJoystick />
         </Show>

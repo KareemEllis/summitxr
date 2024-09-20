@@ -3,16 +3,21 @@ import { Component, createMemo, createSignal, For, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { Portal } from 'solid-js/web';
 import { FiUsers } from 'solid-icons/fi';
-import { BsMic, BsMicMute } from 'solid-icons/bs';
+import { BsMic, BsMicMute, BsCameraVideo } from 'solid-icons/bs';
+import { TbScreenShare } from 'solid-icons/tb';
 import { VsChromeClose } from 'solid-icons/vs';
 
 import { setShowChatPanel } from './Chat';
 import { setShowModelPanel } from './ModelButtonWithPanel';
+
 import { audioEnabled } from './MicButton';
+import { videoEnabled } from './CameraButton';
 
 export interface Presence {
   id: string;
   muted: boolean;
+  videoOff: boolean;
+  screenShareOff: boolean;
   name: string;
 }
 
@@ -37,13 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (!el.components['player-info'].presenceAdded) {
-      setPresences(presences.length, { id: clientId, muted: data.muted, name: data.name });
+      setPresences(presences.length, { id: clientId, muted: data.muted, videoOff: data.videoOff, screenShareOff: data.screenShareOff, name: data.name });
       el.components['player-info'].presenceAdded = true;
     } else if (oldData) {
       if (oldData.muted !== data.muted) {
         setPresences((p) => p.id === clientId, 'muted', data.muted);
       }
-
+      if (oldData.videoOff !== data.videoOff) {
+        setPresences((p) => p.id === clientId, 'videoOff', data.videoOff);
+      }
+      if (oldData.screenShareOff !== data.screenShareOff) {
+        setPresences((p) => p.id === clientId, 'screenShareOff', data.screenShareOff);
+      }
       if (oldData.name !== data.name) {
         setPresences((p) => p.id === clientId, 'name', data.name);
       }
@@ -107,12 +117,24 @@ export const UsersButton: Component = () => {
             <For each={presences}>
               {(p) => (
                 <div class="flex items-center space-x-1 text-sm font-medium">
+                  {/* Muted */}
                   <Show when={!p.muted && audioEnabled()}>
                     <BsMic size={20} />
                   </Show>
                   <Show when={p.muted && audioEnabled()}>
                     <BsMicMute size={20} />
                   </Show>
+
+                  {/* VideoOff */}
+                  <Show when={!p.videoOff && videoEnabled()}>
+                    <BsCameraVideo size={20} />
+                  </Show>
+
+                  {/* ScreenShareOff */}
+                  <Show when={!p.screenShareOff && videoEnabled()}>
+                    <TbScreenShare size={20} />
+                  </Show>
+
                   <span>{p.name}</span>
                 </div>
               )}
