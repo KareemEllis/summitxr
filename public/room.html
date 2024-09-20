@@ -8,7 +8,9 @@
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
 
     <!-- See Link: https://github.com/c-frame/aframe-super-hands-component/issues/238 -->
-    <script>delete AFRAME.components["grabbable"]</script>
+    <script>
+      delete AFRAME.components['grabbable'];
+    </script>
 
     <!-- --------------------------------------------------- -->
     <!-- --------- Networked A-Frame Requirements ---------- -->
@@ -24,13 +26,12 @@
     <!-- A-Frame Event Set Component -->
     <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
     <!-- See src/components.js for A-Frame components -->
-    <script src="/dist/components.js"></script> 
+    <script src="/dist/components.js"></script>
 
     <!-- --------------------------------------------------- -->
     <!-- COMMENT OUT THIS LINE TO DIABLE UI WHILE DEVELOPING -->
     <script defer src="/dist/ui.js"></script>
-    <!-- --------------------------------------------------- --> 
-
+    <!-- --------------------------------------------------- -->
   </head>
 
   <body>
@@ -53,15 +54,11 @@
         </template>
 
         <!-- 3D Room Model -->
-        <a-asset-item 
-          id="roomModel" 
-          src="./assets/models/room/scene.gltf"
-        ></a-asset-item> 
+        <a-asset-item id="roomModel" src="./assets/models/room/scene.gltf"></a-asset-item>
+        <!-- Test Generated Models -->
+        <a-asset-item id="testGeneratedModel" src="./assets/models/generated/"></a-asset-item>
         <!-- Navigation Mesh -->
-        <a-asset-item 
-          id="navmesh-model" 
-          src="./assets/models/room/navmesh.gltf"
-        ></a-asset-item> 
+        <a-asset-item id="navmesh-model" src="./assets/models/room/navmesh.gltf"></a-asset-item>
 
         <!-- Test asset for 3d model -->
          
@@ -70,7 +67,6 @@
         <!-- Player -->
         <template id="avatar-template">
           <a-entity class="avatar" networked-audio-source player-info>
-
             <a-entity id="camera-display" scale="1 1 1" visible="false">
               <!-- These 2 planes are the objects that will show the camera stream -->
               <!-- Aspect Ratio 4:3 scaled down to 2:1.5-->
@@ -142,28 +138,29 @@
         </template>
 
         <!-- Grab interaction mixin: Apply to eneities than need to be grabbable -->
-        <a-mixin 
+        <a-mixin
           id="grab-move"
-          hoverable grabbable stretchable grab-look-control-manager
+          hoverable
+          grabbable
+          stretchable
+          grab-look-control-manager
           event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
           event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
         ></a-mixin>
       </a-assets>
 
       <!-- Entity For 3D Room -->
-      <a-entity 
-        gltf-model="#roomModel" 
-        position="0 0 0" 
-        scale="1.5 1 1.5"
-      ></a-entity>
+      <a-entity gltf-model="#roomModel" position="0 0 0" scale="1.5 1 1.5"></a-entity>
+      <!-- Entity For Generated Model Tests -->
+      <a-entity gltf-model="#testGeneratedModel" position="0 2 0" scale=" 1.5 1 1.5"></a-entity>
       <!-- Entity for Navigation Mesh -->
       <a-gltf-model class="navmesh" src="#navmesh-model" visible="false"></a-gltf-model>
 
       <a-entity light="type:ambient;intensity:0.5"></a-entity>
 
       <!-- Entity for Rig and Player -->
-      <a-entity 
-        id="rig" 
+      <a-entity
+        id="rig"
         position="0 0 6"
         simple-navmesh-constraint="navmesh:.navmesh;fall:0.5;height:0;"
         movement-controls
@@ -180,6 +177,8 @@
           capture-mouse
           raycaster="objects: .clickable"
           cursor="rayOrigin: mouse"
+          raycaster
+          cursor="rayOrigin:mouse"
           super-hands="
             colliderEvent: raycaster-intersection;
             colliderEventProperty: els;
@@ -203,7 +202,6 @@
           sphere-collider="objects: a-box"
           super-hands
         ></a-entity>
-      
       </a-entity>
 
       <!--  -->
@@ -223,13 +221,12 @@
       </a-entity>
       
     </a-scene>
-
   </body>
 
   <!-- Show joystick on mobile devives -->
   <script>
-      const rig = document.getElementById('rig');
-      const player = document.getElementById('player');
+    const rig = document.getElementById('rig');
+    const player = document.getElementById('player');
 
       if (AFRAME.utils.device.isMobile()) {
         // Disable movement-controls and look controls on mobile devices
@@ -259,7 +256,10 @@
         window.location.href = arUrl;
       }
 
+    if (AFRAME.utils.device.isMobile()) {
+      // Disable movement-controls and look controls on mobile devices
+      rig.removeAttribute('movement-controls');
+      player.removeAttribute('look-controls');
+    }
   </script>
-  
-
 </html>
