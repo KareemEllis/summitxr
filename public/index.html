@@ -10,33 +10,35 @@
   </head>
 
   <body>
-    <nav class="navbar justify-center bg-base-300">
+    <!-- Navbar -->
+    <nav class="navbar justify-between bg-base-300">
+      <!-- Logo -->
       <a class="btn btn-ghost text-2xl font-bold">
           <img alt="Logo" src="./assets/Logo.webp" class="w-4" />
           SummitXR
       </a>
-    </nav>
-  
-    <nav class="flex justify-center bg-base-200">
-      <ul class="menu menu-horizontal justify-center">
-        <li>
-          <a class="font-semibold">
-              <i class="fa-solid fa-circle-info text-secondary"></i>
-              About Us
-          </a>
-        </li>
-        <li>
-            <a class="font-semibold">
-                <i class="fa-solid fa-users text-secondary"></i>
-                Team
-            </a>
-        </li>
-        <li>
-            <a class="font-semibold">
-                <i class="fa-solid fa-address-book text-secondary"></i>
-                Contact Us 
-            </a>
-        </li>
+
+      <!-- Menu for mobile -->
+      <div class="dropdown dropdown-end sm:hidden">
+          <button class="btn btn-ghost">
+              <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+
+          <ul tabindex="0" class="dropdown-content menu z-[1] bg-base-200 p-6 rounded-box shadow w-56 gap-2">
+              <li><a>About</a></li>
+              <li><a>Team</a></li>
+              <li><a>Contact Us</a></li>
+              <a class="btn btn-md btn-primary">Try a Room</a>
+
+          </ul>
+      </div>
+
+      <!-- Menu for desktop -->
+      <ul class="hidden menu sm:menu-horizontal gap-2">
+        <li><a>About</a></li>
+        <li><a>Team</a></li>
+        <li><a>Contact</a></li>
+        <a class="btn btn-md btn-primary font-bold">Try a Room</a>
       </ul>
     </nav>
     
@@ -53,11 +55,6 @@
               <a class="btn btn-primary" href="rooms.html">
                   Try a room
                   <i class="fa-solid fa-arrow-right text-sm"></i>
-              </a>
-  
-              <a class="btn btn-neutral">
-                  See our blog
-                  <i class="fa-solid fa-blog"></i>
               </a>
           </div>
       </div>
@@ -95,7 +92,7 @@
           <!-- Right Image Section -->
           <div class="flex-1">
             <img
-              src="https://via.placeholder.com/400" 
+              src="https://www.shutterstock.com/image-vector/team-work-collaboration-partnership-concept-600nw-2180557867.jpg" 
               alt="Virtual meeting space"
               class="rounded-lg shadow-lg mx-auto lg:mx-0"
             />
@@ -120,8 +117,8 @@
           <div class="card bg-base-100 w-72 shadow-xl">
             <figure>
               <img
-                src="https://plus.unsplash.com/premium_photo-1674078693680-d409068a7c88?q=80&w=2023&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Shoes" />
+                src="https://www.shutterstock.com/image-vector/team-work-collaboration-partnership-concept-600nw-2180557867.jpg"
+                alt="Real-Time Collaboration" />
             </figure>
             <div class="card-body">
               <h2 class="card-title">
@@ -135,8 +132,8 @@
           <div class="card bg-base-100 w-72 shadow-xl">
             <figure>
               <img
-                src="https://plus.unsplash.com/premium_vector-1718306350080-9da10c84afa7?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="Shoes" />
+                src="https://www.shutterstock.com/image-vector/team-work-collaboration-partnership-concept-600nw-2180557867.jpg"
+                alt="Virtual Meetin Spaces" />
             </figure>
             <div class="card-body">
               <h2 class="card-title">
@@ -150,8 +147,8 @@
           <div class="card bg-base-100 w-72 shadow-xl">
             <figure>
               <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                alt="Shoes" />
+                src="https://www.shutterstock.com/image-vector/team-work-collaboration-partnership-concept-600nw-2180557867.jpg"
+                alt="3D Avatars" />
             </figure>
             <div class="card-body">
               <h2 class="card-title">
@@ -165,8 +162,8 @@
           <div class="card bg-base-100 w-72 shadow-xl">
             <figure>
               <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                alt="Shoes" />
+                src="https://www.shutterstock.com/image-vector/team-work-collaboration-partnership-concept-600nw-2180557867.jpg"
+                alt="Screen Sharing" />
             </figure>
             <div class="card-body">
               <h2 class="card-title">
@@ -180,8 +177,8 @@
           <div class="card bg-base-100 w-72 shadow-xl">
             <figure>
               <img
-                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                alt="Shoes" />
+                src="https://www.shutterstock.com/image-vector/team-work-collaboration-partnership-concept-600nw-2180557867.jpg"
+                alt="Cross-Platform" />
             </figure>
             <div class="card-body">
               <h2 class="card-title">
@@ -205,25 +202,14 @@
               <a class="btn btn-ghost btn-sm btn-circle">
                   <i class="fa-brands fa-github text-2xl"></i>
               </a>
-              <a class="btn btn-ghost btn-sm btn-circle">
-                  <i class="fa-brands fa-twitter text-2xl"></i>
-              </a>
-              <a class="btn btn-ghost btn-sm btn-circle">
-                  <i class="fa-brands fa-facebook text-2xl"></i>
-              </a>
-              <a class="btn btn-ghost btn-sm btn-circle">
-                  <i class="fa-brands fa-youtube text-2xl"></i>
-              </a>
           </nav>
   
           <!-- Links -->
           <nav>
               <div class="flex flex-wrap justify-center gap-y-2 gap-x-6 text-lg">
-                  <a class="link link-hover">Contact us</a>
-                  <a class="link link-hover">Services</a>
-                  <a class="link link-hover">Privacy Policy</a>
-                  <a class="link link-hover">Terms & Conditions</a>
-                  <a class="link link-hover">Career</a>
+                  <a class="link link-hover">About</a>
+                  <a class="link link-hover">Team</a>
+                  <a class="link link-hover">Contact Us</a>
               </div>
           </nav>
       </div>
@@ -231,8 +217,8 @@
       <!-- Brand -->
       <aside class="bg-base-300 py-4 px-8 w-full flex gap-2 flex-wrap justify-between items-center text-sm">
           <p class="text-xl flex items-center gap-2">
-              <img alt="Logo" src="/logo.svg" class="w-4" />
-              <span>Company</span>
+              <img alt="Logo" src="./assets/Logo.webp" class="w-4" />
+              <span>SummitXR</span>
           </p>
           <p>Copyright © 2024 - All rights reserved</p>
       </aside>
