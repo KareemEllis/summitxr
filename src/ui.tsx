@@ -34,11 +34,15 @@ const UserForm = () => {
 const SettingsScreen = () => {
   return (
     <div class="naf-centered-fullscreen">
+      <img alt="Logo" src="./assets/Logo.webp" class="w-20" />
+      <h2 class="text-2xl font-bold">SummitXR</h2>
+      <h3 class="text-2xl font-medium">Settings</h3>
+
       <UserForm />
       <button
         type="button"
         id="saveSettingsButton"
-        class="btn min-w-[100px]"
+        class="btn btn-primary min-w-[100px]"
         onClick={() => {
           setShowSettings(false);
         }}
@@ -51,7 +55,7 @@ const SettingsScreen = () => {
 
 const EnterScreen = () => {
   return (
-    <div class="naf-centered-fullscreen bg-base-100">
+    <div class="naf-centered-fullscreen">
       <img alt="Logo" src="./assets/Logo.webp" class="w-20" />
       <h2 class="text-2xl font-bold">SummitXR</h2>
       <h3 class="text-2xl font-medium">Ready to join?</h3>
@@ -60,7 +64,7 @@ const EnterScreen = () => {
       <button
         type="button"
         id="playButton"
-        class="btn min-w-[100px]"
+        class="btn btn-primary min-w-[100px]"
         onClick={() => {
           setEntered(true);
           const sceneEl = document.querySelector('a-scene');
