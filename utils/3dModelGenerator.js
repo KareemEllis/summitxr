@@ -11,7 +11,7 @@ async function sendImageTo3DAPI(imageUrl, outputPath, apiKey) {
   try {
     // Read the image from the provided URL or path
     const payload = {
-      image: fs.createReadStream(imageUrl), 
+      image: fs.createReadStream(imageUrl),
     };
 
     // Send the image using axios and FormData
@@ -20,13 +20,15 @@ async function sendImageTo3DAPI(imageUrl, outputPath, apiKey) {
       axios.toFormData(payload, new FormData()),
       {
         validateStatus: undefined,
-        responseType: 'arraybuffer', 
+        responseType: 'arraybuffer',
         headers: {
-          Authorization: `Bearer ${apiKey}`, 
+          Authorization: `Bearer ${apiKey}`,
         },
       }
     );
+
     console.log('outputPath:', outputPath);
+
     if (response.status === 200) {
       fs.writeFileSync(outputPath, Buffer.from(response.data));
       console.log(`3D model saved successfully at ${outputPath}`);
@@ -41,4 +43,3 @@ async function sendImageTo3DAPI(imageUrl, outputPath, apiKey) {
 module.exports = {
   sendImageTo3DAPI,
 };
-
