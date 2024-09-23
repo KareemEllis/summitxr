@@ -8,5 +8,9 @@ module.exports = {
     require('@tailwindcss/forms')({
       strategy: 'class',
     }),
+    require('daisyui'),
   ],
+  daisyui: {
+    themes: ['emerald'],
+  },
 };

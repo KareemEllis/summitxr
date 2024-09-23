@@ -86,8 +86,11 @@ export const UsersButton: Component = () => {
     <>
       <button
         type="button"
-        class="btn-secondary btn-rounded relative"
-        classList={{ active: showUsersPanel() }}
+        class="btn btn-circle btn-xs w-10 h-10 border shadow-md relative"
+        classList={{
+          "btn-neutral": showUsersPanel(),
+          "btn-active": showUsersPanel()
+        }}
         onClick={() => {
           setShowUsersPanel((v) => !v);
           if (showUsersPanel()) {
@@ -106,7 +109,7 @@ export const UsersButton: Component = () => {
           <div class="bg-panel absolute bottom-14 left-2 right-2 z-20 mb-3 mt-3 flex max-w-full flex-col space-y-4 rounded-lg p-4 shadow-lg ring-1 ring-black ring-opacity-5 sm:left-auto sm:w-screen sm:max-w-sm">
             <div class="flex justify-end space-x-2 pb-2">
               <button
-                class="btn-secondary btn-rounded"
+                class="btn btn-circle btn-sm btn-neutral"
                 type="button"
                 title="Close"
                 onClick={() => setShowUsersPanel(false)}

@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>SummitXR</title>
+    <meta name="description" content="SummitXR" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/dist/tailwind.js"></script>
+    <script src="https://kit.fontawesome.com/ce9445c7e1.js" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar justify-between bg-base-300">
+      <!-- Logo -->
+      <a href="index.html" class="btn btn-ghost text-2xl font-bold">
+          <img alt="Logo" src="./assets/Logo.webp" class="w-4" />
+          SummitXR
+      </a>
+
+      <!-- Menu for mobile -->
+      <div class="dropdown dropdown-end sm:hidden">
+          <button class="btn btn-ghost">
+              <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+
+          <ul tabindex="0" class="dropdown-content menu z-[1] bg-base-200 p-6 rounded-box shadow w-56 gap-2">
+              <li><a>About</a></li>
+              <li><a>Team</a></li>
+              <li><a>Contact Us</a></li>
+              <a class="btn btn-md btn-primary">Try a Room</a>
+
+          </ul>
+      </div>
+
+      <!-- Menu for desktop -->
+      <ul class="hidden menu sm:menu-horizontal gap-2">
+        <li><a>About</a></li>
+        <li><a>Team</a></li>
+        <li><a>Contact</a></li>
+        <a class="btn btn-md btn-primary font-bold">Try a Room</a>
+      </ul>
+    </nav>
+
+    <!-- Open Rooms -->
+    <section class="py-20">
+      <!-- Section Header -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl font-bold tracking-tight text-gray-900">Open Rooms</h2>
+        <p class="mt-2 text-lg text-gray-600">Here are some open rooms to try for the Blue Mountain Hackathon</p>
+      </div>
+    
+      <!-- Room Cards Section -->
+      <div class="mt-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap justify-center gap-8">
+
+          <!-- Card 1 -->
+          <div class="card bg-base-100 w-72 shadow-xl transform transition duration-300 hover:scale-[1.02]">
+            <figure class="px-10 pt-10">
+              <img
+                src="./assets/meetingTable.webp"
+                alt="Meeting Room Image"
+                class="rounded-xl" />
+            </figure>
+            <div class="card-body items-center text-center">
+              <h2 class="card-title">Room Name</h2>
+              <p>Describe what the room is about</p>
+              <div class="card-actions">
+                <a href="room.html" class="btn btn-md btn-primary">Enter</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card bg-base-100 w-72 shadow-xl transform transition duration-300 hover:scale-[1.02]">
+            <figure class="px-10 pt-10">
+              <img
+                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                alt="Something"
+                class="rounded-xl" />
+            </figure>
+            <div class="card-body items-center text-center">
+              <h2 class="card-title">Room Name</h2>
+              <p>Describe what the room is about</p>
+              <div class="card-actions">
+                <a href="room.html" class="btn btn-md btn-primary">Enter</a>
+              </div>
+            </div>
+          </div>
+    
+          <!-- Add more cards as needed -->
+        </div>
+      </div>
+    </section>
+
+
+    <footer class="text-base-content ">
+      <div class="footer footer-center p-10 bg-base-200">
+  
+          <!-- Socials -->
+          <nav class="grid grid-flow-col gap-6">
+              <a class="btn btn-ghost btn-sm btn-circle">
+                  <i class="fa-brands fa-github text-2xl"></i>
+              </a>
+          </nav>
+  
+          <!-- Links -->
+          <nav>
+              <div class="flex flex-wrap justify-center gap-y-2 gap-x-6 text-lg">
+                  <a class="link link-hover">About</a>
+                  <a class="link link-hover">Team</a>
+                  <a class="link link-hover">Contact Us</a>
+              </div>
+          </nav>
+      </div>
+  
+      <!-- Brand -->
+      <aside class="bg-base-300 py-4 px-8 w-full flex gap-2 flex-wrap justify-between items-center text-sm">
+          <p class="text-xl flex items-center gap-2">
+              <img alt="Logo" src="./assets/Logo.webp" class="w-4" />
+              <span>SummitXR</span>
+          </p>
+          <p>Copyright © 2024 - All rights reserved</p>
+      </aside>
+    </footer>
+  </body>
+</html>

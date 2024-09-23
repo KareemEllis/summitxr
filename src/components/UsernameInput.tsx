@@ -46,11 +46,11 @@ export const UsernameInput: Component<Props> = (props) => {
   });
 
   return (
-    <div class="flex flex-row items-center">
+    <div class="flex flex-row items-center join">
       <input
         id="username"
         type="text"
-        class="form-input h-7 px-1"
+        class="input input-bordered h-10 px-1 bg-white join-item"
         value={username()}
         oninput={(e: any) => {
           setUsername(e.target.value);
@@ -61,7 +61,7 @@ export const UsernameInput: Component<Props> = (props) => {
           id="avatarcolor"
           type="color"
           title="Pick a color for your avatar"
-          class="h-7 w-7"
+          class="h-10 w-10 rounded-r-full join-item"
           value={color()}
           onchange={(e: any) => {
             setColor(e.target.value);

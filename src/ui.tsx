@@ -24,7 +24,7 @@ const [showMoreMenu, setShowMoreMenu] = createSignal(false);
 
 const UserForm = () => {
   return (
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 my-5">
       <label for="username">Your name</label>
       <UsernameInput entity="#player" />
     </div>
@@ -34,11 +34,15 @@ const UserForm = () => {
 const SettingsScreen = () => {
   return (
     <div class="naf-centered-fullscreen">
+      <img alt="Logo" src="./assets/Logo.webp" class="w-20" />
+      <h2 class="text-2xl font-bold">SummitXR</h2>
+      <h3 class="text-2xl font-medium">Settings</h3>
+
       <UserForm />
       <button
         type="button"
         id="saveSettingsButton"
-        class="btn min-w-[100px]"
+        class="btn btn-primary min-w-[100px]"
         onClick={() => {
           setShowSettings(false);
         }}
@@ -52,11 +56,15 @@ const SettingsScreen = () => {
 const EnterScreen = () => {
   return (
     <div class="naf-centered-fullscreen">
+      <img alt="Logo" src="./assets/Logo.webp" class="w-20" />
+      <h2 class="text-2xl font-bold">SummitXR</h2>
+      <h3 class="text-2xl font-medium">Ready to join?</h3>
+
       <UserForm />
       <button
         type="button"
         id="playButton"
-        class="btn min-w-[100px]"
+        class="btn btn-primary min-w-[100px]"
         onClick={() => {
           setEntered(true);
           const sceneEl = document.querySelector('a-scene');
@@ -76,7 +84,7 @@ const EnterScreen = () => {
           }
         }}
       >
-        Enter
+        Join now
       </button>
     </div>
   );
@@ -103,8 +111,11 @@ const BottomBar = () => {
       <div class="more-menu-container">
         <button
           type="button"
-          class="btn-secondary btn-rounded"
-          classList={{ active: showMoreMenu() }}
+          class="btn btn-circle btn-xs w-10 h-10 border shadow-md"
+          classList={{
+            "btn-neutral": showMoreMenu(),
+            "btn-active": showMoreMenu()
+          }}
           onClick={() => {
             setShowMoreMenu((prev) => !prev)
             if (showMoreMenu()) {
@@ -123,7 +134,7 @@ const BottomBar = () => {
             <button
               type="button"
               id="settingsButton"
-              class="btn-secondary btn-rounded"
+              class="btn btn-circle btn-xs w-10 h-10 border shadow-md"
               onClick={() => {
                 setShowSettings(true);
               }}
