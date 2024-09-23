@@ -24,7 +24,7 @@ const [showMoreMenu, setShowMoreMenu] = createSignal(false);
 
 const UserForm = () => {
   return (
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 my-5">
       <label for="username">Your name</label>
       <UsernameInput entity="#player" />
     </div>
@@ -51,7 +51,11 @@ const SettingsScreen = () => {
 
 const EnterScreen = () => {
   return (
-    <div class="naf-centered-fullscreen">
+    <div class="naf-centered-fullscreen bg-base-100">
+      <img alt="Logo" src="./assets/Logo.webp" class="w-20" />
+      <h2 class="text-2xl font-bold">SummitXR</h2>
+      <h3 class="text-2xl font-medium">Ready to join?</h3>
+
       <UserForm />
       <button
         type="button"
@@ -76,7 +80,7 @@ const EnterScreen = () => {
           }
         }}
       >
-        Enter
+        Join now
       </button>
     </div>
   );
@@ -123,7 +127,7 @@ const BottomBar = () => {
             <button
               type="button"
               id="settingsButton"
-              class="btn-secondary btn-rounded"
+              class="btn btn-circle btn-xs w-10 h-10 border shadow-md"
               onClick={() => {
                 setShowSettings(true);
               }}

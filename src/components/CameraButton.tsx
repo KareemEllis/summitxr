@@ -179,8 +179,11 @@ export const CameraButton: Component<Props> = (props) => {
   return (
     <Show when={videoEnabled()}>
       <button
-        class="btn-secondary btn-rounded"
-        classList={{ active: !iconOff() }}
+        class="btn btn-circle btn-xs w-10 h-10 border shadow-md"
+        classList={{
+          "btn-neutral": !iconOff(),
+          "btn-active": !iconOff()
+        }}
         onClick={() => {
           setCameraEnabled((enabled) => !enabled);
           // @ts-ignore

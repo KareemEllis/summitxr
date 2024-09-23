@@ -218,8 +218,11 @@ export const ScreenShareButton: Component<Props> = (props) => {
   return (
       <Show when={screenShareAvailable()}>
         <button
-          class="btn-secondary btn-rounded"
-          classList={{ active: !iconOff() }}
+          class="btn btn-circle btn-xs w-10 h-10 border shadow-md"
+          classList={{
+            "btn-neutral": !iconOff(),
+            "btn-active": !iconOff()
+          }}
           onClick={() => {
             setScreenEnabled((enabled) => !enabled);
             // @ts-ignore

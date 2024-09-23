@@ -76,8 +76,11 @@ export const ModelButtonWithPanel = () => {
       {/* Button to open the panel */}
       <button
         type="button"
-        class="btn-secondary btn-rounded"
-        classList={{ active: showModelPanel() }}
+        class="btn btn-circle btn-xs w-10 h-10 border shadow-md"
+        classList={{
+          "btn-neutral": showModelPanel(),
+          "btn-active": showModelPanel()
+        }}
         onClick={() => {
           setShowModelPanel((v) => !v)
           if (showModelPanel()) {
@@ -97,7 +100,7 @@ export const ModelButtonWithPanel = () => {
             {/* Close Button */}
             <div class="flex justify-end space-x-2 pb-2">
               <button
-                class="btn-secondary btn-rounded"
+                class="btn btn-circle btn-sm btn-neutral"
                 type="button"
                 title="Close"
                 onClick={() => setShowModelPanel(false)}
@@ -116,7 +119,7 @@ export const ModelButtonWithPanel = () => {
                 onInput={(e) => setUploadedFile(e.target.files[0])}
                 class="form-input w-full px-4 py-2 text-sm rounded-lg"
               />
-              <button class="btn-secondary w-full" onClick={handleImageUploadSubmit}>
+              <button class="btn btn-primary w-full" onClick={handleImageUploadSubmit}>
                 Submit Image
               </button>
             </div>
@@ -132,7 +135,7 @@ export const ModelButtonWithPanel = () => {
                 placeholder="Example: A soccer ball"
                 class="form-textarea w-full px-4 py-2 text-sm rounded-lg max-h-20"
               />
-              <button class="btn-secondary w-full" onClick={handleDescriptionSubmit}>
+              <button class="btn btn-primary w-full" onClick={handleDescriptionSubmit}>
                 Submit Description
               </button>
             </div>
