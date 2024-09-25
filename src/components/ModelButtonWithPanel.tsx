@@ -1,3 +1,4 @@
+/* global NAF */
 import { createSignal, Show } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { BsBox } from 'solid-icons/bs';
@@ -28,8 +29,8 @@ const handleImageUploadSubmit = async () => {
       });
 
       const { modelPath } = await response.json();
-      console.log('Model generated:', modelPath);
-      // addModelToScene(modelPath); // Assuming the API returns the path to the generated 3D model
+      console.log('Model generated (CLIENT):', modelPath);
+      addModelToScene(modelPath);
     } catch (error) {
       console.error('Error uploading image:', error);
     }
@@ -50,8 +51,8 @@ const handleDescriptionSubmit = async () => {
       });
 
       const { modelPath } = await response.json();
-      console.log('Model generated:', modelPath);
-      // addModelToScene(modelPath); // Assuming the API returns a model URL
+      console.log('Model generated (CLIENT):', modelPath);
+      addModelToScene(modelPath);
     } catch (error) {
       console.error('Error generating model from description:', error);
     }
@@ -60,14 +61,40 @@ const handleDescriptionSubmit = async () => {
   }
 };
 
-// Function to add a 3D model into the A-Frame scene
-const addModelToScene = (modelUrl: string) => {
+const addModelToScene = (modelUrl: string, position = '0 1 0', isNetworked = true) => {
   const scene = document.querySelector('a-scene');
   const modelEntity = document.createElement('a-entity');
-  modelEntity.setAttribute('gltf-model', modelUrl); // Assuming it's a glTF format
-  modelEntity.setAttribute('position', '0 1 -3'); // Example position
+
+  // Gets the finame from modelUrl, '/assets/models/generated/tree.glb' => 'tree.glb'
+  const filename = modelUrl.split('/').pop();
+
+  // Removes the extension for example, 'tree.glb' => 'tree'
+  const modelUrlWithoutExtension = filename.split('.').slice(0, -1).join('.');
+
+  modelEntity.setAttribute('id', modelUrlWithoutExtension) // Add unique id to the entity
+  modelEntity.setAttribute('gltf-model', modelUrl); // Add the model URL
+  modelEntity.setAttribute('position', position); // Set position
+  modelEntity.setAttribute('networked', 'template:#new-model-template'); // Sync with other users
+
   scene.appendChild(modelEntity);
+
+  // If the model is locally added, broadcast it to other users
+  if (isNetworked) {
+    NAF.connection.broadcastDataGuaranteed('addModel', {
+      url: modelUrl,
+      position: position
+    });
+  }
 };
+
+// Handler for receiving networked events and adding model
+NAF.connection.subscribeToDataChannel('addModel', (senderId, dataType, data, targetId) => {
+  // Ensure the sender is not the current client to prevent duplication
+  if (senderId !== NAF.clientId) {
+    const { url, position } = data;
+    addModelToScene(url, position, false); // Add the model, but don't re-broadcast
+  }
+});
 
 // The component for the "Add Model" button and the panel
 export const ModelButtonWithPanel = () => {

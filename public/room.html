@@ -56,13 +56,24 @@
         <!-- 3D Room Model -->
         <a-asset-item id="roomModel" src="./assets/models/room/scene.gltf"></a-asset-item>
         <!-- Test Generated Models -->
-        <a-asset-item id="testGeneratedModel" src="./assets/models/generated/1727119849671_1727119852912.glb"></a-asset-item>
+        <a-asset-item id="generatedModel" src="./assets/models/generated/1727119849671_1727119852912.glb"></a-asset-item>
         <!-- Navigation Mesh -->
         <a-asset-item id="navmesh-model" src="./assets/models/room/navmesh.gltf"></a-asset-item>
 
         <!-- Test asset for 3d model -->
-         
-        <a-asset-item id="tree" src="./assets/models/ar-display/tree.glb"></a-asset-item>
+        <a-asset-item id="tree" src="./assets/models/generated/tree.glb"></a-asset-item>
+
+        <template id="new-model-template">
+          <a-entity 
+            gltf-model="" 
+            position="" 
+            mixin="grab-move" 
+            class="clickable"
+            onclick="redirectToAR(this)"
+          ></a-entity>
+        </template>
+
+
 
         <!-- Player -->
         <template id="avatar-template">
@@ -116,7 +127,7 @@
 
         <!-- ScreenShare -->
         <template id="screenshare-template">
-          <a-entity id="screen-display" mixin="grab-move">
+          <a-entity id="screen-display" mixin="grab-move" class="clickable">
             <a-plane
               color="#FFF"
               width="2"
@@ -144,6 +155,14 @@
           grabbable
           stretchable
           grab-look-control-manager
+          event-set__hoveron="_event: hover-start; material.opacity: 0.7; material.transparent: true"
+          event-set__hoveroff="_event: hover-end; material.opacity: 1;  material.transparent: false"
+        ></a-mixin>
+
+        <!-- Hover (ONLY) interaction mixin: Apply to eneities that has an opacity effect when hovered -->
+        <a-mixin
+          id="hover"
+          hoverable
           event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
           event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
         ></a-mixin>
@@ -212,10 +231,10 @@
 
       <a-entity 
         id="tree"
+        mixin="grab-move"
         gltf-model="#tree" 
         position="0 1 0"
         scale="0.1 0.1 0.1"
-        modify-materials
         class="clickable"
         onclick="redirectToAR(this)">
       </a-entity>
@@ -228,14 +247,15 @@
     const rig = document.getElementById('rig');
     const player = document.getElementById('player');
 
-      if (AFRAME.utils.device.isMobile()) {
-        // Disable movement-controls and look controls on mobile devices
-        rig.removeAttribute('movement-controls');
-        player.removeAttribute('look-controls');
-      }
+    if (AFRAME.utils.device.isMobile()) {
+      // Disable movement-controls and look controls on mobile devices
+      rig.removeAttribute('movement-controls');
+      player.removeAttribute('look-controls');
+    }
 
-      // Redirect to AR page when model is clicked
-      function redirectToAR(element) {
+
+    // Redirect to AR page when model is clicked
+    function redirectToAR(element) {
         // Get the model's ID, position, and scale to pass as URL parameters
 
         defaultScale = {x: 0.1, y: 0.1, z: 0.1};
@@ -253,13 +273,7 @@
         const arUrl = `ar-display.html?modelId=${modelId}&scale=${scale.x},${scale.y},${scale.z}`;
         
         // Redirect to the AR page
-        window.location.href = arUrl;
+        window.open(arUrl, '_blank');
       }
-
-    if (AFRAME.utils.device.isMobile()) {
-      // Disable movement-controls and look controls on mobile devices
-      rig.removeAttribute('movement-controls');
-      player.removeAttribute('look-controls');
-    }
   </script>
 </html>

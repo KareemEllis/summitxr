@@ -47,6 +47,7 @@ router.post('/api/model/generate-from-text', async (req, res) => {
 
     // path for the generated image
     const generatedImagePath = `uploads/images/generated_${formattedDescription}.png`;
+
     // Save the generated image to a file
     const imageBuffer = Buffer.from(base64ImageData, 'base64');
     fs.writeFileSync(generatedImagePath, imageBuffer);
@@ -58,15 +59,16 @@ router.post('/api/model/generate-from-text', async (req, res) => {
     // Save the processed image (with no background) to a file
     fs.writeFileSync(removedBgPath, imageWithNoBackground);
 
-    // Generate 3D model from the image
-    const generatedModelPath = path.resolve(
+    const generatedModelPath = `/assets/models/generated/${formattedDescription}.glb`;
+
+    const modelOutputPath = path.resolve(
       __dirname,
       `../public/assets/models/generated/${formattedDescription}.glb`,
     );
 
     // Generate 3D model from the image
     const apiKey = process.env.STABILITY_AI_API_KEY; // Load
-    await sendImageTo3DAPI(generatedImagePath, generatedModelPath, apiKey);
+    await sendImageTo3DAPI(removedBgPath, modelOutputPath, apiKey);
 
     // Remove the images from processes
     fs.unlink(removedBgPath, (err) => {

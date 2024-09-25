@@ -30,7 +30,7 @@ async function sendImageTo3DAPI(imageUrl, outputPath, apiKey) {
     console.log('outputPath:', outputPath);
 
     if (response.status === 200) {
-      fs.writeFileSync(outputPath, Buffer.from(response.data));
+      await fs.writeFileSync(outputPath, Buffer.from(response.data));
       console.log(`3D model saved successfully at ${outputPath}`);
     } else {
       throw new Error(`${response.status}: ${response.data.toString()}`);

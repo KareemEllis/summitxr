@@ -56,14 +56,17 @@ router.post('/api/model/generate-from-image', upload.single('image'), async (req
     // Save the processed image (with no background) to a file
     fs.writeFileSync(removedBgPath, imageWithNoBackground);
 
-    // New Generated Model Path
-    const generatedModelPath = path.resolve(
+    // New Generated Model Path (for HTTP access)
+    const modelFilename = `${
+      req.file.filename
+        .replace(/\..+$/, '')
+        .replace(/\s+/g, '')
+    }_${Date.now()}.glb`;
+    const generatedModelPath = `/assets/models/generated/${modelFilename}`;
+
+    const modelOutputPath = path.resolve(
       __dirname,
-      `../public/assets/models/generated/${
-        req.file.filename
-          .replace(/\..+$/, '') // Remove file extension
-          .replace(/\s+/g, '') // Remove all spaces
-      }_${Date.now()}.glb` // Append the timestamp for uniqueness
+      `../public/assets/models/generated/${modelFilename}`,
     );
 
     console.log('Model path:', generatedModelPath);
@@ -72,7 +75,7 @@ router.post('/api/model/generate-from-image', upload.single('image'), async (req
     // Generate 3D model from the image
     const apiKey = process.env.STABILITY_AI_API_KEY; // Load
 
-    await sendImageTo3DAPI(removedBgPath, generatedModelPath, apiKey);
+    await sendImageTo3DAPI(removedBgPath, modelOutputPath, apiKey);
 
     // Remove the images from processes
     fs.unlink(removedBgPath, (err) => {
