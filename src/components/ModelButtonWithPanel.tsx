@@ -11,12 +11,17 @@ import { setShowUsersPanel } from './UsersButton';
 const [description, setDescription] = createSignal('');
 const [uploadedFile, setUploadedFile] = createSignal<File | null>(null); // Signal to store uploaded file
 
+const [descGenerationLoading, setDescGenerationLoading] = createSignal(false);
+const [imageGenerationLoading, setImageGenerationLoading] = createSignal(false);
+
 // Toggle visibility of the model panel
 export const [showModelPanel, setShowModelPanel] = createSignal(false);
 
 // Handler for submitting the uploaded image
 const handleImageUploadSubmit = async () => {
   if (uploadedFile()) {
+    setImageGenerationLoading(true)
+
     // Send the uploaded file to the server for model generation
     const formData = new FormData();
     formData.append('image', uploadedFile()!);
@@ -31,8 +36,10 @@ const handleImageUploadSubmit = async () => {
       const { modelPath } = await response.json();
       console.log('Model generated (CLIENT):', modelPath);
       addModelToScene(modelPath);
+      setImageGenerationLoading(false)
     } catch (error) {
       console.error('Error uploading image:', error);
+      setImageGenerationLoading(false)
     }
   }
 };
@@ -41,6 +48,8 @@ const handleImageUploadSubmit = async () => {
 const handleDescriptionSubmit = async () => {
   if (description()) {
     try {
+      setDescGenerationLoading(true)
+
       // Simulate API call to generate model from description
       const response = await fetch('/api/model/generate-from-text', {
         method: 'POST',
@@ -53,8 +62,10 @@ const handleDescriptionSubmit = async () => {
       const { modelPath } = await response.json();
       console.log('Model generated (CLIENT):', modelPath);
       addModelToScene(modelPath);
+      setDescGenerationLoading(false)
     } catch (error) {
       console.error('Error generating model from description:', error);
+      setDescGenerationLoading(false)
     }
 
     setDescription(''); // Reset input after submission
@@ -147,7 +158,12 @@ export const ModelButtonWithPanel = () => {
                 class="form-input w-full px-4 py-2 text-sm rounded-lg"
               />
               <button class="btn btn-primary w-full" onClick={handleImageUploadSubmit}>
-                Submit Image
+                <Show when={!imageGenerationLoading()}>
+                  Submit Image
+                </Show>
+                <Show when={imageGenerationLoading()}>
+                  <span class="loading loading-spinner"></span>
+                </Show>
               </button>
             </div>
 
@@ -163,7 +179,12 @@ export const ModelButtonWithPanel = () => {
                 class="form-textarea w-full px-4 py-2 text-sm rounded-lg max-h-20"
               />
               <button class="btn btn-primary w-full" onClick={handleDescriptionSubmit}>
-                Submit Description
+                <Show when={!descGenerationLoading()}>
+                  Submit Description
+                </Show>
+                <Show when={descGenerationLoading()}>
+                  <span class="loading loading-spinner"></span>
+                </Show>
               </button>
             </div>
           </div>
