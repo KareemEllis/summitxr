@@ -22,6 +22,18 @@ const [sceneLoaded, setSceneLoaded] = createSignal(false);
 // Signal for toggling the "more" dropdown menu
 const [showMoreMenu, setShowMoreMenu] = createSignal(false);
 
+function getRoomName() {
+  const sceneEl = document.querySelector('a-scene');
+
+  // Get the networked-scene component's attribute
+  const networkedSceneAttr = sceneEl.getAttribute('networked-scene');
+
+  // Parse the attribute to extract the room name
+  const roomName = networkedSceneAttr.room;
+
+  return roomName;
+}
+
 const UserForm = () => {
   return (
     <div class="flex flex-col gap-2 my-5">
@@ -32,11 +44,15 @@ const UserForm = () => {
 };
 
 const SettingsScreen = () => {
+  const roomName = getRoomName();
   return (
     <div class="naf-centered-fullscreen">
       <img alt="Logo" src="./assets/Logo.webp" class="w-20" />
       <h2 class="text-2xl font-bold">SummitXR</h2>
       <h3 class="text-2xl font-medium">Settings</h3>
+
+      <h4 class="text-sm mt-2">Room</h4>
+      <p class='text-md font-medium'>{roomName}</p>
 
       <UserForm />
       <button

@@ -134,24 +134,7 @@ const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true)
   modelEntity.setAttribute('networked', 'template:#new-model-template'); // Sync with other users
 
   scene.appendChild(modelEntity);
-
-  // If the model is locally added, broadcast it to other users
-  if (isNetworked) {
-    NAF.connection.broadcastDataGuaranteed('addModel', {
-      url: modelUrl,
-      position: position
-    });
-  }
 };
-
-// Handler for receiving networked events and adding model
-NAF.connection.subscribeToDataChannel('addModel', (senderId, dataType, data, targetId) => {
-  // Ensure the sender is not the current client to prevent duplication
-  if (senderId !== NAF.clientId) {
-    const { url, position } = data;
-    addModelToScene(url, position, false); // Add the model, but don't re-broadcast
-  }
-});
 
 // The component for the "Add Model" button and the panel
 export const ModelButtonWithPanel = () => {
