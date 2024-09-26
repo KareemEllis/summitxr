@@ -7,6 +7,8 @@ import { VsChromeClose } from 'solid-icons/vs';
 import { setShowChatPanel } from './Chat';
 import { setShowUsersPanel } from './UsersButton';
 
+import calcSpawnPosition from '../calculate-spawn-position';
+
 // Signals to store form input values
 const [description, setDescription] = createSignal('');
 const [uploadedFile, setUploadedFile] = createSignal<File | null>(null); // Signal to store uploaded file
@@ -16,6 +18,12 @@ const [imageGenerationLoading, setImageGenerationLoading] = createSignal(false);
 
 // Toggle visibility of the model panel
 export const [showModelPanel, setShowModelPanel] = createSignal(false);
+
+interface Coords {
+  x: number,
+  y: number,
+  z: number,
+}
 
 // Handler for submitting the uploaded image
 const handleImageUploadSubmit = async () => {
@@ -35,7 +43,25 @@ const handleImageUploadSubmit = async () => {
 
       const { modelPath } = await response.json();
       console.log('Model generated (CLIENT):', modelPath);
-      addModelToScene(modelPath);
+
+      // Get the player's position and rotation
+      const playerPositionAttr = document.querySelector('#rig').getAttribute('position');
+      const playerRotationAttr = document.querySelector('#player').getAttribute('rotation');
+      // Convert the position and rotation strings to numeric values
+      const playerPosition = {
+        x: parseFloat(playerPositionAttr.x),
+        y: parseFloat(playerPositionAttr.y),
+        z: parseFloat(playerPositionAttr.z),
+      };
+      const playerRotation = {
+        x: parseFloat(playerRotationAttr.x),
+        y: parseFloat(playerRotationAttr.y),
+        z: parseFloat(playerRotationAttr.z),
+      };
+
+      const modelPosition = calcSpawnPosition(playerPosition, playerRotation)
+
+      addModelToScene(modelPath, modelPosition);
       setImageGenerationLoading(false)
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -61,7 +87,25 @@ const handleDescriptionSubmit = async () => {
 
       const { modelPath } = await response.json();
       console.log('Model generated (CLIENT):', modelPath);
-      addModelToScene(modelPath);
+
+      // Get the player's position and rotation
+      const playerPositionAttr = document.querySelector('#rig').getAttribute('position');
+      const playerRotationAttr = document.querySelector('#player').getAttribute('rotation');
+      // Convert the position and rotation strings to numeric values
+      const playerPosition = {
+        x: parseFloat(playerPositionAttr.x),
+        y: parseFloat(playerPositionAttr.y),
+        z: parseFloat(playerPositionAttr.z),
+      };
+      const playerRotation = {
+        x: parseFloat(playerRotationAttr.x),
+        y: parseFloat(playerRotationAttr.y),
+        z: parseFloat(playerRotationAttr.z),
+      };
+
+      const modelPosition = calcSpawnPosition(playerPosition, playerRotation)
+
+      addModelToScene(modelPath, modelPosition);
       setDescGenerationLoading(false)
     } catch (error) {
       console.error('Error generating model from description:', error);
@@ -72,7 +116,7 @@ const handleDescriptionSubmit = async () => {
   }
 };
 
-const addModelToScene = (modelUrl: string, position = '0 1 0', isNetworked = true) => {
+const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true) => {
   const scene = document.querySelector('a-scene');
   const modelEntity = document.createElement('a-entity');
 
@@ -82,9 +126,11 @@ const addModelToScene = (modelUrl: string, position = '0 1 0', isNetworked = tru
   // Removes the extension for example, 'tree.glb' => 'tree'
   const modelUrlWithoutExtension = filename.split('.').slice(0, -1).join('.');
 
+  console.log("ADDING AT POSITION: ", position)
+
   modelEntity.setAttribute('id', modelUrlWithoutExtension) // Add unique id to the entity
+  modelEntity.setAttribute('position', `${position.x} ${position.y} ${position.z}`); // Set position
   modelEntity.setAttribute('gltf-model', modelUrl); // Add the model URL
-  modelEntity.setAttribute('position', position); // Set position
   modelEntity.setAttribute('networked', 'template:#new-model-template'); // Sync with other users
 
   scene.appendChild(modelEntity);

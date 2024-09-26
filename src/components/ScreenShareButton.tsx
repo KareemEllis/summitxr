@@ -2,6 +2,8 @@
 import { Component, createEffect, createMemo, createSignal, onCleanup, onMount, Show, untrack } from 'solid-js';
 import { TbScreenShare, TbScreenShareOff } from 'solid-icons/tb';
 
+import calcSpawnPosition from '../calculate-spawn-position';
+
 export const [screenEnabled, setScreenEnabled] = createSignal(false);
 const [isConnected, setIsConnected] = createSignal(false);
 
@@ -91,19 +93,12 @@ export const ScreenShareButton: Component<Props> = (props) => {
         const playerPosition = rig.getAttribute('position');
         const playerRotation = player.getAttribute('rotation');
 
-        // Calculate the screen position in front of the player
-        const offsetDistance = 2; // Distance in front of the player
-        // @ts-ignore
-        const radY = playerRotation.y * (Math.PI / 180); // Convert Y rotation to radians
+        console.log('Position')
+        console.log(playerPosition)
+        console.log('Rotation')
+        console.log(playerRotation)
 
-        const screenPosition = {
-          // @ts-ignore
-          x: playerPosition.x + offsetDistance * Math.sin(radY),
-          // @ts-ignore
-          y: playerPosition.y + 1.5, // Adjust to place it at eye level
-          // @ts-ignore
-          z: playerPosition.z + offsetDistance * Math.cos(radY),
-        };
+        const screenPosition = calcSpawnPosition(playerPosition, playerRotation)
 
         // Create the screen entity and set its attributes
         const screen = document.createElement('a-entity');
