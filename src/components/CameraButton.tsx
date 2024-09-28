@@ -14,14 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const sceneEl = document.querySelector('a-scene');
 
   const sceneLoaded = () => {
-    // @ts-ignore
-    const settings = sceneEl?.getAttribute('networked-scene');
-    // @ts-ignore
-    const adapter = settings.adapter;
-    if (adapter !== 'easyrtc' && adapter !== 'janus') return;
-    // @ts-ignore
-    if (adapter === 'easyrtc' && !settings.video) return;
-
     setVideoEnabled(true);
   };
 
@@ -37,6 +29,24 @@ document.addEventListener('DOMContentLoaded', () => {
 interface Props {
   entity?: string;
 }
+
+const hasCamera = async () => {
+  try {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+    if (videoDevices.length > 0) {
+      return true; // User has a camera
+    } else {
+      alert('No camera found')
+      return false; // No camera available
+    }
+  } catch (error) {
+    alert('Error accessing camera')
+    console.error('Error checking for camera: ', error);
+    return false; // Assume no camera if an error occurs
+  }
+};
 
 export const CameraButton: Component<Props> = (props) => {
   let cameraVideoAddingInProgress = false; // New flag to prevent duplicate creation
@@ -59,7 +69,6 @@ export const CameraButton: Component<Props> = (props) => {
     } else {
       const listener = () => {
         setIsConnected(true);
-        NAF.connection.adapter?.enableCamera?.(untrack(cameraEnabled));
         toggleCameraDisplay(untrack(cameraEnabled));
       };
       document.body.addEventListener('connected', listener);
@@ -70,7 +79,14 @@ export const CameraButton: Component<Props> = (props) => {
   });
 
   // This function toggles the visibility of the camera display
-  const toggleCameraDisplay = (enabled: boolean) => {
+  const toggleCameraDisplay = async (enabled: boolean) => {
+    const cameraDeviceFound = await hasCamera()
+
+    if (!cameraDeviceFound) {
+      // Modal saying no device found
+      return
+    }
+
     // Access the player entity
     const playerEntity = document.querySelector('#rig #player');
 
@@ -98,6 +114,8 @@ export const CameraButton: Component<Props> = (props) => {
 
       // Attach the camera stream to a small video element on the top-left corner
       navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+        NAF.connection.adapter?.addLocalMediaStream(stream, 'camera');
+
         const videoEl = document.createElement('video');
         // @ts-ignore
         videoEl.srcObject = stream;
@@ -126,6 +144,7 @@ export const CameraButton: Component<Props> = (props) => {
           track.addEventListener(
             'ended',
             () => {
+              NAF.connection.adapter?.removeLocalMediaStream('camera');
               setCameraEnabled(false);
               cameraDisplayEntity.setAttribute('visible', 'false');
               document.body.removeChild(videoEl);
@@ -141,6 +160,7 @@ export const CameraButton: Component<Props> = (props) => {
         cameraVideoAddingInProgress = false; // Reset the flag on error
       });
     } else {
+      NAF.connection.adapter?.removeLocalMediaStream('camera');
       // Show the avatar head and hide the camera display
       modelEntity.setAttribute('visible', 'true');
       cameraDisplayEntity.setAttribute('visible', 'false');
@@ -165,13 +185,12 @@ export const CameraButton: Component<Props> = (props) => {
   createEffect(() => {
     const enabled = cameraEnabled();
     if (isConnected()) {
-      if (!NAF.connection.adapter?.enableCamera) {
+      if (!NAF.connection.adapter?.addLocalMediaStream) {
         console.error(
-          `The specified NAF adapter doesn't have the enableCamera method, please be sure you have networked-scene="adapter:easyrtc;video:true" options and networked-video-source on your avatar template.`,
+          `The specified NAF adapter doesn't have the addLocalMediaStream method, please be sure you have networked-scene="adapter:easyrtc;video:true" options and networked-video-source on your avatar template.`,
         );
         return;
       }
-      NAF.connection.adapter.enableCamera(enabled);
       toggleCameraDisplay(enabled);
     }
   });
