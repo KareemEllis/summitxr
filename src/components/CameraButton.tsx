@@ -30,6 +30,24 @@ interface Props {
   entity?: string;
 }
 
+const hasCamera = async () => {
+  try {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter(device => device.kind === 'videoinput');
+
+    if (videoDevices.length > 0) {
+      return true; // User has a camera
+    } else {
+      alert('No camera found')
+      return false; // No camera available
+    }
+  } catch (error) {
+    alert('Error accessing camera')
+    console.error('Error checking for camera: ', error);
+    return false; // Assume no camera if an error occurs
+  }
+};
+
 export const CameraButton: Component<Props> = (props) => {
   let cameraVideoAddingInProgress = false; // New flag to prevent duplicate creation
 
@@ -61,7 +79,14 @@ export const CameraButton: Component<Props> = (props) => {
   });
 
   // This function toggles the visibility of the camera display
-  const toggleCameraDisplay = (enabled: boolean) => {
+  const toggleCameraDisplay = async (enabled: boolean) => {
+    const cameraDeviceFound = await hasCamera()
+
+    if (!cameraDeviceFound) {
+      // Modal saying no device found
+      return
+    }
+
     // Access the player entity
     const playerEntity = document.querySelector('#rig #player');
 
