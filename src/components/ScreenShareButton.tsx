@@ -16,13 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const sceneEl = document.querySelector('a-scene');
 
   const sceneLoaded = () => {
-    // @ts-ignore
-    const settings = sceneEl?.getAttribute('networked-scene');
-    // @ts-ignore
-    const adapter = settings.adapter;
-    if (adapter !== 'easyrtc' && adapter !== 'janus') return;
-    // @ts-ignore
-    if (adapter === 'easyrtc' && !settings.video) return;
+    // // @ts-ignore
+    // const settings = sceneEl?.getAttribute('networked-scene');
+    // // @ts-ignore
+    // const adapter = settings.adapter;
+    // if (adapter !== 'easyrtc' && adapter !== 'janus') return;
+    // // @ts-ignore
+    // if (adapter === 'easyrtc' && !settings.video) return;
 
     setScreenShareAvailable(true);
   };
@@ -201,11 +201,10 @@ export const ScreenShareButton: Component<Props> = (props) => {
     if (isConnected()) {
       if (!NAF.connection.adapter?.addLocalMediaStream) {
         console.error(
-          `The specified NAF adapter doesn't have the removeLocalMediaStream feature, please be sure you have networked-scene="adapter:easyrtc;video:true" options and networked-video-source="streamName: screen" on your screen display template.`,
+          `The specified NAF adapter doesn't have the removeLocalMediaStream feature.`,
         );
         return;
       }
-      // NAF.connection.adapter?.addLocalMediaStream(stream, 'screen'); Not sure if this is necessary like the camera component
       toggleScreenDisplay(enabled);
     }
   });

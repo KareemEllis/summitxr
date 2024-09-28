@@ -43,7 +43,6 @@
         debug: true;
         adapter: easyrtc;
         audio: true;
-        video: true;
       "
     >
       <!-- Assets Management -->
@@ -85,7 +84,7 @@
                 height="1.5"
                 position="0 .6 0"
                 material="side: front"
-                networked-video-source
+                networked-video-source="streamName: camera"
               ></a-plane>
               <a-plane
                 color="#FFF"
@@ -94,7 +93,7 @@
                 scale="-1 1 1"
                 position="0 .6 0"
                 material="side: back"
-                networked-video-source
+                networked-video-source="streamName: camera"
               ></a-plane>
             </a-entity>
 
