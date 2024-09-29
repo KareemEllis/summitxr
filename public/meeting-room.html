@@ -39,7 +39,7 @@
       renderer="physicallyCorrectLights:true;colorManagement:true"
       networked-scene="
         connectOnLoad: false;
-        room: ;
+        room: BlueMountain;
         debug: true;
         adapter: easyrtc;
         audio: true;
@@ -239,6 +239,7 @@
     </a-scene>
   </body>
 
+  <!-- Show joystick on mobile devives -->
   <script>
     const rig = document.getElementById('rig');
     const player = document.getElementById('player');
@@ -248,9 +249,8 @@
       rig.removeAttribute('movement-controls');
       player.removeAttribute('look-controls');
     }
-  </script>
 
-  <script>
+
     // Redirect to AR page when model is clicked
     function redirectToAR(element) {
         // Get the model's ID, position, and scale to pass as URL parameters
@@ -272,29 +272,5 @@
         // Redirect to the AR page
         window.open(arUrl, '_blank');
       }
-  </script>
-
-  <script>
-    // Function to extract the room code from the URL
-    function getRoomCodeFromURL() {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get('code'); // Assuming 'code' is the query parameter key
-    }
-
-    // Get the A-Frame scene element
-    const sceneEl = document.querySelector('a-scene');
-
-    // Get the room code from the URL
-    const roomCode = getRoomCodeFromURL();
-
-    if (roomCode) {
-      // Get the current 'networked-scene' attribute values
-      const currentAttributes = sceneEl.getAttribute('networked-scene');
-
-      // Update only the 'room' attribute
-      sceneEl.setAttribute('networked-scene', { ...currentAttributes, room: roomCode });
-    } else {
-      console.error('No room code found in the URL.');
-    }
   </script>
 </html>
