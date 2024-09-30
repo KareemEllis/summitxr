@@ -54,11 +54,8 @@
 
         <!-- 3D Room Model -->
         <a-asset-item id="roomModel" src="./assets/models/room/scene.gltf"></a-asset-item>
-        <!-- Test Generated Models -->
-        <a-asset-item id="generatedModel" src="./assets/models/generated/1727119849671_1727119852912.glb"></a-asset-item>
         <!-- Navigation Mesh -->
         <a-asset-item id="navmesh-model" src="./assets/models/room/navmesh.gltf"></a-asset-item>
-
         <!-- Test asset for 3d model -->
         <a-asset-item id="tree" src="./assets/models/generated/tree.glb"></a-asset-item>
 
@@ -167,8 +164,6 @@
 
       <!-- Entity For 3D Room -->
       <a-entity gltf-model="#roomModel" position="0 0 0" scale="1.5 1 1.5"></a-entity>
-      <!-- Entity For Generated Model Tests -->
-      <a-entity gltf-model="#testGeneratedModel" position="0 2 0" scale=" 1.5 1 1.5"></a-entity>
       <!-- Entity for Navigation Mesh -->
       <a-gltf-model class="navmesh" src="#navmesh-model" visible="false"></a-gltf-model>
 
@@ -239,7 +234,6 @@
     </a-scene>
   </body>
 
-  <!-- Show joystick on mobile devives -->
   <script>
     const rig = document.getElementById('rig');
     const player = document.getElementById('player');
@@ -249,8 +243,9 @@
       rig.removeAttribute('movement-controls');
       player.removeAttribute('look-controls');
     }
+  </script>
 
-
+  <script>
     // Redirect to AR page when model is clicked
     function redirectToAR(element) {
         // Get the model's ID, position, and scale to pass as URL parameters
@@ -259,7 +254,8 @@
 
         console.log('you clicked ', element);
 
-        const modelId = element.id;
+        const modelId = element.getAttribute('model-id');
+        console.log('ModelId', modelId)
         if (element.getAttribute('scale') !== null) {
           scale = element.getAttribute('scale');
         } else {

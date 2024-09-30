@@ -128,10 +128,11 @@ const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true)
 
   console.log("ADDING AT POSITION: ", position)
 
-  modelEntity.setAttribute('id', modelUrlWithoutExtension) // Add unique id to the entity
+  // modelEntity.setAttribute('id', modelUrlWithoutExtension) // Add unique id to the entity
   modelEntity.setAttribute('position', `${position.x} ${position.y} ${position.z}`); // Set position
   modelEntity.setAttribute('gltf-model', modelUrl); // Add the model URL
   modelEntity.setAttribute('networked', 'template:#new-model-template'); // Sync with other users
+  modelEntity.setAttribute('model-id', modelUrlWithoutExtension)
 
   scene.appendChild(modelEntity);
 };
