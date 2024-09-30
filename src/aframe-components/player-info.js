@@ -58,6 +58,7 @@ NAF.schemas.getComponents = (template) => {
           requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5),
         },
         'gltf-model',
+        'model-id',
       ],
     });
   }
