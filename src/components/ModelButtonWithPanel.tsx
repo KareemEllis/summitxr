@@ -17,6 +17,8 @@ const [descGenerationLoading, setDescGenerationLoading] = createSignal(false);
 const [imageGenerationLoading, setImageGenerationLoading] = createSignal(false);
 const [applyPhysicsImage, setApplyPhysicsImage] = createSignal(false);
 const [applyPhysicsDescription, setApplyPhysicsDescription] = createSignal(false);
+const [selectedShapeImage, setSelectedShapeImage] = createSignal('auto');
+const [selectedShapeDescription, setSelectedShapeDescription] = createSignal('auto');
 // Toggle visibility of the model panel
 export const [showModelPanel, setShowModelPanel] = createSignal(false);
 
@@ -61,10 +63,12 @@ const handleImageUploadSubmit = async () => {
       };
       const modelPosition = calcSpawnPosition(playerPosition, playerRotation);
       const sourceFlag = 'image';
-      addModelToScene(modelPath, modelPosition, true, sourceFlag);
+      addModelToScene(modelPath, modelPosition, true, sourceFlag, selectedShapeImage());
       setImageGenerationLoading(false);
       setApplyPhysicsDescription(false);
       setApplyPhysicsImage(false);
+      setSelectedShapeDescription('auto');
+      setSelectedShapeImage('auto');
     } catch (error) {
       console.error('Error uploading image:', error);
       setImageGenerationLoading(false);
@@ -107,10 +111,12 @@ const handleDescriptionSubmit = async () => {
 
       const modelPosition = calcSpawnPosition(playerPosition, playerRotation);
       const sourceFlag = 'desc';
-      addModelToScene(modelPath, modelPosition, true, sourceFlag);
+      addModelToScene(modelPath, modelPosition, true, sourceFlag, selectedShapeDescription());
       setDescGenerationLoading(false);
       setApplyPhysicsDescription(false);
       setApplyPhysicsImage(false);
+      setSelectedShapeDescription('auto');
+      setSelectedShapeImage('auto');
     } catch (error) {
       console.error('Error generating model from description:', error);
       setDescGenerationLoading(false);
@@ -119,7 +125,7 @@ const handleDescriptionSubmit = async () => {
   }
 };
 
-const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true, sourceFlag: string) => {
+const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true, sourceFlag: string, shape: string) => {
   const scene = document.querySelector('a-scene');
   const modelEntity = document.createElement('a-entity');
   console.log(typeof modelEntity);
@@ -147,7 +153,7 @@ const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true,
   const applyPhysics = imageRadioSync || descRadioSync;
   if (applyPhysics) {
     modelEntity.addEventListener('model-loaded', () => {
-      applyPhysicsToModel(modelEntity); // Apply physics using the helper function
+      applyPhysicsToModel(modelEntity, shape); // Apply physics using the helper function
     });
   }
   scene.appendChild(modelEntity);
@@ -225,6 +231,19 @@ export const ModelButtonWithPanel = () => {
                   onInput={(e) => setApplyPhysicsImage(e.target.checked)}
                 />
                 <span class="text-sm">Apply physics</span>
+                {/* Conditionally show the select input for shape when checkbox is checked */}
+                {applyPhysicsImage() && (
+                  <select
+                    class="form-select ml-2"
+                    value={selectedShapeImage()}
+                    onChange={(e) => setSelectedShapeImage(e.target.value)}
+                  >
+                    <option value="auto">Default Shape</option>
+                    <option value="sphere">Sphere</option>
+                    <option value="box">Box</option>
+                    <option value="cylinder">Cylinder</option>
+                  </select>
+                )}
               </label>
               <button class="btn btn-primary w-full" onClick={handleImageUploadSubmit}>
                 <Show when={!imageGenerationLoading()}>Submit Image</Show>
@@ -254,6 +273,19 @@ export const ModelButtonWithPanel = () => {
                   onInput={(e) => setApplyPhysicsDescription(e.target.checked)}
                 />
                 <span class="text-sm">Apply physics</span>
+                {/* Conditionally show the select input for shape when checkbox is checked */}
+                {applyPhysicsDescription() && (
+                  <select
+                    class="form-select ml-2"
+                    value={selectedShapeImage()}
+                    onChange={(e) => setSelectedShapeImage(e.target.value)}
+                  >
+                    <option value="auto">Default Shape</option>
+                    <option value="sphere">Sphere</option>
+                    <option value="box">Box</option>
+                    <option value="cylinder">Cylinder</option>
+                  </select>
+                )}
               </label>
               <button class="btn btn-primary w-full" onClick={handleDescriptionSubmit}>
                 <Show when={!descGenerationLoading()}>Submit Description</Show>
