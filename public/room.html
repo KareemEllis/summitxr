@@ -233,8 +233,10 @@
         rounded="true"
         radius="50"
       >
-        <!-- Text on the box -->
-        <a-text id="ar-box-text" value="See in AR" color="#000000" align="center" scale="0.5 0.5 0.5" ></a-text>
+        <!-- Front Text on the box -->
+        <a-text id="ar-box-text" value="See in AR" color="#000000" align="center" scale="0.5 0.5 0.5" side="double" ></a-text>
+        <!-- Back Text on the box (flipped) -->
+        <a-text id="ar-box-text-back" value="See in AR" color="#000000" align="center" scale="0.5 0.5 0.5" rotation="0 180 0" side="double"></a-text>
       </a-box>
 
       <!--  -->
