@@ -15,8 +15,8 @@ const [uploadedFile, setUploadedFile] = createSignal<File | null>(null); // Sign
 
 const [descGenerationLoading, setDescGenerationLoading] = createSignal(false);
 const [imageGenerationLoading, setImageGenerationLoading] = createSignal(false);
-const [applyPhysics, setApplyPhysics] = createSignal(false);
-
+const [applyPhysicsImage, setApplyPhysicsImage] = createSignal(false);
+const [applyPhysicsDescription, setApplyPhysicsDescription] = createSignal(false);
 // Toggle visibility of the model panel
 export const [showModelPanel, setShowModelPanel] = createSignal(false);
 
@@ -59,11 +59,12 @@ const handleImageUploadSubmit = async () => {
         y: parseFloat(playerRotationAttr.y),
         z: parseFloat(playerRotationAttr.z),
       };
-
       const modelPosition = calcSpawnPosition(playerPosition, playerRotation);
-
-      addModelToScene(modelPath, modelPosition);
+      const sourceFlag = 'image';
+      addModelToScene(modelPath, modelPosition, true, sourceFlag);
       setImageGenerationLoading(false);
+      setApplyPhysicsDescription(false);
+      setApplyPhysicsImage(false);
     } catch (error) {
       console.error('Error uploading image:', error);
       setImageGenerationLoading(false);
@@ -105,19 +106,20 @@ const handleDescriptionSubmit = async () => {
       };
 
       const modelPosition = calcSpawnPosition(playerPosition, playerRotation);
-
-      addModelToScene(modelPath, modelPosition);
+      const sourceFlag = 'desc';
+      addModelToScene(modelPath, modelPosition, true, sourceFlag);
       setDescGenerationLoading(false);
+      setApplyPhysicsDescription(false);
+      setApplyPhysicsImage(false);
     } catch (error) {
       console.error('Error generating model from description:', error);
       setDescGenerationLoading(false);
     }
-
     setDescription(''); // Reset input after submission
   }
 };
 
-const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true) => {
+const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true, sourceFlag: string) => {
   const scene = document.querySelector('a-scene');
   const modelEntity = document.createElement('a-entity');
   console.log(typeof modelEntity);
@@ -135,7 +137,15 @@ const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true)
   modelEntity.setAttribute('gltf-model', modelUrl); // Add the model URL
   modelEntity.setAttribute('networked', 'template:#new-model-template'); // Sync with other users
   modelEntity.setAttribute('model-id', modelUrlWithoutExtension);
-  if (applyPhysics()) {
+  // Logic to ensure that physics is only applied when correspoding radio button is checked
+  // A user should not be able to check the radio button of the description upload, yet still apply physics to the image upload
+  // The following 5 lines prevent this from happening
+  const imageUpload = sourceFlag === 'image' ? true : false;
+  const descUpload = sourceFlag === 'desc' ? true : false;
+  const imageRadioSync = applyPhysicsImage() && imageUpload;
+  const descRadioSync = applyPhysicsDescription() && descUpload;
+  const applyPhysics = imageRadioSync || descRadioSync;
+  if (applyPhysics) {
     modelEntity.addEventListener('model-loaded', () => {
       applyPhysicsToModel(modelEntity); // Apply physics using the helper function
     });
@@ -208,7 +218,12 @@ export const ModelButtonWithPanel = () => {
                 class="form-input w-full rounded-lg px-4 py-2 text-sm"
               />
               <label class="flex items-center space-x-2">
-                <input type="checkbox" id="apply-physics-upload" onInput={(e) => setApplyPhysics(e.target.checked)} />
+                <input
+                  type="checkbox"
+                  id="apply-physics-upload"
+                  checked={applyPhysicsImage()} // Sync the radio button with the signal
+                  onInput={(e) => setApplyPhysicsImage(e.target.checked)}
+                />
                 <span class="text-sm">Apply physics</span>
               </label>
               <button class="btn btn-primary w-full" onClick={handleImageUploadSubmit}>
@@ -232,7 +247,12 @@ export const ModelButtonWithPanel = () => {
                 class="form-textarea max-h-20 w-full rounded-lg px-4 py-2 text-sm"
               />
               <label class="flex items-center space-x-2">
-                <input type="checkbox" id="apply-physics-upload" onInput={(e) => setApplyPhysics(e.target.checked)} />
+                <input
+                  type="checkbox"
+                  id="apply-physics-upload"
+                  checked={applyPhysicsDescription()} // Sync the radio button with the signal
+                  onInput={(e) => setApplyPhysicsDescription(e.target.checked)}
+                />
                 <span class="text-sm">Apply physics</span>
               </label>
               <button class="btn btn-primary w-full" onClick={handleDescriptionSubmit}>
