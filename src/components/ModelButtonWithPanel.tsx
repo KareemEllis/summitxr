@@ -120,6 +120,7 @@ const handleDescriptionSubmit = async () => {
 const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true) => {
   const scene = document.querySelector('a-scene');
   const modelEntity = document.createElement('a-entity');
+  console.log(typeof modelEntity);
 
   // Gets the finame from modelUrl, '/assets/models/generated/tree.glb' => 'tree.glb'
   const filename = modelUrl.split('/').pop();
@@ -134,23 +135,27 @@ const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true)
   modelEntity.setAttribute('gltf-model', modelUrl); // Add the model URL
   modelEntity.setAttribute('networked', 'template:#new-model-template'); // Sync with other users
   modelEntity.setAttribute('model-id', modelUrlWithoutExtension);
-
-  // Wait for the model to load before applying physics and adding grabbable interaction
-  modelEntity.addEventListener('model-loaded', () => {
-    // Apply dynamic-body for physics
-    modelEntity.setAttribute('dynamic-body', 'shape: auto; mass: 5');
-
-    // Disable physics on grab, re-enable on release
-    modelEntity.addEventListener('grab-start', () => {
-      modelEntity.removeAttribute('dynamic-body'); // Disable physics during grab
+  if (applyPhysics()) {
+    modelEntity.addEventListener('model-loaded', () => {
+      applyPhysicsToModel(modelEntity); // Apply physics using the helper function
     });
-
-    modelEntity.addEventListener('grab-end', () => {
-      modelEntity.setAttribute('dynamic-body', 'shape: auto; mass: 5'); // Re-enable physics after release
-    });
-  });
-  console.log(modelEntity);
+  }
   scene.appendChild(modelEntity);
+};
+
+//Future proofing by adding a shape and mass parameter to the function
+const applyPhysicsToModel = (modelEntity: typeof AFRAME.AEntity, shape: string = 'sphere', mass: string = '5') => {
+  // Apply dynamic-body for physics
+  modelEntity.setAttribute('dynamic-body', `shape: ${shape}; mass: ${mass}`);
+
+  // Disable physics on grab, re-enable on release
+  modelEntity.addEventListener('grab-start', () => {
+    modelEntity.removeAttribute('dynamic-body'); // Disable physics during grab
+  });
+
+  modelEntity.addEventListener('grab-end', () => {
+    modelEntity.setAttribute('dynamic-body', `shape: ${shape}; mass: ${mass}`); // Re-enable physics after release
+  });
 };
 
 // The component for the "Add Model" button and the panel
@@ -203,7 +208,7 @@ export const ModelButtonWithPanel = () => {
                 class="form-input w-full rounded-lg px-4 py-2 text-sm"
               />
               <label class="flex items-center space-x-2">
-                <input type="checkbox" id="apply-physics-upload" />
+                <input type="checkbox" id="apply-physics-upload" onInput={(e) => setApplyPhysics(e.target.checked)} />
                 <span class="text-sm">Apply physics</span>
               </label>
               <button class="btn btn-primary w-full" onClick={handleImageUploadSubmit}>
@@ -227,7 +232,7 @@ export const ModelButtonWithPanel = () => {
                 class="form-textarea max-h-20 w-full rounded-lg px-4 py-2 text-sm"
               />
               <label class="flex items-center space-x-2">
-                <input type="checkbox" id="apply-physics-upload" />
+                <input type="checkbox" id="apply-physics-upload" onInput={(e) => setApplyPhysics(e.target.checked)} />
                 <span class="text-sm">Apply physics</span>
               </label>
               <button class="btn btn-primary w-full" onClick={handleDescriptionSubmit}>
