@@ -30,7 +30,7 @@
 
     <!-- --------------------------------------------------- -->
     <!-- COMMENT OUT THIS LINE TO DIABLE UI WHILE DEVELOPING -->
-    <!-- <script defer src="/dist/ui.js"></script> -->
+    <script defer src="/dist/ui.js"></script>
     <!-- --------------------------------------------------- -->
 
     <!-- A-Frame Physics System -->
@@ -47,22 +47,23 @@
         adapter: easyrtc;
         audio: true;
       "
-      physics="debug: true"
+      physics="gravity: -9.8;debug: false;"
     >
       <a-box navmesh-constraint="navmesh:.navmesh" dynamic-body="shape:box;mass:1" position="0 3 6" color="red"></a-box>
       <!-- Invisible static plane, aligned with the room model's floor -->
+       <!-- If the objects get stuck in the floor then try increasing this planes height a little -->
       <a-plane
-        visible="false"
-        position="0 -0.1 0"
+        visible="true"
+        position="0 -0.2 0"
         rotation="-90 0 0"
         width="15a"
         height="17"
-        static-bodys
+        static-body
         color="green"
       ></a-plane>
       <!-- Collision plane for back wall -->
       <a-plane
-        visible="true"
+        visible="false"
         position="0 1 -5.3"
         rotation="0 0 0"
         width="12"
@@ -72,7 +73,7 @@
       ></a-plane>
       <!-- Collision panes for drawer object at back wall -->
       <a-plane
-        visible="true"
+        visible="false"
         position="0 1 -5.3"
         rotation="-90 0 180"
         width="3"
@@ -81,7 +82,7 @@
         color="green"
       ></a-plane>
       <a-plane
-        visible="true"
+        visible="false"
         position="1.55 0.5 -5"
         rotation="0 90 180"
         width="0.87"
@@ -90,7 +91,7 @@
         color="green"
       ></a-plane>
       <a-plane
-        visible="true"
+        visible="false"
         position="0 0.5 -4.5"
         rotation="0 0 180"
         width="3.05"
@@ -99,7 +100,7 @@
         color="green"
       ></a-plane>
       <a-plane
-        visible="true"
+        visible="false"
         position="-1.56 0.5 -5"
         rotation="0 90 180"
         width="0.87"
