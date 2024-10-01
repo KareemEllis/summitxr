@@ -45,6 +45,24 @@ NAF.schemas.getComponents = (template) => {
     });
   }
 
+  if (!NAF.schemas.hasTemplate('#new-model-template')) {
+    NAF.schemas.add({
+      template: '#new-model-template',
+      components: [
+        {
+          component: 'position',
+          requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.001),
+        },
+        {
+          component: 'rotation',
+          requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5),
+        },
+        'gltf-model',
+        'model-id',
+      ],
+    });
+  }
+
   const components = NAF.schemas.getComponentsOriginal(template);
   return components;
 };

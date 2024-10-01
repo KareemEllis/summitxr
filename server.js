@@ -6,8 +6,8 @@ const socketIo = require("socket.io"); // web socket external module
 const easyrtc = require("open-easyrtc"); // EasyRTC external module
 
 // Import API routes
-const generateFromImageRoute = require('./routes/generateFromImage');
-const generateFromTextRoute = require('./routes/generateFromText');
+const generateFromImageRoute = require('./routes/generateFromImage.js');
+const generateFromTextRoute = require('./routes/generateFromText.js');
 
 // Set process name
 process.title = "networked-aframe-server";

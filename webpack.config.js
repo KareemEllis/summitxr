@@ -5,6 +5,7 @@ module.exports = {
     components: './src/components.js',
     'ui-components': './src/ui-components.tsx',
     ui: './src/ui.tsx',
+    tailwind: './src/import-tailwind.js',
   },
   output: {
     libraryTarget: 'umd',

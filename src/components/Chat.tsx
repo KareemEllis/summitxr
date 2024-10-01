@@ -4,7 +4,7 @@ import { createStore } from 'solid-js/store';
 import { Portal } from 'solid-js/web';
 // @ts-ignore
 import Linkify from 'solid-media-linkify';
-import { BsChatDots, BsSend } from 'solid-icons/bs';
+import { BsChatDots, BsSendFill } from 'solid-icons/bs';
 import { VsChromeClose } from 'solid-icons/vs';
 import { username } from './UsernameInput';
 
@@ -85,8 +85,11 @@ export const ChatButton = () => {
     <>
       <button
         type="button"
-        class="btn-secondary btn-rounded relative"
-        classList={{ active: showChatPanel() }}
+        class="btn btn-circle btn-xs w-10 h-10 border shadow-md relative"
+        classList={{
+          "btn-neutral": showChatPanel(),
+          "btn-active": showChatPanel()
+        }}
         onClick={() => {
           setShowChatPanel((v) => !v);
           if (showChatPanel()) {
@@ -117,27 +120,16 @@ export const ChatButton = () => {
 export const ChatMessageRepresentation: Component<ChatMessageProps> = (props) => {
   return (
     <div
-      class="pointer-events-auto mb-2 mr-2 flex flex-col"
+      class="chat pointer-events-auto"
       classList={{
-        // display to the right when the message is from the current user
-        'items-end': props.entry.fromClientId === NAF.clientId,
-        // display to the left when the message is not from the current user
-        'items-start': props.entry.fromClientId !== NAF.clientId,
+        "chat-end": props.entry.fromClientId === NAF.clientId,
+        "chat-start": props.entry.fromClientId !== NAF.clientId,
       }}
     >
-      {/* Only show sender's name when the message is not from the current user */}
       <Show when={props.entry.fromClientId !== NAF.clientId}>
-        <span class="text-sm font-normal">{props.entry.name}</span>
+        <div class="chat-header">{props.entry.name}</div>
       </Show>
-      <div
-        class="whitespace-pre-wrap rounded-xl p-2 text-base font-normal text-gray-900"
-        classList={{
-          // Background Color for message from current user
-          'bg-sky-200': props.entry.fromClientId === NAF.clientId,
-          // Background Color for message from other users
-          'bg-gray-200': props.entry.fromClientId !== NAF.clientId,
-        }}
-      >
+      <div class="chat-bubble whitespace-pre-wrap">
         <Linkify text={props.entry.text} guessType={false} emoji={true} trim={false} scroll={props.scroll} />
       </div>
     </div>
@@ -206,17 +198,18 @@ export const ChatPanel: Component<ChatPanelProps> = (props) => {
     <Show when={showChatPanel()}>
       <div class="bg-panel absolute bottom-16 left-2 right-2 top-16 z-10 flex max-w-full flex-col justify-between rounded-lg p-4 shadow-lg ring-1 ring-black ring-opacity-5 sm:left-auto sm:w-screen sm:max-w-sm">
         <div class="flex justify-end space-x-2 pb-2">
-          <button class="btn-secondary btn-rounded" type="button" title="Close" onClick={() => setShowChatPanel(false)}>
+          <button class="btn btn-circle btn-sm btn-neutral" type="button" title="Close" onClick={() => setShowChatPanel(false)}>
             <VsChromeClose size={16} />
           </button>
         </div>
+
         <div class="flex grow flex-col overflow-y-auto">
           <For each={messages.entries}>
             {(entry) => {
               return (
                 <>
                   <Show when={messages.firstUnreadKey === entry.key}>
-                    <div class="relative w-full">
+                    <div class="relative w-full mb-4">
                       <div class="absolute w-full text-center text-sm font-bold text-red-600">unread from here</div>
                     </div>
                   </Show>
@@ -226,6 +219,7 @@ export const ChatPanel: Component<ChatPanelProps> = (props) => {
             }}
           </For>
           <div ref={messagesEndRef}></div>
+
         </div>
 
         {/* Chat Message Input */}
@@ -252,7 +246,7 @@ export const ChatPanel: Component<ChatPanelProps> = (props) => {
               title="Send message"
               disabled={pendingMessage().length === 0}
             >
-              <BsSend size={24} />
+              <BsSendFill size={24} />
             </button>
           </div>
         </form>

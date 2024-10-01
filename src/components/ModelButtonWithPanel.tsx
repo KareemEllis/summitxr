@@ -1,3 +1,4 @@
+/* global NAF */
 import { createSignal, Show } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import { BsBox } from 'solid-icons/bs';
@@ -6,16 +7,29 @@ import { VsChromeClose } from 'solid-icons/vs';
 import { setShowChatPanel } from './Chat';
 import { setShowUsersPanel } from './UsersButton';
 
+import calcSpawnPosition from '../calculate-spawn-position';
+
 // Signals to store form input values
 const [description, setDescription] = createSignal('');
 const [uploadedFile, setUploadedFile] = createSignal<File | null>(null); // Signal to store uploaded file
 
+const [descGenerationLoading, setDescGenerationLoading] = createSignal(false);
+const [imageGenerationLoading, setImageGenerationLoading] = createSignal(false);
+
 // Toggle visibility of the model panel
 export const [showModelPanel, setShowModelPanel] = createSignal(false);
+
+interface Coords {
+  x: number,
+  y: number,
+  z: number,
+}
 
 // Handler for submitting the uploaded image
 const handleImageUploadSubmit = async () => {
   if (uploadedFile()) {
+    setImageGenerationLoading(true)
+
     // Send the uploaded file to the server for model generation
     const formData = new FormData();
     formData.append('image', uploadedFile()!);
@@ -28,10 +42,30 @@ const handleImageUploadSubmit = async () => {
       });
 
       const { modelPath } = await response.json();
-      console.log('Model generated:', modelPath);
-      // addModelToScene(modelPath); // Assuming the API returns the path to the generated 3D model
+      console.log('Model generated (CLIENT):', modelPath);
+
+      // Get the player's position and rotation
+      const playerPositionAttr = document.querySelector('#rig').getAttribute('position');
+      const playerRotationAttr = document.querySelector('#player').getAttribute('rotation');
+      // Convert the position and rotation strings to numeric values
+      const playerPosition = {
+        x: parseFloat(playerPositionAttr.x),
+        y: parseFloat(playerPositionAttr.y),
+        z: parseFloat(playerPositionAttr.z),
+      };
+      const playerRotation = {
+        x: parseFloat(playerRotationAttr.x),
+        y: parseFloat(playerRotationAttr.y),
+        z: parseFloat(playerRotationAttr.z),
+      };
+
+      const modelPosition = calcSpawnPosition(playerPosition, playerRotation)
+
+      addModelToScene(modelPath, modelPosition);
+      setImageGenerationLoading(false)
     } catch (error) {
       console.error('Error uploading image:', error);
+      setImageGenerationLoading(false)
     }
   }
 };
@@ -40,6 +74,8 @@ const handleImageUploadSubmit = async () => {
 const handleDescriptionSubmit = async () => {
   if (description()) {
     try {
+      setDescGenerationLoading(true)
+
       // Simulate API call to generate model from description
       const response = await fetch('/api/model/generate-from-text', {
         method: 'POST',
@@ -50,22 +86,54 @@ const handleDescriptionSubmit = async () => {
       });
 
       const { modelPath } = await response.json();
-      console.log('Model generated:', modelPath);
-      // addModelToScene(modelPath); // Assuming the API returns a model URL
+      console.log('Model generated (CLIENT):', modelPath);
+
+      // Get the player's position and rotation
+      const playerPositionAttr = document.querySelector('#rig').getAttribute('position');
+      const playerRotationAttr = document.querySelector('#player').getAttribute('rotation');
+      // Convert the position and rotation strings to numeric values
+      const playerPosition = {
+        x: parseFloat(playerPositionAttr.x),
+        y: parseFloat(playerPositionAttr.y),
+        z: parseFloat(playerPositionAttr.z),
+      };
+      const playerRotation = {
+        x: parseFloat(playerRotationAttr.x),
+        y: parseFloat(playerRotationAttr.y),
+        z: parseFloat(playerRotationAttr.z),
+      };
+
+      const modelPosition = calcSpawnPosition(playerPosition, playerRotation)
+
+      addModelToScene(modelPath, modelPosition);
+      setDescGenerationLoading(false)
     } catch (error) {
       console.error('Error generating model from description:', error);
+      setDescGenerationLoading(false)
     }
 
     setDescription(''); // Reset input after submission
   }
 };
 
-// Function to add a 3D model into the A-Frame scene
-const addModelToScene = (modelUrl: string) => {
+const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true) => {
   const scene = document.querySelector('a-scene');
   const modelEntity = document.createElement('a-entity');
-  modelEntity.setAttribute('gltf-model', modelUrl); // Assuming it's a glTF format
-  modelEntity.setAttribute('position', '0 1 -3'); // Example position
+
+  // Gets the finame from modelUrl, '/assets/models/generated/tree.glb' => 'tree.glb'
+  const filename = modelUrl.split('/').pop();
+
+  // Removes the extension for example, 'tree.glb' => 'tree'
+  const modelUrlWithoutExtension = filename.split('.').slice(0, -1).join('.');
+
+  console.log("ADDING AT POSITION: ", position)
+
+  // modelEntity.setAttribute('id', modelUrlWithoutExtension) // Add unique id to the entity
+  modelEntity.setAttribute('position', `${position.x} ${position.y} ${position.z}`); // Set position
+  modelEntity.setAttribute('gltf-model', modelUrl); // Add the model URL
+  modelEntity.setAttribute('networked', 'template:#new-model-template'); // Sync with other users
+  modelEntity.setAttribute('model-id', modelUrlWithoutExtension)
+
   scene.appendChild(modelEntity);
 };
 
@@ -76,8 +144,11 @@ export const ModelButtonWithPanel = () => {
       {/* Button to open the panel */}
       <button
         type="button"
-        class="btn-secondary btn-rounded"
-        classList={{ active: showModelPanel() }}
+        class="btn btn-circle btn-xs w-10 h-10 border shadow-md"
+        classList={{
+          "btn-neutral": showModelPanel(),
+          "btn-active": showModelPanel()
+        }}
         onClick={() => {
           setShowModelPanel((v) => !v)
           if (showModelPanel()) {
@@ -97,7 +168,7 @@ export const ModelButtonWithPanel = () => {
             {/* Close Button */}
             <div class="flex justify-end space-x-2 pb-2">
               <button
-                class="btn-secondary btn-rounded"
+                class="btn btn-circle btn-sm btn-neutral"
                 type="button"
                 title="Close"
                 onClick={() => setShowModelPanel(false)}
@@ -116,8 +187,13 @@ export const ModelButtonWithPanel = () => {
                 onInput={(e) => setUploadedFile(e.target.files[0])}
                 class="form-input w-full px-4 py-2 text-sm rounded-lg"
               />
-              <button class="btn-secondary w-full" onClick={handleImageUploadSubmit}>
-                Submit Image
+              <button class="btn btn-primary w-full" onClick={handleImageUploadSubmit}>
+                <Show when={!imageGenerationLoading()}>
+                  Submit Image
+                </Show>
+                <Show when={imageGenerationLoading()}>
+                  <span class="loading loading-spinner"></span>
+                </Show>
               </button>
             </div>
 
@@ -132,8 +208,13 @@ export const ModelButtonWithPanel = () => {
                 placeholder="Example: A soccer ball"
                 class="form-textarea w-full px-4 py-2 text-sm rounded-lg max-h-20"
               />
-              <button class="btn-secondary w-full" onClick={handleDescriptionSubmit}>
-                Submit Description
+              <button class="btn btn-primary w-full" onClick={handleDescriptionSubmit}>
+                <Show when={!descGenerationLoading()}>
+                  Submit Description
+                </Show>
+                <Show when={descGenerationLoading()}>
+                  <span class="loading loading-spinner"></span>
+                </Show>
               </button>
             </div>
           </div>

@@ -89,8 +89,11 @@ export const MicButton: Component<Props> = (props) => {
   return (
     <Show when={audioEnabled()}>
       <button
-        class="btn-secondary btn-rounded"
-        classList={{ active: !iconMuted() }}
+        class="btn btn-circle btn-xs w-10 h-10 border shadow-md"
+        classList={{
+          "btn-neutral": !iconMuted(),
+          "btn-active": !iconMuted()
+        }}
         onClick={() => {
           setMicEnabled((enabled) => !enabled);
           // @ts-ignore

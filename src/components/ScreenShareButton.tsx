@@ -2,6 +2,8 @@
 import { Component, createEffect, createMemo, createSignal, onCleanup, onMount, Show, untrack } from 'solid-js';
 import { TbScreenShare, TbScreenShareOff } from 'solid-icons/tb';
 
+import calcSpawnPosition from '../calculate-spawn-position';
+
 export const [screenEnabled, setScreenEnabled] = createSignal(false);
 const [isConnected, setIsConnected] = createSignal(false);
 
@@ -14,13 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const sceneEl = document.querySelector('a-scene');
 
   const sceneLoaded = () => {
-    // @ts-ignore
-    const settings = sceneEl?.getAttribute('networked-scene');
-    // @ts-ignore
-    const adapter = settings.adapter;
-    if (adapter !== 'easyrtc' && adapter !== 'janus') return;
-    // @ts-ignore
-    if (adapter === 'easyrtc' && !settings.video) return;
+    // // @ts-ignore
+    // const settings = sceneEl?.getAttribute('networked-scene');
+    // // @ts-ignore
+    // const adapter = settings.adapter;
+    // if (adapter !== 'easyrtc' && adapter !== 'janus') return;
+    // // @ts-ignore
+    // if (adapter === 'easyrtc' && !settings.video) return;
 
     setScreenShareAvailable(true);
   };
@@ -91,19 +93,12 @@ export const ScreenShareButton: Component<Props> = (props) => {
         const playerPosition = rig.getAttribute('position');
         const playerRotation = player.getAttribute('rotation');
 
-        // Calculate the screen position in front of the player
-        const offsetDistance = 2; // Distance in front of the player
-        // @ts-ignore
-        const radY = playerRotation.y * (Math.PI / 180); // Convert Y rotation to radians
+        console.log('Position')
+        console.log(playerPosition)
+        console.log('Rotation')
+        console.log(playerRotation)
 
-        const screenPosition = {
-          // @ts-ignore
-          x: playerPosition.x + offsetDistance * Math.sin(radY),
-          // @ts-ignore
-          y: playerPosition.y + 1.5, // Adjust to place it at eye level
-          // @ts-ignore
-          z: playerPosition.z + offsetDistance * Math.cos(radY),
-        };
+        const screenPosition = calcSpawnPosition(playerPosition, playerRotation)
 
         // Create the screen entity and set its attributes
         const screen = document.createElement('a-entity');
@@ -206,11 +201,10 @@ export const ScreenShareButton: Component<Props> = (props) => {
     if (isConnected()) {
       if (!NAF.connection.adapter?.addLocalMediaStream) {
         console.error(
-          `The specified NAF adapter doesn't have the removeLocalMediaStream feature, please be sure you have networked-scene="adapter:easyrtc;video:true" options and networked-video-source="streamName: screen" on your screen display template.`,
+          `The specified NAF adapter doesn't have the removeLocalMediaStream feature.`,
         );
         return;
       }
-      // NAF.connection.adapter?.addLocalMediaStream(stream, 'screen'); Not sure if this is necessary like the camera component
       toggleScreenDisplay(enabled);
     }
   });
@@ -218,8 +212,11 @@ export const ScreenShareButton: Component<Props> = (props) => {
   return (
       <Show when={screenShareAvailable()}>
         <button
-          class="btn-secondary btn-rounded"
-          classList={{ active: !iconOff() }}
+          class="btn btn-circle btn-xs w-10 h-10 border shadow-md"
+          classList={{
+            "btn-neutral": !iconOff(),
+            "btn-active": !iconOff()
+          }}
           onClick={() => {
             setScreenEnabled((enabled) => !enabled);
             // @ts-ignore
