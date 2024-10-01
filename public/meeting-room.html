@@ -32,6 +32,9 @@
     <!-- COMMENT OUT THIS LINE TO DIABLE UI WHILE DEVELOPING -->
     <script defer src="/dist/ui.js"></script>
     <!-- --------------------------------------------------- -->
+
+    <!-- A-Frame Physics System -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
   </head>
 
   <body>
@@ -44,7 +47,19 @@
         adapter: easyrtc;
         audio: true;
       "
+      physics="debug: true"
     >
+      <a-box navmesh-constraint="navmesh:.navmesh" dynamic-body="shape:box;mass:1" position="0 3 6" color="red"></a-box>
+      <!-- Invisible static plane, aligned with the room model's floor -->
+      <a-plane
+        visible="false"
+        position="0 -0.1 0"
+        rotation="-90 0 0"
+        width="15"
+        height="17"
+        static-body
+        color="green"
+      ></a-plane>
       <!-- Assets Management -->
       <a-assets>
         <!-- Player Rig -->
@@ -60,14 +75,8 @@
         <a-asset-item id="tree" src="./assets/models/generated/tree.glb"></a-asset-item>
 
         <template id="new-model-template">
-          <a-entity 
-            mixin="grab-move" 
-            class="clickable"
-            onclick="redirectToAR(this)"
-          ></a-entity>
+          <a-entity mixin="grab-move" class="clickable" onclick="redirectToAR(this)"></a-entity>
         </template>
-
-
 
         <!-- Player -->
         <template id="avatar-template">
@@ -221,16 +230,16 @@
 
       <!-- Each 3d entity needs to have clickable class and the onclick here -->
 
-      <a-entity 
+      <a-entity
         id="tree"
         mixin="grab-move"
-        gltf-model="#tree" 
+        gltf-model="#tree"
         position="0 1 0"
         scale="0.1 0.1 0.1"
         class="clickable"
-        onclick="redirectToAR(this)">
+        onclick="redirectToAR(this)"
+      >
       </a-entity>
-      
     </a-scene>
   </body>
 
@@ -248,25 +257,25 @@
   <script>
     // Redirect to AR page when model is clicked
     function redirectToAR(element) {
-        // Get the model's ID, position, and scale to pass as URL parameters
+      // Get the model's ID, position, and scale to pass as URL parameters
 
-        defaultScale = {x: 0.1, y: 0.1, z: 0.1};
+      defaultScale = { x: 0.1, y: 0.1, z: 0.1 };
 
-        console.log('you clicked ', element);
+      console.log('you clicked ', element);
 
-        const modelId = element.getAttribute('model-id');
-        console.log('ModelId', modelId)
-        if (element.getAttribute('scale') !== null) {
-          scale = element.getAttribute('scale');
-        } else {
-          scale = defaultScale;
-        }
-        
-        // URL to ar page
-        const arUrl = `ar-display.html?modelId=${modelId}&scale=${scale.x},${scale.y},${scale.z}`;
-        
-        // Redirect to the AR page
-        window.open(arUrl, '_blank');
+      const modelId = element.getAttribute('model-id');
+      console.log('ModelId', modelId);
+      if (element.getAttribute('scale') !== null) {
+        scale = element.getAttribute('scale');
+      } else {
+        scale = defaultScale;
       }
+
+      // URL to ar page
+      const arUrl = `ar-display.html?modelId=${modelId}&scale=${scale.x},${scale.y},${scale.z}`;
+
+      // Redirect to the AR page
+      window.open(arUrl, '_blank');
+    }
   </script>
 </html>

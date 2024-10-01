@@ -15,25 +15,26 @@ const [uploadedFile, setUploadedFile] = createSignal<File | null>(null); // Sign
 
 const [descGenerationLoading, setDescGenerationLoading] = createSignal(false);
 const [imageGenerationLoading, setImageGenerationLoading] = createSignal(false);
+const [applyPhysics, setApplyPhysics] = createSignal(false);
 
 // Toggle visibility of the model panel
 export const [showModelPanel, setShowModelPanel] = createSignal(false);
 
 interface Coords {
-  x: number,
-  y: number,
-  z: number,
+  x: number;
+  y: number;
+  z: number;
 }
 
 // Handler for submitting the uploaded image
 const handleImageUploadSubmit = async () => {
   if (uploadedFile()) {
-    setImageGenerationLoading(true)
+    setImageGenerationLoading(true);
 
     // Send the uploaded file to the server for model generation
     const formData = new FormData();
     formData.append('image', uploadedFile()!);
-    console.log(uploadedFile())
+    console.log(uploadedFile());
 
     try {
       const response = await fetch('/api/model/generate-from-image', {
@@ -59,13 +60,13 @@ const handleImageUploadSubmit = async () => {
         z: parseFloat(playerRotationAttr.z),
       };
 
-      const modelPosition = calcSpawnPosition(playerPosition, playerRotation)
+      const modelPosition = calcSpawnPosition(playerPosition, playerRotation);
 
       addModelToScene(modelPath, modelPosition);
-      setImageGenerationLoading(false)
+      setImageGenerationLoading(false);
     } catch (error) {
       console.error('Error uploading image:', error);
-      setImageGenerationLoading(false)
+      setImageGenerationLoading(false);
     }
   }
 };
@@ -74,7 +75,7 @@ const handleImageUploadSubmit = async () => {
 const handleDescriptionSubmit = async () => {
   if (description()) {
     try {
-      setDescGenerationLoading(true)
+      setDescGenerationLoading(true);
 
       // Simulate API call to generate model from description
       const response = await fetch('/api/model/generate-from-text', {
@@ -103,13 +104,13 @@ const handleDescriptionSubmit = async () => {
         z: parseFloat(playerRotationAttr.z),
       };
 
-      const modelPosition = calcSpawnPosition(playerPosition, playerRotation)
+      const modelPosition = calcSpawnPosition(playerPosition, playerRotation);
 
       addModelToScene(modelPath, modelPosition);
-      setDescGenerationLoading(false)
+      setDescGenerationLoading(false);
     } catch (error) {
       console.error('Error generating model from description:', error);
-      setDescGenerationLoading(false)
+      setDescGenerationLoading(false);
     }
 
     setDescription(''); // Reset input after submission
@@ -126,14 +127,29 @@ const addModelToScene = (modelUrl: string, position: Coords, isNetworked = true)
   // Removes the extension for example, 'tree.glb' => 'tree'
   const modelUrlWithoutExtension = filename.split('.').slice(0, -1).join('.');
 
-  console.log("ADDING AT POSITION: ", position)
+  console.log('ADDING AT POSITION: ', position);
 
   // modelEntity.setAttribute('id', modelUrlWithoutExtension) // Add unique id to the entity
   modelEntity.setAttribute('position', `${position.x} ${position.y} ${position.z}`); // Set position
   modelEntity.setAttribute('gltf-model', modelUrl); // Add the model URL
   modelEntity.setAttribute('networked', 'template:#new-model-template'); // Sync with other users
-  modelEntity.setAttribute('model-id', modelUrlWithoutExtension)
+  modelEntity.setAttribute('model-id', modelUrlWithoutExtension);
 
+  // Wait for the model to load before applying physics and adding grabbable interaction
+  modelEntity.addEventListener('model-loaded', () => {
+    // Apply dynamic-body for physics
+    modelEntity.setAttribute('dynamic-body', 'shape: auto; mass: 5');
+
+    // Disable physics on grab, re-enable on release
+    modelEntity.addEventListener('grab-start', () => {
+      modelEntity.removeAttribute('dynamic-body'); // Disable physics during grab
+    });
+
+    modelEntity.addEventListener('grab-end', () => {
+      modelEntity.setAttribute('dynamic-body', 'shape: auto; mass: 5'); // Re-enable physics after release
+    });
+  });
+  console.log(modelEntity);
   scene.appendChild(modelEntity);
 };
 
@@ -144,13 +160,13 @@ export const ModelButtonWithPanel = () => {
       {/* Button to open the panel */}
       <button
         type="button"
-        class="btn btn-circle btn-xs w-10 h-10 border shadow-md"
+        class="btn btn-circle btn-xs h-10 w-10 border shadow-md"
         classList={{
-          "btn-neutral": showModelPanel(),
-          "btn-active": showModelPanel()
+          'btn-neutral': showModelPanel(),
+          'btn-active': showModelPanel(),
         }}
         onClick={() => {
-          setShowModelPanel((v) => !v)
+          setShowModelPanel((v) => !v);
           if (showModelPanel()) {
             setShowChatPanel(false);
             setShowUsersPanel(false);
@@ -168,7 +184,7 @@ export const ModelButtonWithPanel = () => {
             {/* Close Button */}
             <div class="flex justify-end space-x-2 pb-2">
               <button
-                class="btn btn-circle btn-sm btn-neutral"
+                class="btn btn-circle btn-neutral btn-sm"
                 type="button"
                 title="Close"
                 onClick={() => setShowModelPanel(false)}
@@ -185,37 +201,36 @@ export const ModelButtonWithPanel = () => {
                 type="file"
                 accept="image/*"
                 onInput={(e) => setUploadedFile(e.target.files[0])}
-                class="form-input w-full px-4 py-2 text-sm rounded-lg"
+                class="form-input w-full rounded-lg px-4 py-2 text-sm"
               />
               <button class="btn btn-primary w-full" onClick={handleImageUploadSubmit}>
-                <Show when={!imageGenerationLoading()}>
-                  Submit Image
-                </Show>
+                <Show when={!imageGenerationLoading()}>Submit Image</Show>
                 <Show when={imageGenerationLoading()}>
                   <span class="loading loading-spinner"></span>
                 </Show>
               </button>
             </div>
 
-            {/* Section 2: Generate a model based on a description */}
+            {/* Section 2: Generate a model based on a description */}s
             <div class="flex flex-col space-y-4">
               <h3 class="text-lg font-semibold">Generate a 3D Model</h3>
-              <label for="description" class="text-sm">Describe the model you want to generate:</label>
+              <label for="description" class="text-sm">
+                Describe the model you want to generate:
+              </label>
               <textarea
                 id="description"
                 value={description()}
                 onInput={(e) => setDescription(e.target.value)}
                 placeholder="Example: A soccer ball"
-                class="form-textarea w-full px-4 py-2 text-sm rounded-lg max-h-20"
+                class="form-textarea max-h-20 w-full rounded-lg px-4 py-2 text-sm"
               />
               <button class="btn btn-primary w-full" onClick={handleDescriptionSubmit}>
-                <Show when={!descGenerationLoading()}>
-                  Submit Description
-                </Show>
+                <Show when={!descGenerationLoading()}>Submit Description</Show>
                 <Show when={descGenerationLoading()}>
                   <span class="loading loading-spinner"></span>
                 </Show>
               </button>
+              {/* Add check box to apply physics to the model */}
             </div>
           </div>
         </Portal>
