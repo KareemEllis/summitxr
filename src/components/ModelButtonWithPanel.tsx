@@ -234,7 +234,7 @@ export const ModelButtonWithPanel = () => {
                 {/* Conditionally show the select input for shape when checkbox is checked */}
                 {applyPhysicsImage() && (
                   <select
-                    class="form-select ml-2"
+                    class="form-select text-sm"
                     value={selectedShapeImage()}
                     onChange={(e) => setSelectedShapeImage(e.target.value)}
                   >
@@ -276,9 +276,9 @@ export const ModelButtonWithPanel = () => {
                 {/* Conditionally show the select input for shape when checkbox is checked */}
                 {applyPhysicsDescription() && (
                   <select
-                    class="form-select ml-2"
-                    value={selectedShapeImage()}
-                    onChange={(e) => setSelectedShapeImage(e.target.value)}
+                    class="form-select text-sm"
+                    value={selectedShapeDescription()}
+                    onChange={(e) => setSelectedShapeDescription(e.target.value)}
                   >
                     <option value="auto">Default Shape</option>
                     <option value="sphere">Sphere</option>
