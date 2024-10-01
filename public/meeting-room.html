@@ -32,6 +32,9 @@
     <!-- COMMENT OUT THIS LINE TO DIABLE UI WHILE DEVELOPING -->
     <script defer src="/dist/ui.js"></script>
     <!-- --------------------------------------------------- -->
+
+    <!-- A-Frame Physics System -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
   </head>
 
   <body>
@@ -44,7 +47,382 @@
         adapter: easyrtc;
         audio: true;
       "
+      physics="gravity:-9.8;friction: 0.1; restitution: 0.5;debug: false;"
     >
+      <!-- Physics test box -->
+      <!-- <a-box navmesh-constraint="navmesh:.navmesh" dynamic-body="shape:box;mass:1" position="0 3 6" color="red"></a-box> -->
+      <!-- Invisible static plane, aligned with the room model's floor -->
+      <!-- If the objects get stuck in the floor then try increasing this planes height a little -->
+      <a-plane
+        visible="true"
+        position="0 -0.1 0"
+        rotation="-90 0 0"
+        width="15"
+        height="17"
+        static-body
+        color="green"
+      ></a-plane>
+      <!-- Collision plane for back wall -->
+      <a-plane
+        visible="false"
+        position="0 1 -5.3"
+        rotation="0 0 0"
+        width="12"
+        height="13"
+        static-body
+        color="green"
+      ></a-plane>
+      <!-- Collision panes for drawer object at back wall -->
+      <a-plane
+        visible="false"
+        position="0 1 -5.3"
+        rotation="-90 0 180"
+        width="3"
+        height="1.5"
+        static-body
+        color="green"
+      ></a-plane>
+      <a-plane
+        visible="false"
+        position="1.55 0.5 -5"
+        rotation="0 90 180"
+        width="0.87"
+        height="1"
+        static-body
+        color="green"
+      ></a-plane>
+      <a-plane
+        visible="false"
+        position="0 0.5 -4.5"
+        rotation="0 0 180"
+        width="3.05"
+        height=""
+        static-body
+        color="green"
+      ></a-plane>
+      <a-plane
+        visible="false"
+        position="-1.56 0.5 -5"
+        rotation="0 90 180"
+        width="0.87"
+        height="1"
+        static-body
+        color="green"
+      ></a-plane>
+      <!--  Collision panes for drawer object at back wall -->
+
+      <!--  Collision plane for front wall -->
+      <a-plane
+        visible="false"
+        position="1 1 8.23"
+        rotation="0 0 0"
+        width="13"
+        height="6"
+        static-body
+        color="red"
+      ></a-plane>
+      <!--  Collision plane for white board -->
+      <a-plane
+        visible="false"
+        position="0 1.1 7.6"
+        rotation="0 0 0"
+        width="3.25"
+        height="2"
+        static-body
+        color="red"
+      ></a-plane>
+
+      <!-- Collision Planes for left side of room-->
+      <!-- Windows -->
+      <a-plane
+        visible="false"
+        position="-5.5 1 1.23"
+        rotation="0 90 0"
+        width="15"
+        height="6"
+        static-body
+        color="red"
+      ></a-plane>
+      <!-- Window ledge -->
+      <a-plane
+        visible="false"
+        position="-5.7 1.05 1.23"
+        rotation="90 180 90"
+        width="15"
+        height="1"
+        static-body
+        color="red"
+      ></a-plane>
+      <!-- Back of chairs -->
+      <a-plane
+        visible="false"
+        position="-5.0 0 1.23"
+        rotation="0 90 0"
+        width="15"
+        height="2.3"
+        static-body
+        color="red"
+      ></a-plane>
+      <!-- Chair seats -->
+      <a-plane
+        visible="false"
+        position="-5.0 0.55 1.23"
+        rotation="90 90 0"
+        width="15"
+        height="1.6"
+        static-body
+        color="red"
+      ></a-plane>
+      <!-- Front of seats -->
+      <a-plane
+        visible="false"
+        position="-4.2 0.4 1.23"
+        rotation="180 90 0"
+        width="15"
+        height="0.4"
+        static-body
+        color="red"
+      ></a-plane>
+      <!--Column Beam -->
+      <a-box
+        visible="false"
+        position="-5.4 1 1.34"
+        rotation="0 90 0"
+        width="1.1"
+        height="6"
+        static-body
+        color="yellow"
+      ></a-box>
+      <!--Beam above Column Beam -->
+      <a-box
+        visible="false"
+        position="-5.4 3.5 1.34"
+        rotation="180 -90 180"
+        width="15"
+        height="1"
+        static-body
+        color="purple"
+      ></a-box>
+      <!--Right plant-->
+      <a-box
+        visible="false"
+        position="-4.5 1.1 -5"
+        rotation="180 -90 180"
+        width="1.25"
+        height="1.1"
+        static-body
+        color="purple"
+      ></a-box>
+      <!--Left plant-->
+      <a-box
+        visible="false"
+        position="-4.5 1.1 7.65"
+        rotation="180 -90 180"
+        width="1.25"
+        height="1.1"
+        static-body
+        color="purple"
+      ></a-box>
+      <!-- Collision Planes for left side of room-->
+
+      <!-- Collision Planes for right side of room-->
+      <!--Trash Can-->
+      <a-box
+        visible="false"
+        position="3.8 0.33 -5"
+        rotation="180 -90 180"
+        width="0.5"
+        height="0.6"
+        static-body
+        color="blue"
+      ></a-box>
+      <!-- Glass Doors -->
+      <a-plane
+        visible="false"
+        position="4.61 1 1.23"
+        rotation="0 90 0"
+        width="15"
+        height="5"
+        static-body
+        color="green"
+      ></a-plane>
+      <!--Beam above Column Beam -->
+      <a-box
+        visible="false"
+        position="4.8 3.7 1.34"
+        rotation="180 -90 180"
+        width="15"
+        height="1"
+        static-body
+        color="purple"
+      ></a-box>
+      <!--Left Column Beam -->
+      <a-box
+        visible="false"
+        position="4.7 0.33 -4.8"
+        rotation="0 90 0"
+        width="1.7"
+        height="6"
+        static-body
+        color="yellow"
+      ></a-box>
+      <!--Middle Column Beam -->
+      <a-box
+        visible="false"
+        position="4.7 0.33 1"
+        rotation="0 90 0"
+        width="1.7"
+        height="6"
+        static-body
+        color="yellow"
+      ></a-box>
+      <!--Right Column Beam -->
+      <a-box
+        visible="false"
+        position="4.7 0.33 7.4"
+        rotation="0 90 0"
+        width="1.7"
+        height="6"
+        static-body
+        color="yellow"
+      ></a-box>
+      <!-- Collision Planes for right side of room-->
+      <!-- Collision Plane for Ceiling-->
+      <a-plane
+        visible="false"
+        position="0 3.52 0"
+        rotation="-90 0 0"
+        width="15"
+        height="17"
+        static-body
+        color="green"
+      ></a-plane>
+
+      <!-- Collision Planes for Table-->
+      <!-- Table Top -->
+      <a-box
+        visible="false"
+        scale="1 1 0.1"
+        position="0 0.9 1.1"
+        rotation="90 90 0"
+        width="7.8"
+        height="2.2"
+        static-body
+        color="yellow"
+      ></a-box>
+      <!-- Chairs -->
+      <!-- Left:First -->
+      <a-box
+        visible="false"
+        scale="1 1.1 1.3"
+        position="-1.7 0.6 4.3"
+        rotation="90 90 0"
+        width="1"
+        height="1"
+        static-body
+        color="pink"
+      ></a-box>
+      <!-- Left:Second -->
+      <a-box
+        visible="false"
+        scale="1 1.1 1.3"
+        position="-1.7 0.6 2.7"
+        rotation="90 90 0"
+        width="1"
+        height="1"
+        static-body
+        color="pink"
+      ></a-box>
+      <!-- Left:Third -->
+      <a-box
+        visible="false"
+        scale="1 1.1 1.3"
+        position="-1.7 0.6 1.1"
+        rotation="90 90 0"
+        width="1"
+        height="1"
+        static-body
+        color="pink"
+      ></a-box>
+      <!-- Left:4th -->
+      <a-box
+        visible="false"
+        scale="1 1.1 1.3"
+        position="-1.7 0.6 -0.5"
+        rotation="90 90 0"
+        width="1"
+        height="1"
+        static-body
+        color="pink"
+      ></a-box>
+      <!-- Left:5th -->
+      <a-box
+        visible="false"
+        scale="1 1.1 1.3"
+        position="-1.7 0.6 -2.1"
+        rotation="90 90 0"
+        width="1"
+        height="1"
+        static-body
+        color="pink"
+      ></a-box>
+      <!-- Right:5th -->
+      <a-box
+        visible="false"
+        scale="1 1.1 1.3"
+        position="1.7 0.6 -1.9"
+        rotation="90 90 0"
+        width="1"
+        height="1"
+        static-body
+        color="pink"
+      ></a-box>
+      <!-- Right:4th -->
+      <a-box
+        visible="false"
+        scale="1 1.1 1.3"
+        position="1.7 0.6 -0.3"
+        rotation="90 90 0"
+        width="1"
+        height="1"
+        static-body
+        color="pink"
+      ></a-box>
+      <!-- Right:3rd -->
+      <a-box
+        visible="false"
+        scale="1 1.1 1.3"
+        position="1.7 0.6 1.3"
+        rotation="90 90 0"
+        width="1"
+        height="1"
+        static-body
+        color="pink"
+      ></a-box>
+      <!-- Right:2nd -->
+      <a-box
+        visible="false"
+        scale="1 1.1 1.3"
+        position="1.7 0.6 2.9"
+        rotation="90 90 0"
+        width="1"
+        height="1"
+        static-body
+        color="pink"
+      ></a-box>
+      <!-- Right:1st -->
+      <a-box
+        visible="false"
+        scale="1 1.1 1.3"
+        position="1.7 0.6 4.5"
+        rotation="90 90 0"
+        width="1"
+        height="1"
+        static-body
+        color="pink"
+      ></a-box>
+      <!-- Collision Planes for Table-->
+
       <!-- Assets Management -->
       <a-assets>
         <!-- Player Rig -->
@@ -60,14 +438,8 @@
         <a-asset-item id="tree" src="./assets/models/generated/tree.glb"></a-asset-item>
 
         <template id="new-model-template">
-          <a-entity 
-            mixin="grab-move" 
-            class="clickable"
-            onclick="redirectToAR(this)"
-          ></a-entity>
+          <a-entity mixin="grab-move" class="clickable" onclick="redirectToAR(this)"></a-entity>
         </template>
-
-
 
         <!-- Player -->
         <template id="avatar-template">
@@ -221,16 +593,16 @@
 
       <!-- Each 3d entity needs to have clickable class and the onclick here -->
 
-      <a-entity 
+      <a-entity
         id="tree"
         mixin="grab-move"
-        gltf-model="#tree" 
+        gltf-model="#tree"
         position="0 1 0"
         scale="0.1 0.1 0.1"
         class="clickable"
-        onclick="redirectToAR(this)">
+        onclick="redirectToAR(this)"
+      >
       </a-entity>
-      
     </a-scene>
   </body>
 
@@ -248,25 +620,25 @@
   <script>
     // Redirect to AR page when model is clicked
     function redirectToAR(element) {
-        // Get the model's ID, position, and scale to pass as URL parameters
+      // Get the model's ID, position, and scale to pass as URL parameters
 
-        defaultScale = {x: 0.1, y: 0.1, z: 0.1};
+      defaultScale = { x: 0.1, y: 0.1, z: 0.1 };
 
-        console.log('you clicked ', element);
+      console.log('you clicked ', element);
 
-        const modelId = element.getAttribute('model-id');
-        console.log('ModelId', modelId)
-        if (element.getAttribute('scale') !== null) {
-          scale = element.getAttribute('scale');
-        } else {
-          scale = defaultScale;
-        }
-        
-        // URL to ar page
-        const arUrl = `ar-display.html?modelId=${modelId}&scale=${scale.x},${scale.y},${scale.z}`;
-        
-        // Redirect to the AR page
-        window.open(arUrl, '_blank');
+      const modelId = element.getAttribute('model-id');
+      console.log('ModelId', modelId);
+      if (element.getAttribute('scale') !== null) {
+        scale = element.getAttribute('scale');
+      } else {
+        scale = defaultScale;
       }
+
+      // URL to ar page
+      const arUrl = `ar-display.html?modelId=${modelId}&scale=${scale.x},${scale.y},${scale.z}`;
+
+      // Redirect to the AR page
+      window.open(arUrl, '_blank');
+    }
   </script>
 </html>
