@@ -30,7 +30,7 @@
 
     <!-- --------------------------------------------------- -->
     <!-- COMMENT OUT THIS LINE TO DIABLE UI WHILE DEVELOPING -->
-    <script defer src="/dist/ui.js"></script>
+    <!-- <script defer src="/dist/ui.js"></script> -->
     <!-- --------------------------------------------------- -->
 
     <!-- A-Frame Physics System -->
@@ -47,16 +47,16 @@
         adapter: easyrtc;
         audio: true;
       "
-      physics="gravity: -9.8;debug: false;"
+      physics="debug: true;"
     >
       <a-box navmesh-constraint="navmesh:.navmesh" dynamic-body="shape:box;mass:1" position="0 3 6" color="red"></a-box>
       <!-- Invisible static plane, aligned with the room model's floor -->
-       <!-- If the objects get stuck in the floor then try increasing this planes height a little -->
+      <!-- If the objects get stuck in the floor then try increasing this planes height a little -->
       <a-plane
         visible="true"
         position="0 -0.2 0"
         rotation="-90 0 0"
-        width="15a"
+        width="15"
         height="17"
         static-body
         color="green"
@@ -109,6 +109,27 @@
         color="green"
       ></a-plane>
       <!--  Collision panes for drawer object at back wall -->
+
+      <!--  Collision plane for front wall -->
+      <a-plane
+        visible="true"
+        position="1 1 8.23"
+        rotation="0 0 0"
+        width="13"
+        height="6"
+        static-body
+        color="red"
+      ></a-plane>
+      <!--  Collision plane for white board -->
+      <a-plane
+        visible="true"
+        position="0 1.1 7.6"
+        rotation="0 0 0"
+        width="3.25"
+        height="2"
+        static-body
+        color="red"
+      ></a-plane>
       <!-- Assets Management -->
       <a-assets>
         <!-- Player Rig -->
