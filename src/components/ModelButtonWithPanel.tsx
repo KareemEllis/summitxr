@@ -192,7 +192,6 @@ export const ModelButtonWithPanel = () => {
                 <VsChromeClose size={16} />
               </button>
             </div>
-
             {/* Section 1: Upload Image to generate 3D model */}
             <div class="flex flex-col space-y-4">
               <h3 class="text-lg font-semibold">Upload an Image to Generate a 3D Model</h3>
@@ -203,6 +202,10 @@ export const ModelButtonWithPanel = () => {
                 onInput={(e) => setUploadedFile(e.target.files[0])}
                 class="form-input w-full rounded-lg px-4 py-2 text-sm"
               />
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" id="apply-physics-upload" />
+                <span class="text-sm">Apply physics</span>
+              </label>
               <button class="btn btn-primary w-full" onClick={handleImageUploadSubmit}>
                 <Show when={!imageGenerationLoading()}>Submit Image</Show>
                 <Show when={imageGenerationLoading()}>
@@ -210,8 +213,7 @@ export const ModelButtonWithPanel = () => {
                 </Show>
               </button>
             </div>
-
-            {/* Section 2: Generate a model based on a description */}s
+            {/* Section 2: Generate a model based on a description */}
             <div class="flex flex-col space-y-4">
               <h3 class="text-lg font-semibold">Generate a 3D Model</h3>
               <label for="description" class="text-sm">
@@ -224,6 +226,10 @@ export const ModelButtonWithPanel = () => {
                 placeholder="Example: A soccer ball"
                 class="form-textarea max-h-20 w-full rounded-lg px-4 py-2 text-sm"
               />
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" id="apply-physics-upload" />
+                <span class="text-sm">Apply physics</span>
+              </label>
               <button class="btn btn-primary w-full" onClick={handleDescriptionSubmit}>
                 <Show when={!descGenerationLoading()}>Submit Description</Show>
                 <Show when={descGenerationLoading()}>
