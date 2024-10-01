@@ -34,7 +34,9 @@
   </head>
 
   <body>
+
     <a-scene
+      follow-object
       renderer="physicallyCorrectLights:true;colorManagement:true"
       networked-scene="
         connectOnLoad: false;
@@ -64,8 +66,19 @@
         ></a-asset-item> 
 
         <!-- Test asset for 3d model -->
-         
-        <a-asset-item id="tree" src="./assets/models/ar-display/tree.glb"></a-asset-item>
+        <a-asset-item id="tree" src="./assets/models/generated/tree.glb"></a-asset-item>
+
+       
+
+        <template id="new-model-template">
+          <a-entity 
+            mixin="grab-move" 
+            class="clickable"
+            onclick="handleModelClick(event, this)"
+          ></a-entity>
+        </template>
+
+
 
         <!-- Player -->
         <template id="avatar-template">
@@ -206,6 +219,24 @@
       
       </a-entity>
 
+       <!-- The box acting as a button with text to redirect to AR -->
+        <a-box id="ar-box" 
+        visible="false" 
+        class="clickable"
+        position="0 0 0" 
+        width="0.6" 
+        height="0.2" 
+        depth="0.0002"
+        color="#FFFFFF"
+        onclick="redirectToAR()"
+        material="shader: flat; opacity: 0.8;  side: double;"
+        rounded="true"
+        radius="50"
+      >
+        <!-- Text on the box -->
+        <a-text id="ar-box-text" value="See in AR" color="#000000" align="center" scale="0.5 0.5 0.5" ></a-text>
+      </a-box>
+
       <!--  -->
       <!-- Test 3d object -->
       <!--  -->
@@ -216,10 +247,11 @@
         id="tree"
         gltf-model="#tree" 
         position="0 1 0"
-        scale="0.1 0.1 0.1"
-        modify-materials
+        model-id="tree"
+        id="tree-entity"
         class="clickable"
-        onclick="redirectToAR(this)">
+        onclick="handleModelClick(event, this)"
+        >
       </a-entity>
       
     </a-scene>
@@ -236,27 +268,91 @@
         rig.removeAttribute('movement-controls');
         player.removeAttribute('look-controls');
       }
+  </script>
 
-      // Redirect to AR page when model is clicked
-      function redirectToAR(element) {
-        // Get the model's ID, position, and scale to pass as URL parameters
+  <script>
+    let selectedObject = null;
+    let isDragging = false;
 
-        defaultScale = {x: 0.1, y: 0.1, z: 0.1};
+    // Handle clicks on the 3D object and display the box
+    function handleModelClick(event, element) {
+      const arBoxEl = document.getElementById('ar-box');
+      const arTextEl = document.getElementById('ar-box-text');
+      
+      // Save reference to the clicked 3D object
+      selectedObject = element;
+    
+      // Get the position of the clicked object
+      const objectPosition = element.getAttribute('position');
+      
+      // Position the a-box element slightly above the clicked object
+      const newPosition = {
+        x: objectPosition.x,
+        y: objectPosition.y + 0.5,  // Adjusting height to be above the object
+        z: objectPosition.z
+      };
+      arBoxEl.setAttribute('position', newPosition);
+      
+      // Make the a-box element visible and clickable
+      arBoxEl.setAttribute('visible', 'true');
+      arBoxEl.classList.add('clickable'); // Ensure it's clickable
 
-        console.log('you clicked ', element);
+      // Listen for dragging events
+      isDragging = true;
+    
+      // Set a timeout to hide the box after 5 seconds
+      setTimeout(() => {
+        arBoxEl.setAttribute('visible', 'false');
+        arBoxEl.classList.remove('clickable'); // Remove the clickable class when hidden
+        isDragging = false;
+      }, 5000);
+      
+      
+      arTextEl.setAttribute('value', 'See in AR');
+    }
 
-        const modelId = element.id;
-        if (element.getAttribute('scale') !== null) {
-          scale = element.getAttribute('scale');
-        } else {
-          scale = defaultScale;
+    // Continuously update the a-box position while dragging
+    AFRAME.registerComponent('follow-object', {
+      tick: function () {
+        const arBoxEl = document.getElementById('ar-box');
+        if (isDragging && selectedObject) {
+          const objectPosition = selectedObject.getAttribute('position');
+          const newPosition = {
+            x: objectPosition.x,
+            y: objectPosition.y + 0.8,  // Adjusting height to be above the object
+            z: objectPosition.z
+          };
+          arBoxEl.setAttribute('position', newPosition);
+        }
+      }
+    });
+    
+    // Redirect to AR page when model is clicked
+    function redirectToAR() {
+
+      console.log(selectedObject);
+
+        if (selectedObject) {
+
+          defaultScale = {x: 0.1, y: 0.1, z: 0.1};
+
+          console.log('you clicked ', selectedObject);
+
+          const modelId = selectedObject.getAttribute('model-id');
+          console.log('ModelId', modelId)
+          if (selectedObject.getAttribute('scale') !== null) {
+            scale = selectedObject.getAttribute('scale');
+          } else {
+            scale = defaultScale;
+          }
+          
+          // URL to ar page
+          const arUrl = `ar-display.html?modelId=${modelId}&scale=${scale.x},${scale.y},${scale.z}`;
+          
+          // Redirect to the AR page
+          window.open(arUrl, '_blank');
         }
         
-        // URL to ar page
-        const arUrl = `ar-display.html?modelId=${modelId}&scale=${scale.x},${scale.y},${scale.z}`;
-        
-        // Redirect to the AR page
-        window.location.href = arUrl;
       }
 
   </script>
