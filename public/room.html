@@ -442,8 +442,8 @@
         <a-asset-item id="navmesh-model" src="./assets/models/room/navmesh.gltf"></a-asset-item>
         <!-- Test asset for 3d model -->
         <a-asset-item id="tree" src="./assets/models/generated/tree.glb"></a-asset-item>
-
-       
+        <!-- Light Model -->
+        <a-asset-item id="light" src="./assets/models/room/Light/ceiling_lamp.glb"></a-asset-item>
 
         <template id="new-model-template">
           <a-entity 
@@ -553,8 +553,6 @@
       <!-- Entity for Navigation Mesh -->
       <a-gltf-model class="navmesh" src="#navmesh-model" visible="false"></a-gltf-model>
 
-      <a-entity light="type:ambient;intensity:0.5"></a-entity>
-
       <!-- Entity for Rig and Player -->
       <a-entity
         id="rig"
@@ -637,6 +635,45 @@
         >
       </a-entity>
       
+      <!-- LIGHTS -->
+      <a-entity>
+        <a-entity light="type:ambient;intensity:1"></a-entity>
+        <a-entity 
+          gltf-model="#light" 
+          position="-2.64066 0.97695 0.46199"
+          scale="1.5 1 1.5"
+        >
+          <a-entity light="angle: 53.77; color: #fafbd5; decay: -0.6; intensity: 0.73; penumbra: 0.82; type: spot" position="0 2.41144 0" rotation="-90 0 0"></a-entity>
+        </a-entity>
+
+        <a-entity 
+          gltf-model="#light" 
+          position="3.15528 0.977 0.462"
+          scale="1.5 1 1.5"
+        >
+          <a-entity light="angle: 53.77; color: #fafbd5; decay: -0.6; intensity: 0.73; penumbra: 0.82; type: spot" position="0 2.41144 0" rotation="-90 0 0"></a-entity>
+        </a-entity>
+
+        <a-entity 
+          gltf-model="#light" 
+          position="0.06089 0.977 6"
+          rotation="0 90 0"
+          scale="1.5 1 1.5"
+        >
+          <a-entity light="angle: 53.77; color: #fafbd5; decay: -0.6; intensity: 0.73; penumbra: 0.82; type: spot" position="0 2.41144 0" rotation="-90 0 0"></a-entity>
+        </a-entity>
+
+        <a-entity 
+          gltf-model="#light" 
+          position="0.051 0.977 -3.46883"
+          rotation="0 90 0"
+          scale="1.5 1 1.5"
+        >
+          <a-entity light="angle: 53.77; color: #fafbd5; decay: -0.6; intensity: 0.73; penumbra: 0.82; type: spot" position="0 2.41144 0" rotation="-90 0 0"></a-entity>
+        </a-entity>
+      </a-entity>
+
+
     </a-scene>
   </body>
 
