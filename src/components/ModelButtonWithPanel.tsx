@@ -165,12 +165,12 @@ const applyPhysicsToModel = (modelEntity: typeof AFRAME.AEntity, shape: string =
   modelEntity.setAttribute('dynamic-body', `shape: ${shape}; mass: ${mass}`);
 
   // Disable physics on grab, re-enable on release
-  modelEntity.addEventListener('grab-start', () => {
+  modelEntity.addEventListener('grab-start', (event) => {
     modelEntity.removeAttribute('dynamic-body'); // Disable physics during grab
     modelEntity.setAttribute('simple-navmesh-constraint', 'navmesh:.navmesh');
   });
 
-  modelEntity.addEventListener('grab-end', () => {
+  modelEntity.addEventListener('grab-end', (event) => {
     modelEntity.removeAttribute('simple-navmesh-constraint', 'navmesh:.navmesh');
     modelEntity.setAttribute('dynamic-body', `shape: ${shape}; mass: ${mass}`); // Re-enable physics after release
   });
