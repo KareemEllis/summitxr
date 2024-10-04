@@ -446,11 +446,9 @@
           <a-entity 
             mixin="grab-move" 
             class="clickable"
-            onclick="redirectToAR(this)"
+            ondragstart="handleModelClick(event, this)"
           ></a-entity>
         </template>
-
-
 
         <!-- Player -->
         <template id="avatar-template">
@@ -671,6 +669,72 @@
         });
       }
     });
+  </script>
+
+  <!-- See in AR code -->
+
+  <script>
+    let selectedObject = null;
+
+    // Handle clicks on the 3D object and display the box
+    function handleModelClick(event, element) {
+      const scene = document.querySelector('a-scene');
+
+      // Clone a new box each time a 3D object is clicked
+      const arBoxTemplate = document.querySelector('.ar-box-template');
+      const newBox = arBoxTemplate.cloneNode(true);
+      newBox.classList.remove('ar-box-template'); 
+      newBox.classList.add('ar-box'); 
+
+      // Give the new box a unique identifier for tracking
+      const objectId = element.getAttribute('id');
+      newBox.setAttribute('data-object-id', objectId);
+
+      scene.appendChild(newBox);
+
+      // Save reference to the clicked 3D object
+      selectedObject = element;
+
+      // Get the position of the clicked object
+      const objectPosition = element.getAttribute('position');
+
+      // Position the cloned box slightly above the clicked object
+      const newPosition = {
+        x: objectPosition.x,
+        y: objectPosition.y + 1,  
+        z: objectPosition.z
+      };
+      newBox.setAttribute('position', newPosition);
+
+      // Make the new box visible and clickable
+      newBox.setAttribute('visible', 'true');
+
+      // Add event listener to redirect to AR when the cloned box is clicked
+      newBox.addEventListener('click', () => {
+        redirectToAR(selectedObject);
+      });
+
+      // Automatically hide the box after 5 seconds (optional)
+      setTimeout(() => {
+        newBox.setAttribute('visible', 'false');
+        scene.removeChild(newBox); // Clean up the box after it disappears
+      }, 5000);
+    }
+
+    // Redirect to AR page when the box is clicked
+    function redirectToAR() {
+      if (selectedObject) {
+        const defaultScale = { x: 0.1, y: 0.1, z: 0.1 };
+        const modelId = selectedObject.getAttribute('model-id');
+        const scale = selectedObject.getAttribute('scale') || defaultScale;
+        
+        // URL to AR page
+        const arUrl = `ar-display.html?modelId=${modelId}&scale=${scale.x},${scale.y},${scale.z}`;
+        
+        // Redirect to the AR page
+        window.open(arUrl, '_blank');
+      }
+    }
   </script>
 
   <script>
