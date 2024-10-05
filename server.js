@@ -38,8 +38,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // API routes
-app.use(generateFromImageRoute);
-app.use(generateFromTextRoute);
+// app.use(generateFromImageRoute);
+// app.use(generateFromTextRoute);
 
 // Start Express http server
 const webServer = http.createServer(app);
