@@ -30,6 +30,9 @@ interface Coords {
 
 // Handler for submitting the uploaded image
 const handleImageUploadSubmit = async () => {
+  console.log('Feature Disabled')
+  return
+
   if (uploadedFile()) {
     setImageGenerationLoading(true);
 
@@ -78,6 +81,9 @@ const handleImageUploadSubmit = async () => {
 
 // Handler for submitting the description to an API
 const handleDescriptionSubmit = async () => {
+  console.log('Feature Disabled')
+  return
+
   if (description()) {
     try {
       setDescGenerationLoading(true);
@@ -247,7 +253,7 @@ export const ModelButtonWithPanel = () => {
                   </select>
                 )}
               </label>
-              <button class="btn btn-primary w-full" onClick={handleImageUploadSubmit}>
+              <button class="btn btn-primary w-full btn-disabled" onClick={handleImageUploadSubmit}>
                 <Show when={!imageGenerationLoading()}>Submit Image</Show>
                 <Show when={imageGenerationLoading()}>
                   <span class="loading loading-spinner"></span>
@@ -289,7 +295,7 @@ export const ModelButtonWithPanel = () => {
                   </select>
                 )}
               </label>
-              <button class="btn btn-primary w-full" onClick={handleDescriptionSubmit}>
+              <button class="btn btn-primary w-full btn-disabled" onClick={handleDescriptionSubmit}>
                 <Show when={!descGenerationLoading()}>Submit Description</Show>
                 <Show when={descGenerationLoading()}>
                   <span class="loading loading-spinner"></span>
